@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgres://localhost:5432/database
+    url: jdbc:postgres://localhost:5432/e-commerce
 
   jpa:
     hibernate:
@@ -8,3 +8,7 @@ spring:
 
   flyway:
     clean-disabled: false
+
+  h2:
+    console:
+      enabled: true

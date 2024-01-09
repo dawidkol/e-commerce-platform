@@ -1,0 +1,11 @@
+services:
+  postgres:
+    image: 'postgres:latest'
+    container_name: e-commerce
+    restart: always
+    environment:
+      POSTGRES_DB: e-commerce
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: admin
+    ports:
+      - '5432:5432'
