@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:postgres://localhost:5432/database
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+  flyway:
+    clean-disabled: false
