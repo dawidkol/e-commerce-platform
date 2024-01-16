@@ -1,11 +1,13 @@
 package pl.dk.ecommerceplatform.brand;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import pl.dk.ecommerceplatform.product.Product;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,11 +21,7 @@ public class Brand {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @OneToMany
-    @JoinColumn(name = "brand_id")
-    private List<Product> products;
+    @OneToMany(mappedBy = "brand")
+    private List<Product> products = new ArrayList<>();
 
-    public Brand(String name) {
-        this.name = name;
-    }
 }
