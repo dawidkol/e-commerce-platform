@@ -10,6 +10,8 @@ import pl.dk.ecommerceplatform.product.dtos.SaveProductDto;
 import java.net.URI;
 import java.util.List;
 
+import static pl.dk.ecommerceplatform.product.ProductService.*;
+
 @RestController
 @RequestMapping("/products")
 @AllArgsConstructor
@@ -37,7 +39,7 @@ class ProductController {
     @GetMapping("")
     public ResponseEntity<List<ProductDto>> getProducts(@RequestParam(defaultValue = "-1") Integer page,
                                                         @RequestParam(defaultValue = "-1") Integer size,
-                                                        @RequestParam(defaultValue = "") String sort) {
+                                                        @RequestParam(defaultValue = NAME) String sort) {
         return ResponseEntity.ok(productService.getProducts(page, size, sort));
     }
 
@@ -48,6 +50,5 @@ class ProductController {
             return ResponseEntity.ok(productsByName);
         else return ResponseEntity.noContent().build();
     }
-
 
 }

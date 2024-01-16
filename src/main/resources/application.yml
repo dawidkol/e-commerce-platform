@@ -27,3 +27,7 @@ logging:
         orm:
           jdbc:
             bind: TRACE
+
+server:
+  error:
+    include-message: always

@@ -10,6 +10,7 @@ import pl.dk.ecommerceplatform.product.dtos.ProductDto;
 import pl.dk.ecommerceplatform.product.dtos.SaveProductDto;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.springframework.data.domain.Sort.*;
@@ -26,9 +27,13 @@ class ProductService {
     private final ProductDtoMapper productDtoMapper;
 
     public ProductDto save(SaveProductDto saveProductDto) {
-        Product productToSave = productDtoMapper.map(saveProductDto);
-        Product savedProduct = productRepository.save(productToSave);
-        return productDtoMapper.map(savedProduct);
+        try {
+            Product productToSave = productDtoMapper.map(saveProductDto);
+            Product savedProduct = productRepository.save(productToSave);
+            return productDtoMapper.map(savedProduct);
+        } catch (NoSuchElementException ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Incorrect brand id or category id");
+        }
     }
 
     public Optional<ProductDto> getProductById(Long id) {
@@ -41,15 +46,18 @@ class ProductService {
             return getSortedProducts(pageNumber, size, PRICE, Direction.ASC);
         } else if (sortBy.equals(PRICE_DESC) && pageNumber >= 0 && size >= 0) {
             return getSortedProducts(pageNumber, size, PRICE, Direction.DESC);
-        } else if (sortBy.isEmpty())
-            return productRepository.findAll(Sort.by(NAME)).stream().map(productDtoMapper::map).toList();
-        else throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        } else
+            return productRepository.findAll(Sort.by(NAME))
+                    .stream()
+                    .map(productDtoMapper::map)
+                    .toList();
     }
 
     public List<ProductDto> getProductsByNameAndCategory(String name, String category) {
         if (category == null) {
             return productRepository.findByName(name)
-                    .stream().map(productDtoMapper::map)
+                    .stream()
+                    .map(productDtoMapper::map)
                     .toList();
         } else {
             return productRepository.findByNameAndCategory(name, category)
@@ -65,6 +73,5 @@ class ProductService {
                 .map(productDtoMapper::map)
                 .getContent();
     }
-
 
 }

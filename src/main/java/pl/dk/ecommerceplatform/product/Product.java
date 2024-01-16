@@ -2,9 +2,11 @@ package pl.dk.ecommerceplatform.product;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.lang.Nullable;
 import pl.dk.ecommerceplatform.brand.Brand;
 import pl.dk.ecommerceplatform.category.Category;
 
