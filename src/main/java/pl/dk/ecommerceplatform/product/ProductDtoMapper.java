@@ -11,7 +11,7 @@ import java.time.LocalDate;
 
 @Service
 @AllArgsConstructor
-class ProductDtoMapper {
+public class ProductDtoMapper {
 
 
     private final CategoryRepository categoryRepository;

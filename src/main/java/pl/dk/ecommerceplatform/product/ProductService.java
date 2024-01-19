@@ -2,7 +2,6 @@ package pl.dk.ecommerceplatform.product;
 
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -26,7 +25,7 @@ class ProductService {
     private final ProductRepository productRepository;
     private final ProductDtoMapper productDtoMapper;
 
-    public ProductDto save(SaveProductDto saveProductDto) {
+    public ProductDto saveProduct(SaveProductDto saveProductDto) {
         try {
             Product productToSave = productDtoMapper.map(saveProductDto);
             Product savedProduct = productRepository.save(productToSave);
@@ -41,16 +40,8 @@ class ProductService {
                 .map(productDtoMapper::map);
     }
 
-    public List<ProductDto> getProducts(int pageNumber, int size, String sortBy) {
-        if (sortBy.equals(PRICE_ASC) && pageNumber >= 0 && size >= 0) {
-            return getSortedProducts(pageNumber, size, PRICE, Direction.ASC);
-        } else if (sortBy.equals(PRICE_DESC) && pageNumber >= 0 && size >= 0) {
-            return getSortedProducts(pageNumber, size, PRICE, Direction.DESC);
-        } else
-            return productRepository.findAll(Sort.by(NAME))
-                    .stream()
-                    .map(productDtoMapper::map)
-                    .toList();
+    public List<ProductDto> getProducts(int pageNumber, int size, String field, Direction direction) {
+        return getSortedProducts(pageNumber, size, field, direction);
     }
 
     public List<ProductDto> getProductsByNameAndCategory(String name, String category) {
