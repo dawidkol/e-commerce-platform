@@ -21,14 +21,11 @@ class CategoryService {
     private final ProductDtoMapper productDtoMapper;
 
     List<ProductDto> getProductsByCategory(String categoryName, int pageNumber, int size) {
-        try {
-            Category category = categoryRepository.findByNameIgnoreCase(categoryName).orElseThrow();
+            Category category = categoryRepository.findByNameIgnoreCase(categoryName)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found"));
             return productRepository.findAllByCategory_Name(category.getName(), PageRequest.of(pageNumber, size))
                     .stream()
                     .map(productDtoMapper::map)
                     .toList();
-        } catch (NoSuchElementException ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not exists");
-        }
     }
 }
