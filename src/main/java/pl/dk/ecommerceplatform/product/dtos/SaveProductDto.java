@@ -14,7 +14,6 @@ public record SaveProductDto(
         Long quantity,
         Long categoryId,
         Long brandId,
-        Boolean available,
-        LocalDate added
+        Boolean available
 ) {
 }
