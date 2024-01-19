@@ -1,0 +1,5 @@
+CREATE TABLE category
+(
+    id BIGSERIAL NOT NULL PRIMARY KEY,
+    name VARCHAR(100)
+);
