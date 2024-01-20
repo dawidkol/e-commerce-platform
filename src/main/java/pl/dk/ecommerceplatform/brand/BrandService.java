@@ -6,8 +6,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import pl.dk.ecommerceplatform.brand.dtos.BrandDto;
+import pl.dk.ecommerceplatform.brand.dtos.SaveBrandDto;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -26,5 +28,16 @@ class BrandService {
                 .stream()
                 .map(brandDtoMapper::map)
                 .toList();
+    }
+
+    public BrandDto saveBrand(SaveBrandDto saveBrandDto) {
+        Optional<Brand> brand = brandRepository.findByNameIgnoreCase(saveBrandDto.name());
+        if (brand.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Brand already exists");
+        } else {
+            Brand brandToSave = brandDtoMapper.map(saveBrandDto);
+            Brand savedBrand = brandRepository.save(brandToSave);
+            return brandDtoMapper.map(savedBrand);
+        }
     }
 }

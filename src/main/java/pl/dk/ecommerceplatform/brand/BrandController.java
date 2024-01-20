@@ -1,10 +1,14 @@
 package pl.dk.ecommerceplatform.brand;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.dk.ecommerceplatform.brand.dtos.BrandDto;
+import pl.dk.ecommerceplatform.brand.dtos.SaveBrandDto;
 
+import java.net.URI;
 import java.util.List;
 
 import static pl.dk.ecommerceplatform.constant.PaginationConstant.PAGE_DEFAULT;
@@ -27,6 +31,14 @@ class BrandController {
                                                        @RequestParam(required = false, defaultValue = SIZE_DEFAULT) int size) {
         List<BrandDto> brands = brandService.getAllBrands(page, size);
         return ResponseEntity.ok(brands);
+    }
+
+    @PostMapping("")
+    public ResponseEntity<BrandDto> saveBrand(@Valid @RequestBody SaveBrandDto saveBrandDto) {
+        BrandDto brandDto = brandService.saveBrand(saveBrandDto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(brandDto.id())
+                .toUri();
+        return ResponseEntity.created(uri).body(brandDto);
     }
 
 }
