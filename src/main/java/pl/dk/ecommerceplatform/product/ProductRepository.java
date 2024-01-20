@@ -7,13 +7,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query(value = "SELECT product.* FROM product JOIN category ON product.category_id = category.id" +
             " WHERE LOWER(product.name) LIKE LOWER(CONCAT('%', :name, '%'))", nativeQuery = true)
-    List<Product> findByName(String name);
+    List<Product> findAllByName(String name);
 
     @Query(value = "SELECT product.* FROM product JOIN category ON product.category_id = category.id " +
             "WHERE LOWER(product.name) LIKE LOWER(CONCAT('%', :name, '%')) AND LOWER(category.name)" +
@@ -21,5 +22,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByNameAndCategory(String name, String category);
 
     Page<Product> findAllByCategory_Name(String categoryName, Pageable pageable);
+
+    Optional<Product> findByName(String name);
 
 }
