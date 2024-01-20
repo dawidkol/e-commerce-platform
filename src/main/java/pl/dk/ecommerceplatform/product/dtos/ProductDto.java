@@ -1,8 +1,6 @@
 package pl.dk.ecommerceplatform.product.dtos;
 
 import lombok.Builder;
-import pl.dk.ecommerceplatform.brand.Brand;
-import pl.dk.ecommerceplatform.category.Category;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

@@ -10,7 +10,6 @@ import pl.dk.ecommerceplatform.product.ProductRepository;
 import pl.dk.ecommerceplatform.product.dtos.ProductDto;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 @AllArgsConstructor
