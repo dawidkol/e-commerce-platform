@@ -18,10 +18,6 @@ import static org.springframework.data.domain.Sort.Direction;
 @AllArgsConstructor
 class ProductService {
 
-    public static final String PRICE_ASC = "price_asc";
-    public static final String PRICE_DESC = "price_desc";
-    public static final String PRICE = "price";
-    public static final String NAME = "name";
     private final ProductRepository productRepository;
     private final ProductDtoMapper productDtoMapper;
 
@@ -40,8 +36,8 @@ class ProductService {
                 .map(productDtoMapper::map);
     }
 
-    public List<ProductDto> getProducts(int pageNumber, int size, String field, Direction direction) {
-        return getSortedProducts(pageNumber, size, field, direction);
+    public List<ProductDto> getProducts(int pageNumber, int size, String property, Direction direction) {
+        return getSortedProducts(pageNumber, size, property, direction);
     }
 
     public List<ProductDto> getProductsByNameAndCategory(String name, String category) {

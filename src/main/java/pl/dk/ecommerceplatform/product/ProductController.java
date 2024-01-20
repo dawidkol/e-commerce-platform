@@ -12,7 +12,7 @@ import pl.dk.ecommerceplatform.product.dtos.SaveProductDto;
 import java.net.URI;
 import java.util.List;
 
-import static pl.dk.ecommerceplatform.product.ProductService.NAME;
+import static pl.dk.ecommerceplatform.constant.PaginationConstant.*;
 
 @RestController
 @RequestMapping("/products")
@@ -39,11 +39,11 @@ class ProductController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<ProductDto>> getProducts(@RequestParam(required = false, defaultValue = "0") Integer page,
-                                                        @RequestParam(required = false, defaultValue = "10") Integer size,
-                                                        @RequestParam(required = false, defaultValue = NAME) String field,
-                                                        @RequestParam(required = false, defaultValue = "ASC") Direction dir) {
-        return ResponseEntity.ok(productService.getProducts(page, size, field, dir));
+    public ResponseEntity<List<ProductDto>> getProducts(@RequestParam(required = false, defaultValue = PAGE_DEFAULT) int page,
+                                                        @RequestParam(required = false, defaultValue = SIZE_DEFAULT) int size,
+                                                        @RequestParam(required = false, defaultValue = SORT_NAME) String property,
+                                                        @RequestParam(required = false, defaultValue = ASC) Direction dir) {
+        return ResponseEntity.ok(productService.getProducts(page, size, property, dir));
     }
 
     @GetMapping("/search")
