@@ -1,5 +1,6 @@
 package pl.dk.ecommerceplatform.product;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ class ProductController {
     private final ProductService productService;
 
     @PostMapping("")
-    public ResponseEntity<ProductDto> saveProduct(@RequestBody SaveProductDto saveProductDto) {
+    public ResponseEntity<ProductDto> saveProduct(@Valid @RequestBody SaveProductDto saveProductDto) {
         ProductDto dto = productService.saveProduct(saveProductDto);
         URI productUri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
