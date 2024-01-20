@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import pl.dk.ecommerceplatform.product.dtos.ProductDto;
 import pl.dk.ecommerceplatform.product.dtos.SaveProductDto;
@@ -21,6 +22,7 @@ class ProductService {
     private final ProductRepository productRepository;
     private final ProductDtoMapper productDtoMapper;
 
+    @Transactional
     public ProductDto saveProduct(SaveProductDto saveProductDto) {
         Optional<Product> product = productRepository.findByName(saveProductDto.name());
         if (product.isPresent())
