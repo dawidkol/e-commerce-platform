@@ -22,6 +22,9 @@ class ProductService {
     private final ProductDtoMapper productDtoMapper;
 
     public ProductDto saveProduct(SaveProductDto saveProductDto) {
+        Optional<Product> product = productRepository.findByName(saveProductDto.name());
+        if (product.isPresent())
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Product already exists");
         try {
             Product productToSave = productDtoMapper.map(saveProductDto);
             Product savedProduct = productRepository.save(productToSave);
@@ -31,34 +34,35 @@ class ProductService {
         }
     }
 
-    public Optional<ProductDto> getProductById(Long id) {
-        return productRepository.findById(id)
-                .map(productDtoMapper::map);
-    }
-
-    public List<ProductDto> getProducts(int pageNumber, int size, String property, Direction direction) {
-        return getSortedProducts(pageNumber, size, property, direction);
-    }
-
-    public List<ProductDto> getProductsByNameAndCategory(String name, String category) {
-        if (category == null) {
-            return productRepository.findByName(name)
-                    .stream()
-                    .map(productDtoMapper::map)
-                    .toList();
-        } else {
-            return productRepository.findByNameAndCategory(name, category)
-                    .stream()
-                    .map(productDtoMapper::map)
-                    .toList();
+        public Optional<ProductDto> getProductById (Long id){
+            return productRepository.findById(id)
+                    .map(productDtoMapper::map);
         }
-    }
 
-    private List<ProductDto> getSortedProducts(Integer pageNumber, Integer size, String sortBy, Direction direction) {
-        return productRepository.findAll(PageRequest.of(pageNumber, size)
-                        .withSort(direction, sortBy))
-                .map(productDtoMapper::map)
-                .getContent();
-    }
+        public List<ProductDto> getProducts ( int pageNumber, int size, String property, Direction direction){
+            return getSortedProducts(pageNumber, size, property, direction);
+        }
 
-}
+        public List<ProductDto> getProductsByNameAndCategory (String name, String category){
+            if (category == null) {
+                return productRepository.findAllByName(name)
+                        .stream()
+                        .map(productDtoMapper::map)
+                        .toList();
+            } else {
+                return productRepository.findByNameAndCategory(name, category)
+                        .stream()
+                        .map(productDtoMapper::map)
+                        .toList();
+            }
+        }
+
+        private List<ProductDto> getSortedProducts (Integer pageNumber, Integer size, String sortBy, Direction direction)
+        {
+            return productRepository.findAll(PageRequest.of(pageNumber, size)
+                            .withSort(direction, sortBy))
+                    .map(productDtoMapper::map)
+                    .getContent();
+        }
+
+    }
