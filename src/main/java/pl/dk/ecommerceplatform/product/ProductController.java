@@ -12,7 +12,7 @@ import pl.dk.ecommerceplatform.product.dtos.SaveProductDto;
 import java.net.URI;
 import java.util.List;
 
-import static pl.dk.ecommerceplatform.product.ProductService.*;
+import static pl.dk.ecommerceplatform.product.ProductService.NAME;
 
 @RestController
 @RequestMapping("/products")
