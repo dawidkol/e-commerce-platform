@@ -53,3 +53,11 @@ VALUES
     ('Yoga Mat', 'Exercise Equipment', 29.99, 15, 7, 5, true, now() - interval '2 days'),
     ('Tennis Racket', 'Sports Equipment', 89.99, 8, 7, 6, true, now() - interval '2 days'),
     ('Adjustable Dumbbell Set', 'Weightlifting Equipment', 199.99, 10, 7, 6, true, now() - interval '1 day');
+
+INSERT INTO user_role(name, description)
+VALUES ('ADMIN', 'Full authorities'),
+       ('USER', 'Basic authorities');
+
+INSERT INTO users(first_name, last_name, email, password,  role_id)
+VALUES ('Janusz', 'Kowalski', 'janusz.kowalski@test.pl','{noop}password',  1),
+       ('Sebastian', 'Kowalski', 'sebastian.kowalski@test.pl','{noop}password', 2);
