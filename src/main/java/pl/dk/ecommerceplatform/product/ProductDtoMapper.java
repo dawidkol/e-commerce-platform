@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.dk.ecommerceplatform.brand.BrandRepository;
 import pl.dk.ecommerceplatform.category.CategoryRepository;
+import pl.dk.ecommerceplatform.error.exceptions.brand.BrandNotFoundException;
+import pl.dk.ecommerceplatform.error.exceptions.category.CategoryNotFoundException;
 import pl.dk.ecommerceplatform.product.dtos.ProductDto;
 import pl.dk.ecommerceplatform.product.dtos.SaveProductDto;
 
@@ -23,8 +25,8 @@ public class ProductDtoMapper {
                 .description(saveProductDto.description())
                 .price(saveProductDto.price())
                 .quantity(saveProductDto.quantity())
-                .category(categoryRepository.findById(saveProductDto.categoryId()).orElseThrow())
-                .brand(brandRepository.findById(saveProductDto.brandId()).orElseThrow())
+                .category(categoryRepository.findById(saveProductDto.categoryId()).orElseThrow(CategoryNotFoundException::new))
+                .brand(brandRepository.findById(saveProductDto.brandId()).orElseThrow(BrandNotFoundException::new))
                 .available(saveProductDto.available())
                 .added(LocalDate.now())
                 .build();
