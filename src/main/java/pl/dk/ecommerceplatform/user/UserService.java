@@ -16,7 +16,7 @@ import pl.dk.ecommerceplatform.user.dtos.UserDto;
 
 import java.util.Optional;
 
-import static pl.dk.ecommerceplatform.constant.UserRoleConstant.*;
+import static pl.dk.ecommerceplatform.constant.UserRoleConstant.USER_ROLE;
 
 @Service
 @AllArgsConstructor
@@ -47,7 +47,6 @@ class UserService {
             throw new ServerException();
         }
     }
-
 
     private User saveUser(RegisterUserDto registerUserDto) {
         User userToSave = userDtoMapper.map(registerUserDto);
