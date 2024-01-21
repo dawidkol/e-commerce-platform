@@ -42,8 +42,10 @@ class WarehouseService {
     @Transactional
     public void updateItem(Long id, JsonMergePatch jsonMergePatch) {
         Item item = warehouseRepository.findById(id).orElseThrow(ItemNotFoundException::new);
+        Product product = item.getProduct();
         try {
-            Item itemToUpdate = utils.applyPatch(item, jsonMergePatch, Item.class);
+            SaveItemDto updateItemDto = utils.applyPatch(item, jsonMergePatch, SaveItemDto.class);
+            Item itemToUpdate = itemDtoMapper.map(updateItemDto, product);
             warehouseRepository.save(itemToUpdate);
         } catch (JsonPatchException | JsonProcessingException e) {
             throw new ServerException();

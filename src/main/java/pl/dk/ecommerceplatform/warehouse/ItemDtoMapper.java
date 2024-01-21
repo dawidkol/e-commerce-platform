@@ -12,6 +12,7 @@ class ItemDtoMapper {
 
     public Item map(SaveItemDto saveItemDto, Product product) {
         return Item.builder()
+                .id(saveItemDto.id())
                 .product(product)
                 .quantity(saveItemDto.quantity())
                 .available(saveItemDto.available())

@@ -1,5 +1,6 @@
 package pl.dk.ecommerceplatform.warehouse;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -9,7 +10,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import pl.dk.ecommerceplatform.product.Product;
 
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Entity
 @Table(name = "warehouse")
@@ -22,8 +22,9 @@ public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "product_id")
+    @JsonBackReference
     private Product product;
     @NotNull
     @PositiveOrZero
