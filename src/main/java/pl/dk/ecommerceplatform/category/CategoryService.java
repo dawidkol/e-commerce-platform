@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import pl.dk.ecommerceplatform.category.dtos.CategoryDto;
 import pl.dk.ecommerceplatform.category.dtos.SaveCategoryDto;
+import pl.dk.ecommerceplatform.error.exceptions.category.CategoryExistsException;
+import pl.dk.ecommerceplatform.error.exceptions.category.CategoryNotFoundException;
 import pl.dk.ecommerceplatform.product.ProductDtoMapper;
 import pl.dk.ecommerceplatform.product.ProductRepository;
 import pl.dk.ecommerceplatform.product.dtos.ProductDto;
@@ -26,7 +28,7 @@ class CategoryService {
 
     public List<ProductDto> getProductsByCategory(String categoryName, int pageNumber, int size) {
         Category category = categoryRepository.findByNameIgnoreCase(categoryName)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found"));
+                .orElseThrow(CategoryNotFoundException::new);
         return productRepository.findAllByCategory_Name(category.getName(), PageRequest.of(pageNumber, size))
                 .stream()
                 .map(productDtoMapper::map)
@@ -37,7 +39,7 @@ class CategoryService {
     public CategoryDto saveCategory(SaveCategoryDto saveCategoryDto) {
         Optional<Category> category = categoryRepository.findByNameIgnoreCase(saveCategoryDto.name());
         if (category.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Category already exists");
+            throw new CategoryExistsException();
         } else {
             Category categoryToSave = categoryDtoMapper.map(saveCategoryDto);
             Category savedCategory = categoryRepository.save(categoryToSave);
