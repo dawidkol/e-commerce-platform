@@ -14,7 +14,7 @@ public record ProductDto(
         Long quantity,
         String category,
         String brand,
-        Boolean available,
+        boolean available,
         LocalDate added
 ) {
 }

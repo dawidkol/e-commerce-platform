@@ -34,9 +34,6 @@ public class Product {
     @NotNull
     @PositiveOrZero
     private BigDecimal price;
-    @NotNull
-    @PositiveOrZero
-    private Long quantity;
     @ManyToOne
     @JoinColumn(name = "category_id")
     @NotNull
@@ -45,8 +42,6 @@ public class Product {
     @JoinColumn(name = "brand_id")
     @NotNull
     private Brand brand;
-    @NotNull
-    private Boolean available;
     @NotNull
     private LocalDate added;
 

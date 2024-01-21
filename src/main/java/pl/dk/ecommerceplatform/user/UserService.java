@@ -1,8 +1,6 @@
 package pl.dk.ecommerceplatform.user;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatchException;
 import com.github.fge.jsonpatch.mergepatch.JsonMergePatch;
 import lombok.AllArgsConstructor;
@@ -13,10 +11,12 @@ import pl.dk.ecommerceplatform.error.exceptions.user.UserExistsException;
 import pl.dk.ecommerceplatform.error.exceptions.user.UserNotFoundException;
 import pl.dk.ecommerceplatform.user.dtos.RegisterUserDto;
 import pl.dk.ecommerceplatform.user.dtos.UserDto;
+import pl.dk.ecommerceplatform.utils.UtilsService;
 
 import java.util.Optional;
 
-import static pl.dk.ecommerceplatform.constant.UserRoleConstant.USER_ROLE;
+import static pl.dk.ecommerceplatform.constant.UserRoleConstant.CUSTOMER_ROLE;
+import static pl.dk.ecommerceplatform.constant.UserRoleConstant.CUSTOMER_ROLE_DESCRIPTION;
 
 @Service
 @AllArgsConstructor
@@ -25,7 +25,7 @@ class UserService {
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
     private final UserDtoMapper userDtoMapper;
-    private final ObjectMapper objectMapper;
+    private final UtilsService utils;
 
     @Transactional
     public UserDto register(RegisterUserDto registerUserDto) {
@@ -41,7 +41,7 @@ class UserService {
     public void updateUser(Long id, JsonMergePatch patch) {
         User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
         try {
-            RegisterUserDto registerUserDto = this.applyPatch(user, patch);
+            RegisterUserDto registerUserDto = utils.applyPatch(user, patch, RegisterUserDto.class);
             this.saveUser(registerUserDto);
         } catch (JsonPatchException | JsonProcessingException e) {
             throw new ServerException();
@@ -50,23 +50,17 @@ class UserService {
 
     private User saveUser(RegisterUserDto registerUserDto) {
         User userToSave = userDtoMapper.map(registerUserDto);
-        userRoleRepository.findByName(USER_ROLE).ifPresentOrElse(
+        userRoleRepository.findByName(CUSTOMER_ROLE).ifPresentOrElse(
                 userToSave::setUserRole,
                 () -> {
                     UserRole userRole = userRoleRepository.save(UserRole.builder()
-                            .name(USER_ROLE)
-                            .description("Basic authorities")
+                            .name(CUSTOMER_ROLE)
+                            .description(CUSTOMER_ROLE_DESCRIPTION)
                             .build());
                     userToSave.setUserRole(userRole);
                 }
         );
         return userRepository.save(userToSave);
-    }
-
-    private RegisterUserDto applyPatch(User user, JsonMergePatch jsonMergePatch) throws JsonPatchException, JsonProcessingException {
-        JsonNode jsonNode = objectMapper.valueToTree(user);
-        JsonNode userApply = jsonMergePatch.apply(jsonNode);
-        return objectMapper.treeToValue(userApply, RegisterUserDto.class);
     }
 
 }
