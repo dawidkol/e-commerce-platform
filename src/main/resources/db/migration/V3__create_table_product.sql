@@ -2,7 +2,7 @@ CREATE table product
 (
     id BIGSERIAL NOT NULL PRIMARY KEY,
     name VARCHAR(100),
-    description VARCHAR(1000),
+    description VARCHAR(3000),
     quantity BIGINT,
     category_id BIGINT,
     brand_id BIGINT,

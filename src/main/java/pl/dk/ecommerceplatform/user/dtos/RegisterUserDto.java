@@ -17,6 +17,6 @@ public record RegisterUserDto(Long id,
                               @Size(min = 6, max = 75)
                               String email,
                               @NotBlank
-                              @Size(min = 6, max = 150)
+                              @Size(min = 6, max = 75)
                               String password) {
 }

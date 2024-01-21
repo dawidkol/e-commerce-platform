@@ -30,7 +30,7 @@ class User {
     @Email
     private String email;
     @NotBlank
-    @Size(min = 6, max = 150)
+    @Size(min = 6, max = 200)
     private String password;
     @ManyToOne
     @JoinColumn(name = "role_id")
