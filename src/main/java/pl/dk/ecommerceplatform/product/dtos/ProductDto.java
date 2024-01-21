@@ -11,10 +11,8 @@ public record ProductDto(
         String name,
         String description,
         BigDecimal price,
-        Long quantity,
         String category,
         String brand,
-        Boolean available,
         LocalDate added
 ) {
 }

@@ -24,10 +24,10 @@ public class ProductDtoMapper {
                 .name(saveProductDto.name())
                 .description(saveProductDto.description())
                 .price(saveProductDto.price())
-                .quantity(saveProductDto.quantity())
+//                .quantity(saveProductDto.quantity())
                 .category(categoryRepository.findById(saveProductDto.categoryId()).orElseThrow(CategoryNotFoundException::new))
                 .brand(brandRepository.findById(saveProductDto.brandId()).orElseThrow(BrandNotFoundException::new))
-                .available(saveProductDto.available())
+//                .available(saveProductDto.available())
                 .added(LocalDate.now())
                 .build();
     }
@@ -38,10 +38,10 @@ public class ProductDtoMapper {
                 .name(product.getName())
                 .description(product.getDescription())
                 .price(product.getPrice())
-                .quantity(product.getQuantity())
+//                .quantity(product.getQuantity())
                 .category(product.getCategory().getName())
                 .brand(product.getBrand().getName())
-                .available(product.getAvailable())
+//                .available(product.getAvailable())
                 .added(product.getAdded())
                 .build();
     }

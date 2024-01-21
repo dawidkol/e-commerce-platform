@@ -17,16 +17,16 @@ public record SaveProductDto(
         @NotNull
         @PositiveOrZero
         BigDecimal price,
-        @NotNull
-        @PositiveOrZero
-        Long quantity,
+//        @NotNull
+//        @PositiveOrZero
+//        Long quantity,
         @NotNull
         @Positive
         Long categoryId,
         @NotNull
         @Positive
-        Long brandId,
-        @NotNull
-        Boolean available
+        Long brandId
+//        @NotNull
+//        Boolean available
 ) {
 }
