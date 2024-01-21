@@ -5,8 +5,10 @@ import com.github.fge.jsonpatch.JsonPatchException;
 import com.github.fge.jsonpatch.mergepatch.JsonMergePatch;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.dk.ecommerceplatform.constant.PaginationConstant;
 import pl.dk.ecommerceplatform.error.exceptions.product.ProductNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.server.ServerException;
 import pl.dk.ecommerceplatform.error.exceptions.warehouse.ItemExistsException;
@@ -19,6 +21,9 @@ import pl.dk.ecommerceplatform.warehouse.dtos.SaveItemDto;
 
 import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.data.domain.Sort.Direction.ASC;
+import static pl.dk.ecommerceplatform.constant.PaginationConstant.*;
 
 @Service
 @AllArgsConstructor
@@ -53,7 +58,7 @@ class WarehouseService {
     }
 
     public List<ItemDto> getItems(int page, int size) {
-        return warehouseRepository.findAll(PageRequest.of(page, size))
+        return warehouseRepository.findAll(PageRequest.of(page, size, ASC, SORT_ID))
                 .stream().map(itemDtoMapper::map)
                 .toList();
     }

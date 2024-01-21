@@ -7,4 +7,6 @@ public class PaginationConstant {
     public static final String ASC = "ASC";
     public static final String DESC = "DESC";
     public static final String SORT_NAME = "name";
+    public static final String SORT_ID = "id";
+
 }
