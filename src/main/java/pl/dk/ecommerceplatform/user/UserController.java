@@ -1,13 +1,11 @@
 package pl.dk.ecommerceplatform.user;
 
+import com.github.fge.jsonpatch.mergepatch.JsonMergePatch;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.dk.ecommerceplatform.user.dtos.RegisterUserDto;
 import pl.dk.ecommerceplatform.user.dtos.UserDto;
@@ -29,6 +27,12 @@ class UserController {
                 .buildAndExpand(registeredUser.id())
                 .toUri();
         return ResponseEntity.created(uri).body(registeredUser);
+    }
+
+    @PatchMapping("")
+    public ResponseEntity<?> updateUser(@RequestParam Long id, @RequestBody JsonMergePatch jsonMergePatch) {
+        userService.updateUser(id, jsonMergePatch);
+        return ResponseEntity.noContent().build();
     }
 
 }
