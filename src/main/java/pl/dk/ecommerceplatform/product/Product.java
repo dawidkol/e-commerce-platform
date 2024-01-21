@@ -26,7 +26,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank
-    @Size(min = 3, max = 200)
+    @Size(min = 3, max = 100)
     private String name;
     @NotBlank
     @Size(min = 10, max = 3000)

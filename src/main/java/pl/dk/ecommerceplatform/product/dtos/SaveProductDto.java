@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 @Builder
 public record SaveProductDto(
         @NotBlank
-        @Size(min = 3, max = 200)
+        @Size(min = 3, max = 100)
         String name,
         @NotBlank
         @Size(min = 10, max = 3000)

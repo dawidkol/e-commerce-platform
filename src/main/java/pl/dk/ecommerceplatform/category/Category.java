@@ -24,7 +24,7 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank
-    @Size(min = 3, max = 50)
+    @Size(min = 3, max = 100)
     private String name;
     @OneToMany(mappedBy = "category")
     private List<Product> product = new ArrayList<>();

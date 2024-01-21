@@ -2,10 +2,8 @@ package pl.dk.ecommerceplatform.category;
 
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 import pl.dk.ecommerceplatform.category.dtos.CategoryDto;
 import pl.dk.ecommerceplatform.category.dtos.SaveCategoryDto;
 import pl.dk.ecommerceplatform.error.exceptions.category.CategoryExistsException;
