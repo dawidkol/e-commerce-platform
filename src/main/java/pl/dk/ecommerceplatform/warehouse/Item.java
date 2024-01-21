@@ -9,13 +9,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import pl.dk.ecommerceplatform.product.Product;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 @Entity
 @Table(name = "warehouse")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Data
-class Item {
+public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

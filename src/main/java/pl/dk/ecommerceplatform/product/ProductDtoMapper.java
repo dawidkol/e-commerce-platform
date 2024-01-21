@@ -8,26 +8,30 @@ import pl.dk.ecommerceplatform.error.exceptions.brand.BrandNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.category.CategoryNotFoundException;
 import pl.dk.ecommerceplatform.product.dtos.ProductDto;
 import pl.dk.ecommerceplatform.product.dtos.SaveProductDto;
+import pl.dk.ecommerceplatform.warehouse.Item;
+import pl.dk.ecommerceplatform.warehouse.WarehouseRepository;
 
 import java.time.LocalDate;
+import java.util.function.Function;
+
+import static pl.dk.ecommerceplatform.constant.ProductConstant.DEFAULT_AVAILABILITY;
+import static pl.dk.ecommerceplatform.constant.ProductConstant.DEFAULT_QUANTITY;
 
 @Service
 @AllArgsConstructor
 public class ProductDtoMapper {
 
-
     private final CategoryRepository categoryRepository;
     private final BrandRepository brandRepository;
+    private final WarehouseRepository warehouseRepository;
 
     public Product map(SaveProductDto saveProductDto) {
         return Product.builder()
                 .name(saveProductDto.name())
                 .description(saveProductDto.description())
                 .price(saveProductDto.price())
-//                .quantity(saveProductDto.quantity())
                 .category(categoryRepository.findById(saveProductDto.categoryId()).orElseThrow(CategoryNotFoundException::new))
                 .brand(brandRepository.findById(saveProductDto.brandId()).orElseThrow(BrandNotFoundException::new))
-//                .available(saveProductDto.available())
                 .added(LocalDate.now())
                 .build();
     }
@@ -38,11 +42,17 @@ public class ProductDtoMapper {
                 .name(product.getName())
                 .description(product.getDescription())
                 .price(product.getPrice())
-//                .quantity(product.getQuantity())
+                .quantity(getPropertyValue(product, Item::getQuantity, DEFAULT_QUANTITY))
                 .category(product.getCategory().getName())
                 .brand(product.getBrand().getName())
-//                .available(product.getAvailable())
+                .available(getPropertyValue(product, Item::isAvailable, DEFAULT_AVAILABILITY))
                 .added(product.getAdded())
                 .build();
+    }
+
+    private <T> T getPropertyValue(Product product, Function<Item, T> extractor, T defaultValue) {
+        return warehouseRepository.findByProduct_id(product.getId())
+                .map(extractor)
+                .orElseGet(() -> defaultValue);
     }
 }

@@ -66,10 +66,10 @@ INSERT INTO warehouse (product_id, quantity, available)
 VALUES (1, 23, true),
        (2, 24, true),
        (3, 10, true),
-       (4, 14, true),
+       (4, 14, false),
        (5, 8, true),
        (6, 16, true),
        (7, 12, true),
        (8, 3, true),
        (9, 2, true),
-       (10, 5, true);
+       (10, 5, false);

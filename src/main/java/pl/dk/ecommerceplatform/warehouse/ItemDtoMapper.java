@@ -5,6 +5,8 @@ import pl.dk.ecommerceplatform.product.Product;
 import pl.dk.ecommerceplatform.warehouse.dtos.ItemDto;
 import pl.dk.ecommerceplatform.warehouse.dtos.SaveItemDto;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 @Service
 class ItemDtoMapper {
 

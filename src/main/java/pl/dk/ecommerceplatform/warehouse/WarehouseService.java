@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.fge.jsonpatch.JsonPatchException;
 import com.github.fge.jsonpatch.mergepatch.JsonMergePatch;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.dk.ecommerceplatform.error.exceptions.product.ProductNotFoundException;
@@ -16,12 +17,13 @@ import pl.dk.ecommerceplatform.utils.UtilsService;
 import pl.dk.ecommerceplatform.warehouse.dtos.ItemDto;
 import pl.dk.ecommerceplatform.warehouse.dtos.SaveItemDto;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 class WarehouseService {
-    
+
     private final WarehouseRepository warehouseRepository;
     private final ProductRepository productRepository;
     private final UtilsService utils;
@@ -35,7 +37,6 @@ class WarehouseService {
         Item itemToSave = itemDtoMapper.map(saveItemDto, product);
         Item savedItem = warehouseRepository.save(itemToSave);
         return itemDtoMapper.map(savedItem);
-
     }
 
     @Transactional
@@ -47,6 +48,18 @@ class WarehouseService {
         } catch (JsonPatchException | JsonProcessingException e) {
             throw new ServerException();
         }
+    }
+
+    public List<ItemDto> getItems(int page, int size) {
+        return warehouseRepository.findAll(PageRequest.of(page, size))
+                .stream().map(itemDtoMapper::map)
+                .toList();
+    }
+
+    @Transactional
+    public void deleteItem(Long id) {
+        warehouseRepository.findById(id).orElseThrow(ItemNotFoundException::new);
+        warehouseRepository.deleteById(id);
     }
 
 }
