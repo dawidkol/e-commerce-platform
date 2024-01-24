@@ -1,6 +1,9 @@
 package pl.dk.ecommerceplatform.cart;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,9 +31,11 @@ class Cart {
     @JoinTable(name = "cart_products",
             joinColumns = @JoinColumn(name = "cart_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"))
+    @NotNull
     private List<Product> products = new ArrayList<>();
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @NotNull
     private User user;
 
 }

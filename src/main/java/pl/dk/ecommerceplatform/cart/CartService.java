@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.dk.ecommerceplatform.cart.dtos.AddToCartDto;
 import pl.dk.ecommerceplatform.cart.dtos.CartDto;
+import pl.dk.ecommerceplatform.error.exceptions.cart.CartNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.product.ProductNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.user.UserNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.warehouse.ItemNotFoundException;
@@ -28,31 +29,59 @@ class CartService {
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
     private final CartDtoMapper cartDtoMapper;
+    private CartProductsDAO cartProductsDAO;
 
     @Transactional
     public CartDto addProductToCart(AddToCartDto toCartDto) {
-
         User user = userRepository.findById(toCartDto.userId()).orElseThrow(UserNotFoundException::new);
-        Product product = productRepository.findById(toCartDto.productId()).orElseThrow(ProductNotFoundException::new);
-        Item item = getItem(product.getId()).orElseThrow(ItemNotFoundException::new);
 
-        if (item.getQuantity() < toCartDto.quantity())
-            throw new QuantityException();
+        ProductItemChecker productItemChecker = this.validateProductAndItemData(toCartDto);
+        Product product = productItemChecker.product;
+        Item item = productItemChecker.item;
 
         Cart cart;
-        Long itemId;
         if (item.isAvailable()) {
-            itemId = item.getId();
             cart = this.getCart(toCartDto, user);
         } else
             throw new ProductUnavailableException();
 
         this.addProduct(toCartDto, cart, product);
-        warehouseRepository.updateQuantity(itemId, toCartDto.quantity());
-        warehouseRepository.flush();
         cartRepository.flush();
         return cartDtoMapper.map(cart);
     }
+
+    @Transactional
+    public void updateProductQuantityInCart(AddToCartDto dto) {
+        Cart cart = cartRepository.findByUser_id(dto.userId()).orElseThrow(CartNotFoundException::new);
+        this.validateProductAndItemData(dto);
+
+        Long cartId = cart.getId();
+        Long productId = cart.getProducts().stream()
+                .filter(p -> p.getId().equals(dto.productId()))
+                .findFirst()
+                .map(Product::getId)
+                .orElseThrow(ProductNotFoundException::new);
+        cartProductsDAO.deleteProductsInCart(cartId, productId);
+        for (int i = 0; i < dto.quantity(); i++) {
+            cartProductsDAO.insertProductToCart(cartId, productId);
+        }
+    }
+
+    private ProductItemChecker validateProductAndItemData(AddToCartDto dto) {
+        Product product = productRepository.findById(dto.productId()).orElseThrow(ProductNotFoundException::new);
+        Item item = this.getItem(product.getId()).orElseThrow(ItemNotFoundException::new);
+
+        if (item.getQuantity() < dto.quantity())
+            throw new QuantityException();
+        return new ProductItemChecker(product, item);
+    }
+
+    @Transactional
+    public void cleanUserCart(Long userId) {
+        cartRepository.findByUser_id(userId)
+                .ifPresentOrElse(cartRepository::delete, CartNotFoundException::new);
+    }
+
 
     private Cart getCart(AddToCartDto toCartDto, User user) {
         return cartRepository.findByUser_id(toCartDto.userId()).orElseGet(() -> {
@@ -77,4 +106,7 @@ class CartService {
         return warehouseRepository.findByProduct_id(productId);
     }
 
+    private record ProductItemChecker(Product product, Item item) {
+    }
 }
+
