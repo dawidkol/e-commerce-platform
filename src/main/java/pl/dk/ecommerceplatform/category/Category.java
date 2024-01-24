@@ -3,10 +3,7 @@ package pl.dk.ecommerceplatform.category;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import pl.dk.ecommerceplatform.product.Product;
 
 import java.util.ArrayList;
@@ -18,6 +15,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString(exclude = {"product"})
+
 public class Category {
 
     @Id
