@@ -29,7 +29,7 @@ class CartService {
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
     private final CartDtoMapper cartDtoMapper;
-    private CartProductsDAO cartProductsDAO;
+    private final CartProductsDAO cartProductsDAO;
 
     @Transactional
     public CartDto addProductToCart(AddToCartDto toCartDto) {
