@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatchException;
 import com.github.fge.jsonpatch.mergepatch.JsonMergePatch;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -19,4 +21,9 @@ public class UtilsService {
         JsonNode apply = jsonMergePatch.apply(jsonNode);
         return objectMapper.treeToValue(apply, var);
     }
+
+    public static Logger getLogger(Class<?> var) {
+        return LoggerFactory.getLogger(var);
+    }
 }
+
