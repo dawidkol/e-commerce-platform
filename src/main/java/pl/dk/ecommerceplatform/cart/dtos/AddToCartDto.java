@@ -6,7 +6,7 @@ import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Builder;
 
 @Builder
-public record AddToCartDto(@NotNull @PositiveOrZero Long userId,
+public record AddToCartDto(/*@NotNull @PositiveOrZero Long userId,*/
                            @NotNull @PositiveOrZero Long productId,
                            @NotNull @PositiveOrZero Long quantity) {
 }

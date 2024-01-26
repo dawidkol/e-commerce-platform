@@ -3,6 +3,7 @@ package pl.dk.ecommerceplatform.category;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.dk.ecommerceplatform.category.dtos.CategoryDto;
@@ -31,6 +32,7 @@ class CategoryController {
     }
 
     @PostMapping("")
+    @PreAuthorize(value = "hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<CategoryDto> saveCategory(@Valid @RequestBody SaveCategoryDto saveCategoryDto) {
         CategoryDto categoryDto = categoryService.saveCategory(saveCategoryDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")

@@ -3,6 +3,7 @@ package pl.dk.ecommerceplatform.brand;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.dk.ecommerceplatform.brand.dtos.BrandDto;
@@ -34,6 +35,7 @@ class BrandController {
     }
 
     @PostMapping("")
+    @PreAuthorize(value = "hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<BrandDto> saveBrand(@Valid @RequestBody SaveBrandDto saveBrandDto) {
         BrandDto brandDto = brandService.saveBrand(saveBrandDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(brandDto.id())

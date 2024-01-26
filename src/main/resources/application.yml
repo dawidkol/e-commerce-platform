@@ -34,7 +34,6 @@ logging:
           jdbc:
             bind: TRACE
 
-
 server:
   error:
     include-message: always

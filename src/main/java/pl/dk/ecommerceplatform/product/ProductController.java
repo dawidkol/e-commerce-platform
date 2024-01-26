@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.dk.ecommerceplatform.product.dtos.ProductDto;
@@ -22,6 +23,7 @@ class ProductController {
     private final ProductService productService;
 
     @PostMapping("")
+    @PreAuthorize(value = "hasAnyRole(userRoleConstant.ADMIN_ROLE)")
     public ResponseEntity<ProductDto> saveProduct(@Valid @RequestBody SaveProductDto saveProductDto) {
         ProductDto dto = productService.saveProduct(saveProductDto);
         URI productUri = ServletUriComponentsBuilder.fromCurrentRequest()
