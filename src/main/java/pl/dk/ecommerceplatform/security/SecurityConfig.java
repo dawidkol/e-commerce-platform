@@ -31,14 +31,16 @@ class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity, MvcRequestMatcher.Builder mvc, AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         AuthenticationManager authenticationManager = authenticationManagerBuilder.getOrBuild();
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtService);
+        BearerTokenFilter bearerTokenFilter = new BearerTokenFilter(jwtService);
 
         httpSecurity.authorizeHttpRequests(request -> request
                 .anyRequest()
-                .permitAll());
+                .authenticated());
 
         httpSecurity.sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
         httpSecurity.addFilterBefore(jwtAuthenticationFilter, AuthorizationFilter.class);
+        httpSecurity.addFilterBefore(bearerTokenFilter, AuthorizationFilter.class);
         return httpSecurity.build();
     }
 }

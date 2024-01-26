@@ -25,12 +25,13 @@ class JwtAuthenticationFilter extends HttpFilter {
     private final Logger logger = getLogger(JwtAuthenticationFilter.class);
     private static final RequestMatcher DEFAULT_ANT_PATCH_REQUEST_MATCHER = new AntPathRequestMatcher("/auth", "POST", false);
     private final AuthenticationManager authenticationManager;
-    private final AuthenticationFailureHandler failureHandler = new SimpleUrlAuthenticationFailureHandler();
+    private final AuthenticationFailureHandler failureHandler;
     private final AuthenticationSuccessHandler successHandler;
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtService jwtService) {
         this.authenticationManager = authenticationManager;
         successHandler = new JwtAuthenticationSuccessHandler(jwtService);
+        failureHandler = new JwtAuthenticationFailureHandler();
     }
 
     @Override
