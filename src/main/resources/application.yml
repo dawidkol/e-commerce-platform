@@ -1,6 +1,10 @@
 spring:
   datasource:
     url: jdbc:postgres://localhost:5432/e-commerce
+  security:
+    user:
+      name: user
+      password: pass
 
   jpa:
     hibernate:
@@ -21,6 +25,8 @@ spring:
 
 logging:
   level:
+    pl:
+      dk: TRACE
     org:
       flywaydb: TRACE
       hibernate:
@@ -28,6 +34,10 @@ logging:
           jdbc:
             bind: TRACE
 
+
 server:
   error:
     include-message: always
+
+jws:
+  sharedKey: 2a4dca24-dc9d-4ed8-9e2b-6d32a51cd21a
