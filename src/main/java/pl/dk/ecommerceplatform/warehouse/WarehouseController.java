@@ -4,6 +4,7 @@ import com.github.fge.jsonpatch.mergepatch.JsonMergePatch;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.dk.ecommerceplatform.constant.PaginationConstant;
@@ -18,6 +19,7 @@ import static pl.dk.ecommerceplatform.constant.PaginationConstant.*;
 @RestController
 @RequestMapping("/items")
 @AllArgsConstructor
+@PreAuthorize(value = "hasAnyRole('ROLE_ADMIN')")
 class WarehouseController {
 
     private final WarehouseService warehouseService;

@@ -32,8 +32,8 @@ class CartService {
     private final CartProductsDAO cartProductsDAO;
 
     @Transactional
-    public CartDto addProductToCart(AddToCartDto toCartDto) {
-        User user = userRepository.findById(toCartDto.userId()).orElseThrow(UserNotFoundException::new);
+    public CartDto addProductToCart(Long userId, AddToCartDto toCartDto) {
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
         ProductItemChecker productItemChecker = this.validateProductAndItemData(toCartDto);
         Product product = productItemChecker.product;
@@ -41,7 +41,7 @@ class CartService {
 
         Cart cart;
         if (item.isAvailable()) {
-            cart = this.getCart(toCartDto, user);
+            cart = this.getCart(user);
         } else
             throw new ProductUnavailableException();
 
@@ -51,8 +51,8 @@ class CartService {
     }
 
     @Transactional
-    public void updateProductQuantityInCart(AddToCartDto dto) {
-        Cart cart = cartRepository.findByUser_id(dto.userId()).orElseThrow(CartNotFoundException::new);
+    public void updateProductQuantityInCart(Long userId, AddToCartDto dto) {
+        Cart cart = cartRepository.findByUser_id(userId).orElseThrow(CartNotFoundException::new);
         this.validateProductAndItemData(dto);
 
         Long cartId = cart.getId();
@@ -83,8 +83,8 @@ class CartService {
     }
 
 
-    private Cart getCart(AddToCartDto toCartDto, User user) {
-        return cartRepository.findByUser_id(toCartDto.userId()).orElseGet(() -> {
+    private Cart getCart(User user) {
+        return cartRepository.findByUser_id(user.getId()).orElseGet(() -> {
             Cart newCart = this.cartBuilder(user);
             return cartRepository.save(newCart);
         });

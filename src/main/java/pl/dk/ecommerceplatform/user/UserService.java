@@ -18,6 +18,7 @@ import java.util.Optional;
 import static pl.dk.ecommerceplatform.constant.UserRoleConstant.CUSTOMER_ROLE;
 import static pl.dk.ecommerceplatform.constant.UserRoleConstant.CUSTOMER_ROLE_DESCRIPTION;
 
+
 @Service
 @AllArgsConstructor
 class UserService {
