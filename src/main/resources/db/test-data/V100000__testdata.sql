@@ -84,4 +84,20 @@ VALUES ('22-400', 'Orzeszkowej', '17b', '666666666'),
        ('11-222', 'Wrocławska', '20', '666996669'),
        ('50-400', 'Grunwaldzka', '12', '554455778');
 
+INSERT INTO cart(user_id)
+VALUES (1),
+       (2);
+
+INSERT INTO cart_products(cart_id, product_id)
+VALUES (1, 1),
+       (1, 1),
+       (1, 3),
+       (2, 5),
+       (2, 6),
+       (2, 8);
+
+INSERT INTO orders(status, user_id, cart_id, shipping_id, address_id, order_value, created)
+VALUES ('NEW', 1, 1, 1, 1, 5977.00, '2024-01-08 14:10:06'),
+       ('PAID', 2, 2, 2, 2, 548.98, '2024-01-16 18:05:06');
+
 
