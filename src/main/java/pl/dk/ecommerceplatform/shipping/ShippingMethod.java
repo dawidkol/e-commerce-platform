@@ -1,6 +1,8 @@
 package pl.dk.ecommerceplatform.shipping;
 
-enum ShippingMethod {
+import lombok.Getter;
+
+public enum ShippingMethod {
     STANDARD,
     EXPRESS,
     PERSONAL_COLLECTION
