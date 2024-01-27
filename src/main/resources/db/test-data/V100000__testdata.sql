@@ -31,7 +31,7 @@ VALUES
     ('Apple Watch Series 6', 'Smartwatch', 399.00, 1, 2, now() - interval '4 days'),
 
 
--- Clothing
+    -- Clothing
     ('Adidas Originals Hoodie', 'Sports Apparel', 69.99, 2, 5, now() - interval '1 day'),
     ('Nike Dri-FIT Running Shorts', 'Athletic Wear', 29.99, 2, 6, now() - interval '4 days'),
     ('Nike Tech Fleece Joggers', 'Athletic Pants', 79.99, 2, 6, now() - interval '2 days'),
@@ -73,3 +73,15 @@ VALUES (1, 23, true),
        (8, 3, true),
        (9, 2, true),
        (10, 5, false);
+
+INSERT INTO shipping (name, shipping_cost)
+VALUES ('STANDARD', 10.99),
+       ('EXPRESS', 19.99),
+       ('PERSONAL_COLLECTION', 0);
+
+INSERT INTO address(postal_code, street, building_number, phone_number)
+VALUES ('22-400', 'Orzeszkowej', '17b', '666666666'),
+       ('11-222', 'Wrocławska', '20', '666996669'),
+       ('50-400', 'Grunwaldzka', '12', '554455778');
+
+

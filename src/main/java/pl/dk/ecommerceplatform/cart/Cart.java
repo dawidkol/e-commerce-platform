@@ -22,7 +22,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Data
 @Builder
-class Cart {
+public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

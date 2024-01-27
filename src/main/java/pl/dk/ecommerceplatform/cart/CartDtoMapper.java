@@ -12,7 +12,7 @@ import java.util.*;
 
 @Service
 @AllArgsConstructor
-class CartDtoMapper {
+public class CartDtoMapper {
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -24,7 +24,7 @@ class CartDtoMapper {
                 .currentCartValue(this.getCartValue(cart))
                 .build();
     }
-    private List<CartProductDto> getCartProductsDto(Cart cart) {
+    public List<CartProductDto> getCartProductsDto(Cart cart) {
         List<Product> list = cart.getProducts().stream().distinct().toList();
         return list.stream()
                 .map(this::createCartProductDto)
@@ -51,7 +51,7 @@ class CartDtoMapper {
                 productId);
     }
 
-    private BigDecimal getCartValue(Cart cart) {
+    public BigDecimal getCartValue(Cart cart) {
         return cart.getProducts()
                 .stream()
                 .map(Product::getPrice)
