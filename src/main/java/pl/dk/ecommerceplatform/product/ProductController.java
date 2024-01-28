@@ -23,7 +23,7 @@ class ProductController {
     private final ProductService productService;
 
     @PostMapping("")
-    @PreAuthorize(value = "hasAnyRole(userRoleConstant.ADMIN_ROLE)")
+    @PreAuthorize(value = "hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<ProductDto> saveProduct(@Valid @RequestBody SaveProductDto saveProductDto) {
         ProductDto dto = productService.saveProduct(saveProductDto);
         URI productUri = ServletUriComponentsBuilder.fromCurrentRequest()

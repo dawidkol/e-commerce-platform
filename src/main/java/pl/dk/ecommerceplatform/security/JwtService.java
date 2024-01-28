@@ -57,10 +57,10 @@ class JwtService {
         try {
             boolean verify = signedJWT.verify(jwsVerifier);
             if (!verify) {
-                throw new JwtAuthenticationException("JWT verification failed for token: [%s]".formatted(signedJWT.serialize()));
+                throw new JwtAuthenticationException("JWT verification failed for token: [%s]" .formatted(signedJWT.serialize()));
             }
         } catch (JOSEException e) {
-            throw new JwtAuthenticationException("JWT verification failed for token: [%s]".formatted(signedJWT.serialize()));
+            throw new JwtAuthenticationException("JWT verification failed for token: [%s]" .formatted(signedJWT.serialize()));
         }
     }
 
@@ -72,7 +72,7 @@ class JwtService {
                     .atZone(ZoneId.systemDefault())
                     .toLocalDateTime();
             if (LocalDateTime.now().isAfter(expirationTime)) {
-                throw new JwtAuthenticationException("Token expired at: [%s]".formatted(expirationTime));
+                throw new JwtAuthenticationException("Token expired at: [%s]" .formatted(expirationTime));
             }
         } catch (ParseException e) {
             throw new JwtAuthenticationException("Token does not hava exp claims");
@@ -81,7 +81,7 @@ class JwtService {
 
     public Authentication createAuthentication(SignedJWT signedJWT) {
         String subject;
-        List <String> authorities ;
+        List<String> authorities;
         try {
             JWTClaimsSet jwtClaimsSet = signedJWT.getJWTClaimsSet();
             subject = jwtClaimsSet.getSubject();

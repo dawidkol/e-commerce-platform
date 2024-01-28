@@ -6,11 +6,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface WarehouseRepository extends JpaRepository<Item, Long> {
-    Optional<Item> findByProduct_id(Long name);
+    Optional<Item> findByProduct_id(Long id);
+
     Optional<Item> findByProduct_name(String name);
 
     @Modifying

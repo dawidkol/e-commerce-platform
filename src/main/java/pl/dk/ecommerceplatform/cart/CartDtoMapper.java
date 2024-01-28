@@ -12,9 +12,9 @@ import java.util.*;
 
 @Service
 @AllArgsConstructor
-class CartDtoMapper {
+public class CartDtoMapper {
 
-    private final JdbcTemplate jdbcTemplate;
+    private final CartProductsDAO cartProductsDAO;
 
     public CartDto map(Cart cart) {
         return CartDto.builder()
@@ -24,15 +24,16 @@ class CartDtoMapper {
                 .currentCartValue(this.getCartValue(cart))
                 .build();
     }
-    private List<CartProductDto> getCartProductsDto(Cart cart) {
+
+    public List<CartProductDto> getCartProductsDto(Cart cart) {
         List<Product> list = cart.getProducts().stream().distinct().toList();
         return list.stream()
-                .map(this::createCartProductDto)
+                .map(product -> this.createCartProductDto(product, cart.getId()))
                 .toList();
     }
 
-    private CartProductDto createCartProductDto(Product product) {
-        Long quantity = this.getQuantity(product.getId());
+    private CartProductDto createCartProductDto(Product product, Long cartId) {
+        Long quantity = cartProductsDAO.getQuantity(product.getId(), cartId);
         String quantityString = String.valueOf(quantity);
         BigDecimal quantityBigDecimal = new BigDecimal(quantityString);
         BigDecimal productPrice = product.getPrice();
@@ -45,13 +46,7 @@ class CartDtoMapper {
                 .build();
     }
 
-    private Long getQuantity(Long productId) {
-        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM cart_products WHERE product_id = ?",
-                Long.class,
-                productId);
-    }
-
-    private BigDecimal getCartValue(Cart cart) {
+    public BigDecimal getCartValue(Cart cart) {
         return cart.getProducts()
                 .stream()
                 .map(Product::getPrice)

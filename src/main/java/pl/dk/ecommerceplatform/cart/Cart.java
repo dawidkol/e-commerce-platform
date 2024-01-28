@@ -22,7 +22,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Data
 @Builder
-class Cart {
+public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,5 +37,6 @@ class Cart {
     @JoinColumn(name = "user_id")
     @NotNull
     private User user;
+    private Boolean used;
 
 }

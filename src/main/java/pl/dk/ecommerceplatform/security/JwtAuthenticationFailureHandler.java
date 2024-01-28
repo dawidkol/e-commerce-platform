@@ -21,5 +21,6 @@ class JwtAuthenticationFailureHandler implements AuthenticationFailureHandler {
         new ObjectMapper().writeValue(response.getWriter(), new FailureWrapper(failureMessage));
     }
 
-    private record FailureWrapper(String message){}
+    private record FailureWrapper(String message) {
+    }
 }

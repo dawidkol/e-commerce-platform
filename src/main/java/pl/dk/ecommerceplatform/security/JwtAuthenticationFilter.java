@@ -41,10 +41,10 @@ class JwtAuthenticationFilter extends HttpFilter {
         } else {
             try {
                 Authentication authenticationResult = this.attemptAuthentication(request);
-                logger.debug("Authentication success for user: [%s]".formatted(authenticationResult.getName()));
+                logger.debug("Authentication success for user: [%s]" .formatted(authenticationResult.getName()));
                 this.successHandler.onAuthenticationSuccess(request, response, authenticationResult);
             } catch (AuthenticationException e) {
-                logger.debug("Authentication failed %s".formatted(e.getCause()));
+                logger.debug("Authentication failed %s" .formatted(e.getCause()));
                 this.failureHandler.onAuthenticationFailure(request, response, e);
             }
         }
@@ -52,7 +52,7 @@ class JwtAuthenticationFilter extends HttpFilter {
 
     private Authentication attemptAuthentication(HttpServletRequest request) throws AuthenticationException, IOException {
         JwtAuthenticationToken jwtAuthenticationToken = new ObjectMapper().readValue(request.getInputStream(), JwtAuthenticationToken.class);
-        logger.debug("Authentication: [%s] with password: [%s]".formatted(jwtAuthenticationToken.username, jwtAuthenticationToken.password));
+        logger.debug("Authentication: [%s] with password: [%s]" .formatted(jwtAuthenticationToken.username, jwtAuthenticationToken.password));
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(jwtAuthenticationToken.username, jwtAuthenticationToken.password);
         return authenticationManager.authenticate(usernamePasswordAuthenticationToken);
     }
