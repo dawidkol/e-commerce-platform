@@ -4,5 +4,5 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.CONFLICT, reason = "Category already exists")
-public class CategoryExistsException extends RuntimeException{
+public class CategoryExistsException extends RuntimeException {
 }

@@ -7,6 +7,6 @@ import lombok.Builder;
 
 @Builder
 public record AddToCartDto(/*@NotNull @PositiveOrZero Long userId,*/
-                           @NotNull @PositiveOrZero Long productId,
-                           @NotNull @PositiveOrZero Long quantity) {
+        @NotNull @PositiveOrZero Long productId,
+        @NotNull @PositiveOrZero Long quantity) {
 }

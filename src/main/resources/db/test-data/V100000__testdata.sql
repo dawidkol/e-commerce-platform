@@ -84,9 +84,9 @@ VALUES ('22-400', 'Orzeszkowej', '17b', '666666666'),
        ('11-222', 'Wrocławska', '20', '666996669'),
        ('50-400', 'Grunwaldzka', '12', '554455778');
 
-INSERT INTO cart(user_id)
-VALUES (1),
-       (2);
+INSERT INTO cart(user_id, used)
+VALUES (1, true),
+       (2, true);
 
 INSERT INTO cart_products(cart_id, product_id)
 VALUES (1, 1),

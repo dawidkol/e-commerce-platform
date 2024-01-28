@@ -37,5 +37,6 @@ public class Cart {
     @JoinColumn(name = "user_id")
     @NotNull
     private User user;
+    private Boolean used;
 
 }

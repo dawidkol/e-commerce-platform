@@ -14,14 +14,20 @@ class CartProductsDAO {
 
     @Transactional
     @Modifying
-    void insertProductToCart(Long cartId, Long productId) {
+    public void insertProductToCart(Long cartId, Long productId) {
         jdbcTemplate.update("INSERT INTO cart_products(cart_id, product_id) VALUES (? , ?)", cartId, productId);
     }
 
     @Transactional
     @Modifying
-    void deleteProductsInCart(Long cartId, Long productId) {
+    public void deleteProductsInCart(Long cartId, Long productId) {
         jdbcTemplate.update("DELETE FROM cart_products WHERE cart_id = ? AND product_id = ?", cartId, productId);
     }
 
+    public Long getQuantity(Long productId, Long cartId) {
+        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM cart_products WHERE product_id = ? AND cart_id = ?",
+                Long.class,
+                productId,
+                cartId);
+    }
 }

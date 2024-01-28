@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-class Order {
+public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +33,7 @@ class Order {
     @NotNull
     private User user;
     @OneToOne
-    @JoinColumn(name = "cart_id")
+    @JoinColumn(name = "cart_id", unique = true)
     @NotNull
     private Cart cart;
     @ManyToOne

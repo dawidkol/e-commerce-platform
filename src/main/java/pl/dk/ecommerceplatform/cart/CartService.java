@@ -22,7 +22,7 @@ import java.util.*;
 
 @Service
 @AllArgsConstructor
-class CartService {
+public class CartService {
 
     private final CartRepository cartRepository;
     private final WarehouseRepository warehouseRepository;
@@ -70,9 +70,8 @@ class CartService {
     private ProductItemChecker validateProductAndItemData(AddToCartDto dto) {
         Product product = productRepository.findById(dto.productId()).orElseThrow(ProductNotFoundException::new);
         Item item = this.getItem(product.getId()).orElseThrow(ItemNotFoundException::new);
-
         if (item.getQuantity() < dto.quantity())
-            throw new QuantityException();
+            throw new QuantityException("Insufficient stock of the product in the warehouse. Product id = %d" .formatted(product.getId()));
         return new ProductItemChecker(product, item);
     }
 
@@ -82,9 +81,8 @@ class CartService {
                 .ifPresentOrElse(cartRepository::delete, CartNotFoundException::new);
     }
 
-
-    private Cart getCart(User user) {
-        return cartRepository.findByUser_id(user.getId()).orElseGet(() -> {
+    public Cart getCart(User user) {
+        return cartRepository.findCartByUserIdWhereUsedEqualsFalse(user.getId()).orElseGet(() -> {
             Cart newCart = this.cartBuilder(user);
             return cartRepository.save(newCart);
         });
@@ -94,6 +92,7 @@ class CartService {
         return Cart.builder()
                 .products(new ArrayList<Product>())
                 .user(user)
+                .used(false)
                 .build();
     }
 

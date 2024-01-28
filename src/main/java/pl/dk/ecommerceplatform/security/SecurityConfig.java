@@ -25,7 +25,7 @@ class SecurityConfig {
     private final JwtService jwtService;
 
     @Bean
-    public MvcRequestMatcher.Builder mvc (HandlerMappingIntrospector introspector) {
+    public MvcRequestMatcher.Builder mvc(HandlerMappingIntrospector introspector) {
         return new MvcRequestMatcher.Builder(introspector);
     }
 

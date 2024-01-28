@@ -8,15 +8,13 @@ import pl.dk.ecommerceplatform.address.dtos.AddressDto;
 import pl.dk.ecommerceplatform.cart.Cart;
 import pl.dk.ecommerceplatform.cart.CartDtoMapper;
 import pl.dk.ecommerceplatform.cart.CartRepository;
-import pl.dk.ecommerceplatform.cart.dtos.CartProductDto;
+import pl.dk.ecommerceplatform.cart.CartService;
 import pl.dk.ecommerceplatform.error.exceptions.address.AddressNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.cart.CartNotFoundException;
-import pl.dk.ecommerceplatform.error.exceptions.order.OrderStatusNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.shipping.ShippingNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.user.UserNotFoundException;
 import pl.dk.ecommerceplatform.order.dtos.OrderDto;
 import pl.dk.ecommerceplatform.order.dtos.SaveOrderDto;
-import pl.dk.ecommerceplatform.product.Product;
 import pl.dk.ecommerceplatform.shipping.Shipping;
 import pl.dk.ecommerceplatform.shipping.ShippingMethod;
 import pl.dk.ecommerceplatform.shipping.ShippingRepository;
@@ -26,7 +24,6 @@ import pl.dk.ecommerceplatform.user.UserRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -39,18 +36,18 @@ class OrderDtoMapper {
     private final CartDtoMapper cartDtoMapper;
 
     public Order map(Long userId, SaveOrderDto saveOrderDto) {
-        Cart cart = cartRepository.findByUser_id(userId).orElseThrow(CartNotFoundException::new);
+        Cart cart = cartRepository.findCartByUserIdWhereUsedEqualsFalse(userId).orElseThrow(CartNotFoundException::new);
         BigDecimal cartValue = cartDtoMapper.getCartValue(cart);
+        cart.setUsed(true);
         return Order.builder()
                 .status(OrderStatus.NEW)
                 .user(this.getUser(userId))
-                .cart(this.getCart(saveOrderDto.cartId()))
+                .cart(this.getCart(cart.getId()))
                 .shipping(this.getShipping(saveOrderDto.shippingId()))
                 .address(this.getAddress(saveOrderDto.addressId()))
                 .orderValue(cartValue)
                 .created(LocalDateTime.now())
                 .build();
-
     }
 
     public OrderDto map(Order order) {

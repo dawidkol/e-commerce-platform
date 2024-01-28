@@ -41,6 +41,6 @@ class CartController {
     public ResponseEntity<?> updateProductQuantityInCart(@Valid @RequestBody AddToCartDto addToCartDto) {
         Long userIdFromSecurityContext = securityService.getIdFromSecurityContextOrThrowException();
         cartService.updateProductQuantityInCart(userIdFromSecurityContext, addToCartDto);
-        return ResponseEntity.noContent().build() ;
+        return ResponseEntity.noContent().build();
     }
 }

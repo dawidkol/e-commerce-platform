@@ -14,7 +14,7 @@ import java.util.*;
 @AllArgsConstructor
 public class CartDtoMapper {
 
-    private final JdbcTemplate jdbcTemplate;
+    private final CartProductsDAO cartProductsDAO;
 
     public CartDto map(Cart cart) {
         return CartDto.builder()
@@ -24,15 +24,16 @@ public class CartDtoMapper {
                 .currentCartValue(this.getCartValue(cart))
                 .build();
     }
+
     public List<CartProductDto> getCartProductsDto(Cart cart) {
         List<Product> list = cart.getProducts().stream().distinct().toList();
         return list.stream()
-                .map(this::createCartProductDto)
+                .map(product -> this.createCartProductDto(product, cart.getId()))
                 .toList();
     }
 
-    private CartProductDto createCartProductDto(Product product) {
-        Long quantity = this.getQuantity(product.getId());
+    private CartProductDto createCartProductDto(Product product, Long cartId) {
+        Long quantity = cartProductsDAO.getQuantity(product.getId(), cartId);
         String quantityString = String.valueOf(quantity);
         BigDecimal quantityBigDecimal = new BigDecimal(quantityString);
         BigDecimal productPrice = product.getPrice();
@@ -43,12 +44,6 @@ public class CartDtoMapper {
                 .productPrice(productPrice)
                 .totalPrice(totalPrice)
                 .build();
-    }
-
-    private Long getQuantity(Long productId) {
-        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM cart_products WHERE product_id = ?",
-                Long.class,
-                productId);
     }
 
     public BigDecimal getCartValue(Cart cart) {

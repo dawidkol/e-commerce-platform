@@ -30,7 +30,7 @@ public class SecurityService {
     }
 
     public List<String> getCredentials() {
-       return this.getAuthentication().getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
+        return this.getAuthentication().getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
     }
 
     private Authentication getAuthentication() {
