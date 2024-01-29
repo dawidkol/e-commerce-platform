@@ -11,6 +11,8 @@ import pl.dk.ecommerceplatform.user.UserRepository;
 
 import java.util.List;
 
+import static pl.dk.ecommerceplatform.constant.UserRoleConstant.ADMIN_ROLE;
+
 @Service
 @AllArgsConstructor
 public class SecurityService {

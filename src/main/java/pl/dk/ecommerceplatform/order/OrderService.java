@@ -22,8 +22,8 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static pl.dk.ecommerceplatform.constant.UserRoleConstant.ADMIN_ROLE;
 import static pl.dk.ecommerceplatform.utils.UtilsService.getLogger;
+import static pl.dk.ecommerceplatform.utils.UtilsService.isAdmin;
 
 @Service
 @AllArgsConstructor
@@ -71,11 +71,6 @@ class OrderService {
                     .map(orderDtoMapper::map)
                     .orElseThrow(OrderNotFoundException::new);
         }
-    }
-
-    private boolean isAdmin(List<String> credentials) {
-        return credentials.stream()
-                .anyMatch(c -> c.substring(5).equalsIgnoreCase(ADMIN_ROLE));
     }
 
     public List<OrderDto> getOrders(List<String> credentials, Long userId, int page, int size) {

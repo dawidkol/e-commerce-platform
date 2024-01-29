@@ -1,6 +1,6 @@
 package pl.dk.ecommerceplatform.order;
 
-enum OrderStatus {
+public enum OrderStatus {
     NEW,
     PAID,
     ORDER_HANDED_FOR_PROCESSING,

@@ -15,6 +15,8 @@ import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import org.springframework.security.web.authentication.AuthenticationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.security.web.util.matcher.AndRequestMatcher;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 @Configuration
@@ -36,6 +38,8 @@ class SecurityConfig {
         BearerTokenFilter bearerTokenFilter = new BearerTokenFilter(jwtService);
 
         httpSecurity.authorizeHttpRequests(request -> request
+                .requestMatchers(new AntPathRequestMatcher("/payments/events"))
+                .permitAll()
                 .requestMatchers("/swagger-ui/**",
                         "/swagger-resources/**",
                         "/v3/api-docs/**")
