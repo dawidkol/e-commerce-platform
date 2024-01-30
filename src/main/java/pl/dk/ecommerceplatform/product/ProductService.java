@@ -58,6 +58,4 @@ class ProductService {
                 .map(productDtoMapper::map)
                 .getContent();
     }
-
-
 }
