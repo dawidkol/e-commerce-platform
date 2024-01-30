@@ -24,12 +24,9 @@ import pl.dk.ecommerceplatform.utils.UtilsService;
 @RequestMapping("/payments")
 class WebHookController {
     private static final Logger logger = UtilsService.getLogger(WebHookController.class);
-
-    private final OrderRepository orderRepository;
+    private final WebHookService webHookService;
     @Value("${stripe.webhook.key}")
     String endpointSecret;
-    private final ObjectMapper objectMapper;
-
 
     @PostMapping("/events")
     public ResponseEntity<?> handleStripeEvent(@RequestBody String payload, @RequestHeader("Stripe-Signature") String sigHeader) {
@@ -74,12 +71,7 @@ class WebHookController {
             case "checkout.session.completed": {
                 logger.info(event.getType());
                 try {
-                    Long orderId = this.getOrderId(payload, event.getType());
-                    Order order = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
-                    logger.info("Starting setting status as {}", OrderStatus.PAID);
-                    order.setStatus(OrderStatus.PAID);
-                    orderRepository.flush();
-                    logger.info("Orders status set as {}", OrderStatus.PAID);
+                    webHookService.setOrderStatusAsPaid(payload, event);
                 } catch (NumberFormatException ex) {
                     logger.error("OrderId not received");
                 }
@@ -90,20 +82,4 @@ class WebHookController {
         }
         return ResponseEntity.ok().build();
     }
-
-    private Long getOrderId(String payload, String event) {
-        JsonNode jsonNode = null;
-        try {
-            jsonNode = objectMapper.readTree(payload);
-        } catch (JsonProcessingException e) {
-            throw new ServerException();
-        }
-        JsonNode jsonPatched = jsonNode.path("data")
-                .path("object")
-                .path("metadata");
-
-        logger.error("OrderId id {} from event: {}", jsonPatched.path("orderId").asText(), event);
-        return Long.valueOf(jsonPatched.path("orderId").asText());
-    }
-
 }
