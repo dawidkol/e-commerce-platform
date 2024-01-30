@@ -39,10 +39,10 @@ server:
     include-message: always
 
 jws:
-  sharedKey: 2a4dca24-dc9d-4ed8-9e2b-6d32a51cd21a
+  sharedKey: ${JWS_SHARED_KEY}
 
 stripe:
   api:
-    key: # stripe api key
+    key: ${STRIPE_API_KEY}
   webhook:
-    key: # stripe webhook key
+    key: ${STRIPE_WEBHOOK_KEY}
