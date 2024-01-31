@@ -68,7 +68,7 @@ class ProductController {
             ReviewProductDto allProductsReviews = reviewService.getAllProductsReviews(id);
             return ResponseEntity.ok(allProductsReviews);
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.noContent().build();
         }
     }
 

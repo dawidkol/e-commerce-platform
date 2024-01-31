@@ -1,7 +1,7 @@
 CREATE TABLE review
 (
     id BIGSERIAL NOT NULL PRIMARY KEY,
-    user_id BIGINT,
+    user_id BIGINT UNIQUE,
     rating INT,
     comment VARCHAR(30000),
     product_id BIGINT,
