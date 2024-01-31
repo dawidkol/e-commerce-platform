@@ -3,11 +3,11 @@ package pl.dk.ecommerceplatform;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-//@SpringBootTest
-//class ECommercePlatformApplicationTests {
-//
-//    @Test
-//    void contextLoads() {
-//    }
-//
-//}
+@SpringBootTest
+class ECommercePlatformApplicationTests {
+
+    @Test
+    void contextLoads() {
+    }
+
+}

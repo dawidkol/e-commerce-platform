@@ -5,6 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 interface ReviewRepository extends CrudRepository<Review, Long> {
@@ -13,5 +14,7 @@ interface ReviewRepository extends CrudRepository<Review, Long> {
 
     @Query(value = "SELECT ROUND(AVG(rating), 2) FROM review WHERE product_id = :productId", nativeQuery = true)
     double getAverageProductRating(Long productId);
+
+    Optional<Review> findByUser_idAndProduct_Id(Long userId, Long product_id);
 
 }

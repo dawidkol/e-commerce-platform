@@ -102,5 +102,5 @@ VALUES ('NEW', 1, 1, 1, 1, 5977.00, '2024-01-08 14:10:06'),
 
 INSERT INTO review(user_id, rating, comment, product_id, added)
 VALUES (1, 4, 'long comment to test product(id: 1)', 1, now()),
-       (2, 5, 'long comment to test product(id: 1)', 1, now());
+       (2, 5, 'long comment to test product(id: 1)', 5, now());
 

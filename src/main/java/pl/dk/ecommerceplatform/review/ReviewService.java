@@ -11,4 +11,6 @@ public interface ReviewService {
     ReviewProductDto getAllProductsReviews(Long productId);
 
     SingleReviewDto createReview(Long userId, CreateReviewDto createReviewDto);
+
+    SingleReviewDto getReview(Long id);
 }

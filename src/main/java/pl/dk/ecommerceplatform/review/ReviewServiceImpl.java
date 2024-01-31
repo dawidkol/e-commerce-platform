@@ -3,6 +3,8 @@ package pl.dk.ecommerceplatform.review;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.dk.ecommerceplatform.cart.Cart;
+import pl.dk.ecommerceplatform.error.exceptions.review.ReviewAlreadyExistsException;
+import pl.dk.ecommerceplatform.error.exceptions.review.ReviewNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.review.UserNotBoughtProductException;
 import pl.dk.ecommerceplatform.order.Order;
 import pl.dk.ecommerceplatform.order.OrderRepository;
@@ -13,6 +15,7 @@ import pl.dk.ecommerceplatform.review.dtos.ReviewProductDto;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -34,6 +37,11 @@ class ReviewServiceImpl implements ReviewService {
 
     @Override
     public SingleReviewDto createReview(Long userId, CreateReviewDto createReviewDto) {
+        Optional<Review> reviewOptional = reviewRepository.findByUser_idAndProduct_Id(userId, createReviewDto.productId());
+        if (reviewOptional.isPresent()) {
+            throw new ReviewAlreadyExistsException();
+        }
+
         List<Long> productsIds = orderRepository.findByUser_id(userId)
                 .stream()
                 .map(Order::getCart)
@@ -52,6 +60,13 @@ class ReviewServiceImpl implements ReviewService {
             Review savedReview = reviewRepository.save(reviewToSave);
             return reviewDtoMapper.map(savedReview);
         }
+    }
+
+    @Override
+    public SingleReviewDto getReview(Long id) {
+        return reviewRepository.findById(id)
+                .map(reviewDtoMapper::map)
+                .orElseThrow(ReviewNotFoundException::new);
     }
 
     private double getAverage(Long productId) {

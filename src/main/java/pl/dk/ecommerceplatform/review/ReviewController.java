@@ -24,4 +24,11 @@ class ReviewController {
         SingleReviewDto review = reviewService.createReview(idFromSecurityContext, createReviewDto);
         return ResponseEntity.ok(review);
     }
+
+    @GetMapping("/{id}")
+    @PreAuthorize(value = "hasAnyRole('ROLE_ADMIN')")
+    public ResponseEntity<SingleReviewDto> getReview(@PathVariable Long id) {
+        SingleReviewDto reviewDto = reviewService.getReview(id);
+        return ResponseEntity.ok(reviewDto);
+    }
 }
