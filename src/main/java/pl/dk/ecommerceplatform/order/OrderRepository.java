@@ -17,4 +17,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Query(value = "SELECT * FROM orders WHERE status = 'NEW' AND id = :id LIMIT 1", nativeQuery = true)
     Optional<Order> findUnpaidOrder(Long id);
+
+    List<Order> findByUser_id(Long userId);
 }

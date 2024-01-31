@@ -9,9 +9,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.dk.ecommerceplatform.product.dtos.ProductDto;
 import pl.dk.ecommerceplatform.product.dtos.SaveProductDto;
+import pl.dk.ecommerceplatform.review.ReviewService;
+import pl.dk.ecommerceplatform.review.dtos.ReviewProductDto;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import static pl.dk.ecommerceplatform.constant.PaginationConstant.*;
 
@@ -21,6 +24,7 @@ import static pl.dk.ecommerceplatform.constant.PaginationConstant.*;
 class ProductController {
 
     private final ProductService productService;
+    private final ReviewService reviewService;
 
     @PostMapping("")
     @PreAuthorize(value = "hasAnyRole('ROLE_ADMIN')")
@@ -55,6 +59,17 @@ class ProductController {
         if (!productsByName.isEmpty())
             return ResponseEntity.ok(productsByName);
         else return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}/reviews")
+    public ResponseEntity<ReviewProductDto> getAllProductReviews(@PathVariable Long id) {
+        Optional<ProductDto> productDtoOptional = productService.getProductById(id);
+        if (productDtoOptional.isPresent()) {
+            ReviewProductDto allProductsReviews = reviewService.getAllProductsReviews(id);
+            return ResponseEntity.ok(allProductsReviews);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
     }
 
 }
