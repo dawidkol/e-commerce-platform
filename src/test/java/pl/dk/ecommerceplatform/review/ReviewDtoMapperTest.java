@@ -31,7 +31,7 @@ class ReviewDtoMapperTest {
     private AutoCloseable autoCloseable;
 
     @BeforeEach
-    void inti() {
+    void init() {
         autoCloseable = MockitoAnnotations.openMocks(this);
         underTest = new ReviewDtoMapper(productRepository, userRepository);
     }
