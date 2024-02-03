@@ -1,15 +1,12 @@
 package pl.dk.ecommerceplatform.review;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import pl.dk.ecommerceplatform.cart.Cart;
-import pl.dk.ecommerceplatform.category.Category;
 import pl.dk.ecommerceplatform.error.exceptions.review.ReviewAlreadyExistsException;
 import pl.dk.ecommerceplatform.error.exceptions.review.UserNotBoughtProductException;
 import pl.dk.ecommerceplatform.order.Order;
