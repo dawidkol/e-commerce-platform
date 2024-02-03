@@ -41,7 +41,7 @@ class ReviewServiceTest {
     Product product;
     User user;
     Review review;
-    AutoCloseable autoCloseable;
+    private AutoCloseable autoCloseable;
 
     @BeforeEach
     void init() {
@@ -168,6 +168,5 @@ class ReviewServiceTest {
         // Then
         verify(reviewDtoMapper, times(1)).map(review);
     }
-
 
 }
