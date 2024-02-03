@@ -1,6 +1,6 @@
 spring:
   datasource:
-      url: jdbc:postgres://localhost:5432/e-commerce
+    url: jdbc:postgres://localhost:5432/e-commerce
   security:
     user:
       name: user
@@ -19,9 +19,14 @@ spring:
     enabled: true
     locations: classpath:/db/migration, classpath:/db/test-data
 
-  h2:
-    console:
-      enabled: true
+  docker:
+    compose:
+      skip:
+        in-tests: false
+
+  output:
+    ansi:
+      enabled: ALWAYS
 
 logging:
   level:
@@ -46,3 +51,6 @@ stripe:
     key: ${STRIPE_API_KEY}
   webhook:
     key: ${STRIPE_WEBHOOK_KEY}
+
+
+
