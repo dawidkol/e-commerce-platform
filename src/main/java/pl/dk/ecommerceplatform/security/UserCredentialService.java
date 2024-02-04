@@ -3,7 +3,7 @@ package pl.dk.ecommerceplatform.security;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.dk.ecommerceplatform.user.UserRepository;
-import pl.dk.ecommerceplatform.user.dtos.UserCredentialsDto;
+import pl.dk.ecommerceplatform.security.dtos.UserCredentialsDto;
 
 import java.util.Optional;
 

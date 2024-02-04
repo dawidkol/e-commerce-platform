@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.dk.ecommerceplatform.error.exceptions.user.UserNotFoundException;
-import pl.dk.ecommerceplatform.user.dtos.UserCredentialsDto;
+import pl.dk.ecommerceplatform.security.dtos.UserCredentialsDto;
 
 @Service
 @AllArgsConstructor
