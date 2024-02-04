@@ -1,7 +1,7 @@
 package pl.dk.ecommerceplatform.security;
 
 import pl.dk.ecommerceplatform.user.User;
-import pl.dk.ecommerceplatform.user.dtos.UserCredentialsDto;
+import pl.dk.ecommerceplatform.security.dtos.UserCredentialsDto;
 
 class UserCredentialsDtoMapper {
 

@@ -1,4 +1,4 @@
-package pl.dk.ecommerceplatform.user.dtos;
+package pl.dk.ecommerceplatform.security.dtos;
 
 import lombok.Builder;
 
