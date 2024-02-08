@@ -154,7 +154,7 @@ class ProductControllerTest {
     }
 
     @Test
-    void itShouldName() throws Exception {
+    void itShouldRetrieveReviewsByProductId() throws Exception {
         // 1. User wants to get reviews by given product id = 1
         Long productId = 1L;
         mockMvc.perform(MockMvcRequestBuilders.get("/products/{id}/reviews", productId))
