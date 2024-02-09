@@ -3,10 +3,12 @@ package pl.dk.ecommerceplatform.cart;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import pl.dk.ecommerceplatform.cart.dtos.AddToCartDto;
 import pl.dk.ecommerceplatform.cart.dtos.CartDto;
+import pl.dk.ecommerceplatform.error.exceptions.cart.CartNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.user.UserNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.warehouse.ProductUnavailableException;
 import pl.dk.ecommerceplatform.error.exceptions.warehouse.QuantityException;
@@ -14,10 +16,12 @@ import pl.dk.ecommerceplatform.product.Product;
 import pl.dk.ecommerceplatform.product.ProductRepository;
 import pl.dk.ecommerceplatform.user.User;
 import pl.dk.ecommerceplatform.user.UserRepository;
+import pl.dk.ecommerceplatform.user.UserRole;
 import pl.dk.ecommerceplatform.warehouse.Item;
 import pl.dk.ecommerceplatform.warehouse.WarehouseRepository;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -196,5 +200,108 @@ class CartServiceTest {
         verify(warehouseRepository, times(1)).findByProduct_id(productId);
     }
 
+    @Test
+    void itShouldUpdateProductQuantityInCart() {
+        // Given
+        Long userId = 1L;
+        Long productId = 1L;
+        Long productQuantity = 2L;
 
+        User user = User.builder()
+                .id(userId)
+                .build();
+
+        Product product = Product.builder()
+                .id(productId)
+                .build();
+        List<Product> productsList = List.of(product);
+
+        Cart cart = Cart.builder()
+                .id(1L)
+                .products(productsList)
+                .user(user)
+                .used(false)
+                .build();
+
+        AddToCartDto dto = AddToCartDto.builder()
+                .productId(productId)
+                .quantity(productQuantity)
+                .build();
+
+        Item item = Item.builder()
+                .id(1L)
+                .quantity(20L)
+                .available(true)
+                .build();
+
+        when(cartRepository.findByUser_id(userId)).thenReturn(Optional.of(cart));
+        when(productRepository.findById(productId)).thenReturn(Optional.of(product));
+        when(warehouseRepository.findByProduct_id(productId)).thenReturn(Optional.of(item));
+        ArgumentCaptor<Long> longArgumentCaptor = ArgumentCaptor.forClass(Long.class);
+
+        // When
+        underTest.updateProductQuantityInCart(userId, dto);
+
+        // Then
+        verify(cartRepository, times(1)).findByUser_id(userId);
+        verify(productRepository, times(1)).findById(productId);
+        verify(warehouseRepository, times(1)).findByProduct_id(productId);
+        verify(cartProductsDAO, times(2)).insertProductToCart(longArgumentCaptor.capture(), longArgumentCaptor.capture());
+    }
+
+    @Test
+    void itShouldCreateAndReturnNewCartWhenCartNotFoundForUser() {
+        // Given
+        String email = "john.doe@example.com";
+        String password = "testPassword";
+        String fistName = "John";
+        String lastName = "Doe";
+        Long id = 1L;
+
+        UserRole customerRole = UserRole.builder()
+                .id(id)
+                .name("CUSTOMER")
+                .description("description").build();
+
+        User user = User.builder()
+                .id(id)
+                .firstName(fistName)
+                .lastName(lastName)
+                .email(email)
+                .password(password)
+                .userRole(customerRole)
+                .build();
+
+        Cart cart = Cart.builder()
+                .products(new ArrayList<>())
+                .user(user)
+                .used(false)
+                .build();
+
+        when(cartRepository.findCartByUserIdWhereUsedEqualsFalse(id)).thenReturn(Optional.empty());
+        when(cartRepository.save(cart)).thenReturn(cart);
+        ArgumentCaptor<Long> userIdArgumentCaptor = ArgumentCaptor.forClass(Long.class);
+
+        // When
+        underTest.getCart(user);
+
+        // Then
+        verify(cartRepository, times(1)).findCartByUserIdWhereUsedEqualsFalse(userIdArgumentCaptor.capture());
+        verify(cartRepository, times(1)).save(cart);
+    }
+
+    @Test
+    void itShouldDeleteUserCartIfPresent() {
+        // Given
+        Long userId = 1L;
+        Cart cartMock = mock(Cart.class);
+        when(cartRepository.findByUser_id(userId)).thenReturn(Optional.of(cartMock));
+
+        // When
+        underTest.cleanUserCart(userId);
+
+        // Then
+        verify(cartRepository, times(1)).findByUser_id(userId);
+        verify(cartRepository, times(1)).delete(cartMock);
+    }
 }
