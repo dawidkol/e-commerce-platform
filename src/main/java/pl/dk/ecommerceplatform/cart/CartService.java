@@ -52,7 +52,7 @@ public class CartService {
 
     @Transactional
     public void updateProductQuantityInCart(Long userId, AddToCartDto dto) {
-        Cart cart = cartRepository.findByUser_id(userId).orElseThrow(CartNotFoundException::new);
+        Cart cart = cartRepository.findCartByUserIdWhereUsedEqualsFalse(userId).orElseThrow(CartNotFoundException::new);
         this.validateProductAndItemData(dto);
 
         Long cartId = cart.getId();
