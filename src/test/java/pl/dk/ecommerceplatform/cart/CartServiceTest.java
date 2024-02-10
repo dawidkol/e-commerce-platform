@@ -295,13 +295,13 @@ class CartServiceTest {
         // Given
         Long userId = 1L;
         Cart cartMock = mock(Cart.class);
-        when(cartRepository.findByUser_id(userId)).thenReturn(Optional.of(cartMock));
+        when(cartRepository.findCartByUserIdWhereUsedEqualsFalse(userId)).thenReturn(Optional.of(cartMock));
 
         // When
         underTest.cleanUserCart(userId);
 
         // Then
-        verify(cartRepository, times(1)).findByUser_id(userId);
+        verify(cartRepository, times(1)).findCartByUserIdWhereUsedEqualsFalse(userId);
         verify(cartRepository, times(1)).delete(cartMock);
     }
 }
