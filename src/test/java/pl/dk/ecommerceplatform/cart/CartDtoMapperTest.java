@@ -8,7 +8,6 @@ import pl.dk.ecommerceplatform.user.User;
 import pl.dk.ecommerceplatform.user.UserRole;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,7 +22,6 @@ class CartDtoMapperTest {
     void init() {
         CartProductsDAO mockCartProductDao = mock(CartProductsDAO.class);
         underTest = new CartDtoMapper(mockCartProductDao);
-
     }
 
     @Test
