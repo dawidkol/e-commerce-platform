@@ -234,7 +234,7 @@ class CartServiceTest {
                 .available(true)
                 .build();
 
-        when(cartRepository.findByUser_id(userId)).thenReturn(Optional.of(cart));
+        when(cartRepository.findCartByUserIdWhereUsedEqualsFalse(userId)).thenReturn(Optional.of(cart));
         when(productRepository.findById(productId)).thenReturn(Optional.of(product));
         when(warehouseRepository.findByProduct_id(productId)).thenReturn(Optional.of(item));
         ArgumentCaptor<Long> longArgumentCaptor = ArgumentCaptor.forClass(Long.class);
@@ -243,7 +243,7 @@ class CartServiceTest {
         underTest.updateProductQuantityInCart(userId, dto);
 
         // Then
-        verify(cartRepository, times(1)).findByUser_id(userId);
+        verify(cartRepository, times(1)).findCartByUserIdWhereUsedEqualsFalse(userId);
         verify(productRepository, times(1)).findById(productId);
         verify(warehouseRepository, times(1)).findByProduct_id(productId);
         verify(cartProductsDAO, times(2)).insertProductToCart(longArgumentCaptor.capture(), longArgumentCaptor.capture());
