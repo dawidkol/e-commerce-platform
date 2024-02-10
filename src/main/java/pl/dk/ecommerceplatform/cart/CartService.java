@@ -77,7 +77,7 @@ public class CartService {
 
     @Transactional
     public void cleanUserCart(Long userId) {
-        cartRepository.findByUser_id(userId)
+        cartRepository.findCartByUserIdWhereUsedEqualsFalse(userId)
                 .ifPresentOrElse(cartRepository::delete, CartNotFoundException::new);
     }
 
