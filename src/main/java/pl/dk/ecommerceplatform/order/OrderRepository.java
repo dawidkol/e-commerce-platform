@@ -13,7 +13,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     Optional<Order> findByIdAndUser_id(Long id, Long userId);
 
-    List<Order> findAllByUser_id(Long id, Pageable pageable);
+    List<Order> findAllByUser_id(Long userId, Pageable pageable);
 
     @Query(value = "SELECT * FROM orders WHERE status = 'NEW' AND id = :id LIMIT 1", nativeQuery = true)
     Optional<Order> findUnpaidOrder(Long id);
