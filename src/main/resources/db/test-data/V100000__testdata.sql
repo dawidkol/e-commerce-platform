@@ -86,7 +86,8 @@ VALUES ('22-400', 'Orzeszkowej', '17b', '666666666'),
 
 INSERT INTO cart(user_id, used)
 VALUES (1, true),
-       (2, true);
+       (2, true),
+       (2, false);
 
 INSERT INTO cart_products(cart_id, product_id)
 VALUES (1, 1),
@@ -94,7 +95,9 @@ VALUES (1, 1),
        (1, 3),
        (2, 5),
        (2, 6),
-       (2, 8);
+       (2, 8),
+       (3, 7),
+       (3, 7);
 
 INSERT INTO orders(status, user_id, cart_id, shipping_id, address_id, order_value, created)
 VALUES ('NEW', 1, 1, 1, 1, 5977.00, '2024-01-08 14:10:06'),

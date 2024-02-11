@@ -36,15 +36,18 @@ class OrderDtoMapper {
     private final CartDtoMapper cartDtoMapper;
 
     public Order map(Long userId, SaveOrderDto saveOrderDto) {
-        Cart cart = cartRepository.findCartByUserIdWhereUsedEqualsFalse(userId).orElseThrow(CartNotFoundException::new);
+        User user = this.getUser(userId);
+        Cart cart = this.getCart(userId);
+        Shipping shipping = this.getShipping(saveOrderDto.shippingId());
+        Address address = this.getAddress(saveOrderDto.addressId());
         BigDecimal cartValue = cartDtoMapper.getCartValue(cart);
         cart.setUsed(true);
         return Order.builder()
                 .status(OrderStatus.NEW)
-                .user(this.getUser(userId))
-                .cart(this.getCart(cart.getId()))
-                .shipping(this.getShipping(saveOrderDto.shippingId()))
-                .address(this.getAddress(saveOrderDto.addressId()))
+                .user(user)
+                .cart(cart)
+                .shipping(shipping)
+                .address(address)
                 .orderValue(cartValue)
                 .created(LocalDateTime.now())
                 .build();
@@ -73,8 +76,8 @@ class OrderDtoMapper {
                 .orElseThrow(UserNotFoundException::new);
     }
 
-    private Cart getCart(Long id) {
-        return cartRepository.findById(id)
+    private Cart getCart(Long userId) {
+        return cartRepository.findCartByUserIdWhereUsedEqualsFalse(userId)
                 .orElseThrow(CartNotFoundException::new);
     }
 
