@@ -47,6 +47,8 @@ class OrderService {
 
     @Transactional
     public void updateOrderStatus(UpdateOrderStatusDto updateOrderStatusDto) {
+        Long orderId = updateOrderStatusDto.orderId();
+        Order order = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
         OrderStatus newStatus;
         try {
             String orderUpperCase = updateOrderStatusDto.status().toUpperCase();
@@ -54,10 +56,7 @@ class OrderService {
         } catch (IllegalArgumentException e) {
             throw new OrderStatusNotFoundException();
         }
-        Long orderId = updateOrderStatusDto.orderId();
-        Order order = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
         order.setStatus(newStatus);
-        orderDtoMapper.map(order);
     }
 
     public OrderDto getOrder(List<String> credentials, Long orderId, Long userId) {
