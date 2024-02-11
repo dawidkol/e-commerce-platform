@@ -38,8 +38,8 @@ class SecurityConfig {
         BearerTokenFilter bearerTokenFilter = new BearerTokenFilter(jwtService);
 
         httpSecurity.authorizeHttpRequests(request -> request
-                .requestMatchers(new AntPathRequestMatcher("/payments/events"))
-                .permitAll()
+                .requestMatchers(mvc.pattern("/payments/events")).permitAll()
+                .requestMatchers(mvc.pattern(HttpMethod.GET, "/category")).permitAll()
                 .requestMatchers("/swagger-ui/**",
                         "/swagger-resources/**",
                         "/v3/api-docs/**")
