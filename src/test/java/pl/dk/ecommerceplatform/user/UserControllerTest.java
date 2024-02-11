@@ -38,9 +38,7 @@ class UserControllerTest {
         String password = "testPassword";
         String fistName = "John";
         String lastName = "Doe";
-        Long id = 1L;
         RegisterUserDto invalidJsonString = RegisterUserDto.builder()
-                .id(id)
                 .firstName(fistName)
                 .lastName(lastName)
                 .email(invalidEmail)
@@ -57,7 +55,6 @@ class UserControllerTest {
         // 2. User tries to register with an existing email
         String existingEmail = "janusz.kowalski@test.pl";
         RegisterUserDto validDtoWithExistingEmail = RegisterUserDto.builder()
-                .id(id)
                 .firstName(fistName)
                 .lastName(lastName)
                 .email(existingEmail)
@@ -73,7 +70,6 @@ class UserControllerTest {
         // 3. User successfully registers with valid data
         String validEmail = "john.doe@example.com";
         RegisterUserDto validDto = RegisterUserDto.builder()
-                .id(id)
                 .firstName(fistName)
                 .lastName(lastName)
                 .email(validEmail)
