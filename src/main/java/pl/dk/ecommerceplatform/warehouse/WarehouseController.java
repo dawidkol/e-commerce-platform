@@ -34,8 +34,8 @@ class WarehouseController {
         return ResponseEntity.created(uri).body(item);
     }
 
-    @PatchMapping("")
-    public ResponseEntity<?> updateItem(@RequestParam Long id, @Valid @RequestBody JsonMergePatch patch) {
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> updateItem(@PathVariable Long id, @Valid @RequestBody JsonMergePatch patch) {
         warehouseService.updateItem(id, patch);
         return ResponseEntity.noContent().build();
     }
