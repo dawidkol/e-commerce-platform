@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @DataJpaTest
-@ActiveProfiles(value = "default")
+@ActiveProfiles(value = "test")
 @ComponentScan(value = "pl.dk.ecommerceplatform.config")
 @Import(value = CartProductsDAO.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
