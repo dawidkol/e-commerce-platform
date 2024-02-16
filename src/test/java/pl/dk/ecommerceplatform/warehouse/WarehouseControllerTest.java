@@ -1,29 +1,22 @@
 package pl.dk.ecommerceplatform.warehouse;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import pl.dk.ecommerceplatform.constant.PaginationConstant;
+import pl.dk.ecommerceplatform.BaseIntegrationTest;
 import pl.dk.ecommerceplatform.warehouse.dtos.SaveItemDto;
 
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static pl.dk.ecommerceplatform.constant.PaginationConstant.SIZE_DEFAULT;
 
-@SpringBootTest
-@AutoConfigureMockMvc(addFilters = false)
-class WarehouseControllerTest {
+class WarehouseControllerTest extends BaseIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -85,7 +78,7 @@ class WarehouseControllerTest {
                 .andExpect(jsonPath("$", hasSize(Integer.parseInt(SIZE_DEFAULT))));
 
         // 5. Test deleting an item
-        mockMvc.perform(MockMvcRequestBuilders.delete("/items/{id}", itemId ))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/items/{id}", itemId))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
 
     }

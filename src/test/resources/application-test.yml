@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: jdbc:tc:postgresql:latest:///testdb
+  docker:
+    compose:
+      skip:
+        in-tests: true
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+    clean-disabled: false
+jws:
+  sharedKey: ${JWS_SHARED_KEY}
+stripe:
+  api:
+    key: ${STRIPE_API_KEY}
+  webhook:
+    key: ${STRIPE_WEBHOOK_KEY}
+
