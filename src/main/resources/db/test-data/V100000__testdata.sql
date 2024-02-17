@@ -106,3 +106,33 @@ VALUES ('NEW', 1, 1, 1, 1, 5977.00, '2024-01-08 14:10:06'),
 INSERT INTO review(user_id, rating, comment, product_id, added)
 VALUES (1, 4, 'long comment to test product(id: 1) by user 1', 1, now()),
        (2, 5, 'long comment to test product(id: 1) by user 2', 1, now());
+
+-- test data for statistics
+INSERT INTO cart(user_id, used)
+VALUES (2, true),
+       (2, true),
+       (2, true);
+
+INSERT INTO cart_products(cart_id, product_id)
+VALUES (4, 2),
+       (4, 3),
+       (5, 1),
+       (5, 5),
+       (5, 5),
+       (5, 5),
+       (5, 3),
+       (5, 6),
+       (5, 7),
+       (5, 5),
+       (6, 6),
+       (6, 8),
+       (6, 7),
+       (6, 7),
+       (6, 9),
+       (6, 2),
+       (6, 3);
+
+INSERT INTO orders(status, user_id, cart_id, shipping_id, address_id, order_value, created)
+VALUES ('RECEIVED', 2, 4, 3, 2, 5977.00, '2024-01-08 14:10:06'),
+       ('DELIVERED', 2, 5, 2, 2, 548.98, '2024-01-16 18:05:06'),
+       ('DELIVERED', 2, 6, 2, 2, 548.98, '2024-01-16 18:05:06');
