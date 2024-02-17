@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.fge.jsonpatch.JsonPatchException;
 import com.github.fge.jsonpatch.mergepatch.JsonMergePatch;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.dk.ecommerceplatform.error.exceptions.server.ServerException;
@@ -27,6 +28,7 @@ class UserService {
     private final UserRoleRepository userRoleRepository;
     private final UserDtoMapper userDtoMapper;
     private final UtilsService utils;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public UserDto register(RegisterUserDto registerUserDto) {
@@ -34,7 +36,7 @@ class UserService {
         if (user.isPresent()) {
             throw new UserExistsException();
         }
-        User savedUser = saveUser(registerUserDto);
+        User savedUser = this.saveUser(registerUserDto);
         return userDtoMapper.map(savedUser);
     }
 
@@ -51,6 +53,7 @@ class UserService {
 
     private User saveUser(RegisterUserDto registerUserDto) {
         User userToSave = userDtoMapper.map(registerUserDto);
+        userToSave.setPassword(passwordEncoder.encode(userToSave.getPassword()));
         userRoleRepository.findByName(CUSTOMER_ROLE).ifPresentOrElse(
                 userToSave::setUserRole,
                 () -> {

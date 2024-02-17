@@ -44,7 +44,7 @@ class BearerTokenFilterTest extends BaseIntegrationTest {
         // Given
         String user = """
                 {
-                    "username": "sebastian.kowalski@test.pl",
+                    "email": "sebastian.kowalski@test.pl",
                     "password": "password"
                 }
                 """;

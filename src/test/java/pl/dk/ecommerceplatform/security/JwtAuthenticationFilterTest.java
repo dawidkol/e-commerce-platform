@@ -23,7 +23,7 @@ class JwtAuthenticationFilterTest extends BaseIntegrationTest {
         // 1. User wants to get token but he's not registered
         String nonRegisteredUser = """
                 {
-                    "username": "tomasz.kowalski@test.pl",
+                    "email": "tomasz.kowalski@test.pl",
                     "password": "password"
                 }
                 """;
@@ -33,7 +33,7 @@ class JwtAuthenticationFilterTest extends BaseIntegrationTest {
         // 2. Registered user wants to get token
         String user = """
                 {
-                    "username": "sebastian.kowalski@test.pl",
+                    "email": "sebastian.kowalski@test.pl",
                     "password": "password"
                 }
                 """;
