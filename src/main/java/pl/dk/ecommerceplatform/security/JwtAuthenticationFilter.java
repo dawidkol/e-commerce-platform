@@ -52,11 +52,11 @@ class JwtAuthenticationFilter extends HttpFilter {
 
     private Authentication attemptAuthentication(HttpServletRequest request) throws AuthenticationException, IOException {
         JwtAuthenticationToken jwtAuthenticationToken = new ObjectMapper().readValue(request.getInputStream(), JwtAuthenticationToken.class);
-        logger.debug("Authentication: [%s] with password: [%s]" .formatted(jwtAuthenticationToken.username, jwtAuthenticationToken.password));
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(jwtAuthenticationToken.username, jwtAuthenticationToken.password);
+        logger.debug("Authentication: [%s] with password: [%s]" .formatted(jwtAuthenticationToken.email, jwtAuthenticationToken.password));
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(jwtAuthenticationToken.email, jwtAuthenticationToken.password);
         return authenticationManager.authenticate(usernamePasswordAuthenticationToken);
     }
 
-    private record JwtAuthenticationToken(String username, String password) {
+    private record JwtAuthenticationToken(String email, String password) {
     }
 }
