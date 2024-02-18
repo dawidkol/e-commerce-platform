@@ -1,7 +1,5 @@
 package pl.dk.ecommerceplatform.statistics;
 
-import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.PastOrPresent;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
@@ -30,7 +28,7 @@ class StatisticsService {
         return statisticsDAO.getStatsFromLastMonth();
     }
 
-    public AvgOrderDto getStatsFromDate(LocalDate startDate, LocalDate endDate ) {
+    public AvgOrderDto getStatsFromPeriod(LocalDate startDate, LocalDate endDate ) {
         return statisticsDAO.getStatsFromPeriod(startDate, endDate);
     }
 

@@ -14,6 +14,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import pl.dk.ecommerceplatform.BaseIntegrationTest;
 import pl.dk.ecommerceplatform.statistics.dtos.AvgOrderDto;
 
+import java.time.LocalDate;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.AssertionsKt.assertAll;
@@ -42,8 +44,8 @@ class StatisticsControllerTest extends BaseIntegrationTest {
 
     @Test
     @WithMockUser(username = "janusz.kowalski@test.pl", roles = "ADMIN")
-    void itShouldGetAvgStatisticsForAdmin() throws Exception {
-        // 1. Perform GET request to /stats/avg endpoint
+    void itShouldRetrieveStatistics() throws Exception {
+        // 1. Perform GET request to /stats/avg endpoint to retrieve stats from last month
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/stats/avg"))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
@@ -52,5 +54,17 @@ class StatisticsControllerTest extends BaseIntegrationTest {
         AvgOrderDto avgOrderDto = objectMapper.readValue(contentAsString, AvgOrderDto.class);
 
         assertThat(avgOrderDto).isNotNull();
+
+        // 2. Perform GET request to /stats/avg endpoint with start and end parameters to retrieve stats from given period
+        LocalDate start = LocalDate.now().minusMonths(2);
+        LocalDate end = LocalDate.now();
+        MvcResult result1 = mockMvc.perform(MockMvcRequestBuilders.get("/stats/avg").param("start", String.valueOf(start)).param("end", String.valueOf(end)))
+            .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+            .andReturn();
+
+        String contentAsString1 = result1.getResponse().getContentAsString();
+        AvgOrderDto avgOrderDto1 = objectMapper.readValue(contentAsString1, AvgOrderDto.class);
+        assertThat(avgOrderDto1).isNotNull();
     }
+
 }

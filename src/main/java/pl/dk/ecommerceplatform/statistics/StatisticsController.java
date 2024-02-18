@@ -1,6 +1,5 @@
 package pl.dk.ecommerceplatform.statistics;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.AllArgsConstructor;
@@ -33,14 +32,14 @@ class StatisticsController {
 
     @GetMapping("/avg")
     @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
-    public ResponseEntity<AvgOrderDto> getAverageStatsFromLastMonth(
+    public ResponseEntity<AvgOrderDto> getStatsFromPeriod(
             @Past @RequestParam(name = "start", required = false) LocalDate startDate,
             @PastOrPresent @RequestParam(name = "end", required = false) LocalDate endDate) {
         if (startDate == null && endDate == null) {
             AvgOrderDto averageStatsFromLastMonth = statisticsService.getStatsFromLastMonth();
             return ResponseEntity.ok(averageStatsFromLastMonth);
         } else {
-            AvgOrderDto statsFromDate = statisticsService.getStatsFromDate(startDate, endDate);
+            AvgOrderDto statsFromDate = statisticsService.getStatsFromPeriod(startDate, endDate);
             return ResponseEntity.ok(statsFromDate);
         }
     }

@@ -5,11 +5,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.jdbc.core.JdbcTemplate;
 import pl.dk.ecommerceplatform.statistics.dtos.AvgOrderDto;
 import pl.dk.ecommerceplatform.statistics.dtos.CartProductsDto;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,6 +69,28 @@ class StatisticsServiceTest {
 
         // THen
         verify(statisticsDAO, times(1)).getStatsFromLastMonth();
+    }
+
+    @Test
+    void itShouldGetStatsFromGivenPeriod() {
+        // Given
+        AvgOrderDto expectedDto = AvgOrderDto.builder()
+                .avgOrderValue(BigDecimal.valueOf(99.99))
+                .amountOfOrders(3L)
+                .totalSoldProducts(12L)
+                .averageProductsPerOrder(BigDecimal.valueOf(4.00))
+                .build();
+
+        LocalDate start = LocalDate.now().minusMonths(2);
+        LocalDate end = LocalDate.now();
+
+        when(statisticsDAO.getStatsFromPeriod(start, end)).thenReturn(expectedDto);
+
+        // When
+        underTest.getStatsFromPeriod(start, end);
+
+        // THen
+        verify(statisticsDAO, times(1)).getStatsFromPeriod(start, end);
     }
 
 }

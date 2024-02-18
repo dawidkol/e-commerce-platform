@@ -8,9 +8,11 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import pl.dk.ecommerceplatform.order.OrderStatus;
+import pl.dk.ecommerceplatform.statistics.dtos.AvgOrderDto;
 import pl.dk.ecommerceplatform.statistics.dtos.CartProductsDto;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.stream.Stream;
 
 import static org.mockito.Mockito.*;
@@ -83,5 +85,25 @@ class StatisticsDAOTest {
         verify(jdbcTemplate, times(2)).queryForObject(any(String.class), eq(Long.class));
         verify(jdbcTemplate, times(2)).queryForObject(any(String.class), eq(BigDecimal.class));
 
+    }
+
+    @Test
+    void itShouldGetStatsFromGivenPeriod() {
+        // Given
+        BigDecimal expectedAverageOrderValue = BigDecimal.valueOf(100);
+        Long expectedAmountOfOrders = 10L;
+
+        LocalDate start = LocalDate.now().minusMonths(2);
+        LocalDate end = LocalDate.now();
+
+        when(jdbcTemplate.queryForObject(any(String.class), eq(BigDecimal.class), any(LocalDate.class), any(LocalDate.class))).thenReturn(expectedAverageOrderValue);
+        when(jdbcTemplate.queryForObject(any(String.class), eq(Long.class), any(LocalDate.class), any(LocalDate.class))).thenReturn(expectedAmountOfOrders);
+
+        // When
+        underTest.getStatsFromPeriod(start, end);
+
+        // Then
+        verify(jdbcTemplate, times(2)).queryForObject(any(String.class), eq(BigDecimal.class), any(LocalDate.class), any(LocalDate.class));
+        verify(jdbcTemplate, times(2)).queryForObject(any(String.class), eq(Long.class), any(LocalDate.class), any(LocalDate.class));
     }
 }
