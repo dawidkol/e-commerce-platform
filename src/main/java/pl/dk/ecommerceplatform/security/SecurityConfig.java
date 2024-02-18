@@ -40,6 +40,7 @@ class SecurityConfig {
         BearerTokenFilter bearerTokenFilter = new BearerTokenFilter(jwtService);
 
         httpSecurity.authorizeHttpRequests(request -> request
+                .requestMatchers(mvc.pattern(HttpMethod.GET, "/stats")).permitAll()
                 .requestMatchers(mvc.pattern(HttpMethod.GET, "/brands/{id}")).permitAll()
                 .requestMatchers(mvc.pattern(HttpMethod.GET, "/brands")).permitAll()
                 .requestMatchers(mvc.pattern(HttpMethod.GET, "/category")).permitAll()
