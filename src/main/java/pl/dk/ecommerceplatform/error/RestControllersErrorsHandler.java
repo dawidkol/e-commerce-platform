@@ -24,13 +24,13 @@ class RestControllersErrorsHandler {
                 .toList();
     }
 
-    @ResponseStatus(HttpStatus.CONFLICT)
-    @ExceptionHandler(SQLException.class)
-    public SqlError handleDuplicateKeyViolates(SQLException ex) {
-        return SqlError.builder()
-                .error(ex.getMessage())
-                .message("The user has already rated the product.")
-                .build();
-    }
+//    @ResponseStatus(HttpStatus.CONFLICT)
+//    @ExceptionHandler(SQLException.class)
+//    public SqlError handleDuplicateKeyViolates(SQLException ex) {
+//        return SqlError.builder()
+//                .error(ex.getMessage())
+//                .message("The user has already rated the product.")
+//                .build();
+//    }
 
 }

@@ -133,6 +133,6 @@ VALUES (4, 2),
        (6, 3);
 
 INSERT INTO orders(status, user_id, cart_id, shipping_id, address_id, order_value, created)
-VALUES ('RECEIVED', 2, 4, 3, 2, 5977.00, '2024-01-08 14:10:06'),
-       ('DELIVERED', 2, 5, 2, 2, 548.98, '2024-01-16 18:05:06'),
-       ('DELIVERED', 2, 6, 2, 2, 548.98, '2024-01-16 18:05:06');
+VALUES ('RECEIVED', 2, 4, 3, 2, 5977.00, NOW() - INTERVAL '1' MONTH),
+       ('DELIVERED', 2, 5, 2, 2, 548.98, NOW() - INTERVAL '1' MONTH),
+       ('DELIVERED', 2, 6, 2, 2, 548.98, NOW() - INTERVAL '1' MONTH);

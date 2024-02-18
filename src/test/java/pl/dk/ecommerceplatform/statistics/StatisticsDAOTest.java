@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.RowMapper;
 import pl.dk.ecommerceplatform.order.OrderStatus;
 import pl.dk.ecommerceplatform.statistics.dtos.CartProductsDto;
 
+import java.math.BigDecimal;
 import java.util.stream.Stream;
 
 import static org.mockito.Mockito.*;
@@ -44,7 +45,7 @@ class StatisticsDAOTest {
         CartProductsDto cartProductsDto2 = CartProductsDto.builder().build();
         CartProductsDto cartProductsDto3 = CartProductsDto.builder().build();
         String query = """
-                SELECT cart_products.product_id, product.name, COUNT(*) AS "amount_of_sold_product" FROM cart_products
+                SELECT cart_products.product_id, product.name, COUNT(*) AS amount_of_sold_product FROM cart_products
                 JOIN cart ON cart_products.cart_id = cart.id
                 JOIN product ON cart_products.product_id = product.id
                 JOIN orders ON cart_products.cart_id = orders.cart_id
@@ -64,5 +65,24 @@ class StatisticsDAOTest {
 
         // Then
         verify(jdbcTemplate, times(1)).queryForStream(query, rowMapper, receivedStatus, deliveredStatus);
+    }
+
+    @Test
+    void itShouldGetStatsFromLastMonth() {
+        // Given
+        BigDecimal expectedAverageOrderValue = BigDecimal.valueOf(100);
+        Long expectedAmountOfOrders = 10L;
+        Long expectedTotalSoldProducts = 50L;
+
+        when(jdbcTemplate.queryForObject(any(String.class), eq(BigDecimal.class), any(), any())).thenReturn(expectedAverageOrderValue);
+        when(jdbcTemplate.queryForObject(any(String.class), eq(Long.class), any(), any())).thenReturn(expectedAmountOfOrders, expectedTotalSoldProducts);
+
+        // When
+        underTest.getStatsFromLastMonth();
+
+        // Then
+        verify(jdbcTemplate, times(2)).queryForObject(any(String.class), eq(Long.class), any(String.class), any(String.class));
+        verify(jdbcTemplate, times(2)).queryForObject(any(String.class), eq(BigDecimal.class), any(String.class), any(String.class));
+
     }
 }

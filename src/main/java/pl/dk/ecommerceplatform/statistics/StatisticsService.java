@@ -3,6 +3,7 @@ package pl.dk.ecommerceplatform.statistics;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
+import pl.dk.ecommerceplatform.statistics.dtos.AvgOrderDto;
 import pl.dk.ecommerceplatform.statistics.dtos.CartProductsDto;
 import pl.dk.ecommerceplatform.utils.UtilsService;
 
@@ -20,6 +21,10 @@ class StatisticsService {
         List<CartProductsDto> top3SoldProducts = statisticsDAO.getTop3SoldProducts();
         logger.info(top3SoldProducts.toString());
         return top3SoldProducts;
+    }
+
+    public AvgOrderDto getStatsFromLastMonth() {
+        return statisticsDAO.getStatsFromLastMonth();
     }
 
 }
