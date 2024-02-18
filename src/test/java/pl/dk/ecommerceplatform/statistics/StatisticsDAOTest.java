@@ -50,21 +50,20 @@ class StatisticsDAOTest {
                 JOIN product ON cart_products.product_id = product.id
                 JOIN orders ON cart_products.cart_id = orders.cart_id
                 WHERE cart.used = true
-                AND orders.status = ?
-                OR orders.status = ?
+                AND orders.status != 'NEW'
+                AND orders.status IS NOT NULL
                 GROUP BY cart_products.product_id, product.name
                 ORDER BY amount_of_sold_product DESC
                 LIMIT 3
                 """;
-        String receivedStatus = OrderStatus.RECEIVED.name();
-        String deliveredStatus = OrderStatus.DELIVERED.name();
-        when(jdbcTemplate.queryForStream(query, rowMapper, receivedStatus, deliveredStatus)).thenReturn(Stream.of(cartProductsDto1, cartProductsDto2, cartProductsDto3));
+
+        when(jdbcTemplate.queryForStream(query, rowMapper)).thenReturn(Stream.of(cartProductsDto1, cartProductsDto2, cartProductsDto3));
 
         // When
         underTest.getTop3SoldProducts();
 
         // Then
-        verify(jdbcTemplate, times(1)).queryForStream(query, rowMapper, receivedStatus, deliveredStatus);
+        verify(jdbcTemplate, times(1)).queryForStream(query, rowMapper);
     }
 
     @Test
@@ -81,8 +80,8 @@ class StatisticsDAOTest {
         underTest.getStatsFromLastMonth();
 
         // Then
-        verify(jdbcTemplate, times(2)).queryForObject(any(String.class), eq(Long.class), any(String.class), any(String.class));
-        verify(jdbcTemplate, times(2)).queryForObject(any(String.class), eq(BigDecimal.class), any(String.class), any(String.class));
+        verify(jdbcTemplate, times(2)).queryForObject(any(String.class), eq(Long.class));
+        verify(jdbcTemplate, times(2)).queryForObject(any(String.class), eq(BigDecimal.class));
 
     }
 }
