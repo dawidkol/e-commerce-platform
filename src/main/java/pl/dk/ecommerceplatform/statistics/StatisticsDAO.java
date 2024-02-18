@@ -59,7 +59,8 @@ class StatisticsDAO {
                     FROM cart_products
                     JOIN orders ON cart_products.cart_id = orders.cart_id
                     WHERE (orders.status = ? OR orders.status = ?)
-                    AND EXTRACT(MONTH FROM orders.created) = EXTRACT(MONTH FROM NOW() - INTERVAL '1' MONTH)
+                    AND EXTRACT(YEAR FROM created) = EXTRACT(YEAR FROM NOW())
+                    AND EXTRACT(MONTH FROM created) = EXTRACT(MONTH FROM NOW() - INTERVAL '1' MONTH)
                     GROUP BY cart_products.cart_id
                 ) AS products_in_cart;
                 """;
@@ -70,6 +71,7 @@ class StatisticsDAO {
         String query = """
                 SELECT ROUND(AVG(order_value),2) FROM orders
                 WHERE (status = ? OR status = ?)
+                AND EXTRACT(YEAR FROM created) = EXTRACT(YEAR FROM NOW())
                 AND EXTRACT(MONTH FROM created) = EXTRACT(MONTH FROM NOW() - INTERVAL '1' MONTH)
                 """;
         return jdbcTemplate.queryForObject(query, BigDecimal.class, receivedStatus, deliveredStatus);
@@ -79,6 +81,7 @@ class StatisticsDAO {
         String query = """
                 SELECT COUNT(*) FROM orders
                 WHERE (status = ? OR status = ?)
+                AND EXTRACT(YEAR FROM created) = EXTRACT(YEAR FROM NOW())
                 AND EXTRACT(MONTH FROM created) = EXTRACT(MONTH FROM NOW() - INTERVAL '1' MONTH)
                 """;
         return jdbcTemplate.queryForObject(query, Long.class, receivedStatus, deliveredStatus);
@@ -91,7 +94,8 @@ class StatisticsDAO {
                 JOIN orders ON cart_products.cart_id = orders.cart_id
                 WHERE cart.used = true
                 AND (orders.status = ? OR orders.status = ?)
-                AND EXTRACT(MONTH FROM orders.created) = EXTRACT(MONTH FROM NOW() - INTERVAL '1' MONTH)
+                AND EXTRACT(YEAR FROM created) = EXTRACT(YEAR FROM NOW())
+                AND EXTRACT(MONTH FROM created) = EXTRACT(MONTH FROM NOW() - INTERVAL '1' MONTH)
                 """;
         return jdbcTemplate.queryForObject(query, Long.class, receivedStatus, deliveredStatus);
     }
