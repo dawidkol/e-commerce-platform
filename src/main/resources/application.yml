@@ -52,5 +52,8 @@ stripe:
   webhook:
     key: ${STRIPE_WEBHOOK_KEY}
 
-
+scheduler:
+#  promo: 0 12 * * *
+#  promo: 0 44 22 * * ?
+  promo: 0 0 12 * * ?
 
