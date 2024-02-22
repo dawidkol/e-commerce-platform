@@ -2,6 +2,7 @@ package pl.dk.ecommerceplatform.promo;
 
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -12,6 +13,7 @@ import pl.dk.ecommerceplatform.promo.dtos.PromoDto;
 import pl.dk.ecommerceplatform.promo.dtos.SavePromoDto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import java.util.stream.IntStream;
@@ -64,5 +66,12 @@ class PromoService {
                 .usageCount(0L)
                 .maxUsageCount(100L)
                 .build();
+    }
+
+    public List<PromoDto> getPromoCodes(int page, int size) {
+        return promoRepository.findAllByActiveTrueOrderByIdDesc(PageRequest.of(page, size))
+                .stream()
+                .map(promoDtoMapper::map)
+                .toList();
     }
 }
