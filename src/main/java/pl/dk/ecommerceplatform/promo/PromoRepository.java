@@ -5,9 +5,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Optional;
 
 @Repository
-interface PromoRepository extends JpaRepository<Promo, Long> {
+public interface PromoRepository extends JpaRepository<Promo, Long> {
     Page<Promo> findAllByActiveTrueOrderByIdDesc(Pageable pageable);
+    Optional<Promo> findByCode(String promoCode);
 }

@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 @AllArgsConstructor
-class Promo {
+public class Promo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -9,15 +9,25 @@ import pl.dk.ecommerceplatform.cart.Cart;
 import pl.dk.ecommerceplatform.cart.CartRepository;
 import pl.dk.ecommerceplatform.error.exceptions.order.OrderNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.order.OrderStatusNotFoundException;
+import pl.dk.ecommerceplatform.error.exceptions.promo.PromoCodeExpiredException;
+import pl.dk.ecommerceplatform.error.exceptions.promo.PromoCodeNotActiveException;
+import pl.dk.ecommerceplatform.error.exceptions.promo.PromoCodeNotFoundException;
+import pl.dk.ecommerceplatform.error.exceptions.promo.PromoCodeUsedException;
 import pl.dk.ecommerceplatform.error.exceptions.warehouse.ItemNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.warehouse.QuantityException;
 import pl.dk.ecommerceplatform.order.dtos.OrderDto;
 import pl.dk.ecommerceplatform.order.dtos.SaveOrderDto;
 import pl.dk.ecommerceplatform.order.dtos.UpdateOrderStatusDto;
 import pl.dk.ecommerceplatform.product.Product;
+import pl.dk.ecommerceplatform.promo.Promo;
+import pl.dk.ecommerceplatform.promo.PromoRepository;
 import pl.dk.ecommerceplatform.warehouse.Item;
 import pl.dk.ecommerceplatform.warehouse.WarehouseRepository;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -33,6 +43,7 @@ class OrderService {
     private final OrderDtoMapper orderDtoMapper;
     private final WarehouseRepository warehouseRepository;
     private final CartRepository cartRepository;
+    private PromoRepository promoRepository;
     private final Logger logger = getLogger(OrderService.class);
 
     @Transactional
@@ -40,9 +51,13 @@ class OrderService {
         Map<Long, Long> productsMap = this.getProductsMap(userId);
         this.checkProductAvailability(productsMap);
         Order orderToSave = orderDtoMapper.map(userId, saveOrderDto);
+        DiscountResult result = new DiscountResult(0L, BigDecimal.ZERO);
+        if (saveOrderDto.promoCode() !=  null){
+            result = getDiscountResult(saveOrderDto, orderToSave);
+        }
         this.updateWarehouse(productsMap);
         Order savedOrder = orderRepository.save(orderToSave);
-        return orderDtoMapper.map(savedOrder);
+        return orderDtoMapper.map(savedOrder, result.discountPercent(), result.discountValue());
     }
 
     @Transactional
@@ -117,7 +132,7 @@ class OrderService {
                     .map(Item::getQuantity)
                     .orElseThrow(ItemNotFoundException::new);
             if (productQuantity < next.getValue())
-                throw new QuantityException("Insufficient stock of the product in the warehouse. Product id = %d" .formatted(next.getKey()));
+                throw new QuantityException("Insufficient stock of the product in the warehouse. Product id = %d".formatted(next.getKey()));
         }
     }
 
@@ -130,4 +145,38 @@ class OrderService {
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
     }
 
+    private DiscountResult getDiscountResult(SaveOrderDto saveOrderDto, Order orderToSave) {
+        Long discountPercent = 0L;
+        BigDecimal discountValue = BigDecimal.ZERO;
+        BigDecimal totalCost = orderToSave.getOrderValue();
+
+        discountPercent = this.getDiscountPercent(saveOrderDto.promoCode());
+        discountValue = this.calculateOrderValueAfterDiscount(discountPercent, orderToSave);
+        totalCost = totalCost.subtract(discountValue);
+        orderToSave.setOrderValue(totalCost);
+
+        return new DiscountResult(discountPercent, discountValue);
+    }
+
+    private BigDecimal calculateOrderValueAfterDiscount(Long discount, Order order) {
+        BigDecimal currentOrderValue = order.getOrderValue();
+        BigDecimal discountPercent = BigDecimal.valueOf(discount * 0.01);
+        return currentOrderValue.multiply(discountPercent).setScale(2, RoundingMode.HALF_UP);
+    }
+
+    private Long getDiscountPercent(String promoCode) {
+        Promo promo = promoRepository.findByCode(promoCode).orElseThrow(PromoCodeNotFoundException::new);
+        this.validPromoCode(promo);
+        return promo.getDiscountPercent();
+    }
+
+    private void validPromoCode(Promo promo) {
+        LocalDateTime now = LocalDateTime.now();
+        if (promo.getActive().equals(false)) throw new PromoCodeNotActiveException();
+        if (promo.getActiveEnd().isBefore(now)) throw new PromoCodeExpiredException();
+        if (promo.getUsageCount() >= promo.getMaxUsageCount()) throw new PromoCodeUsedException();
+    }
+
+    private record DiscountResult(Long discountPercent, BigDecimal discountValue) {
+    }
 }

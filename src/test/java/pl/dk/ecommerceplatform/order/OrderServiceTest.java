@@ -17,6 +17,7 @@ import pl.dk.ecommerceplatform.order.dtos.OrderDto;
 import pl.dk.ecommerceplatform.order.dtos.SaveOrderDto;
 import pl.dk.ecommerceplatform.order.dtos.UpdateOrderStatusDto;
 import pl.dk.ecommerceplatform.product.Product;
+import pl.dk.ecommerceplatform.promo.PromoRepository;
 import pl.dk.ecommerceplatform.warehouse.Item;
 import pl.dk.ecommerceplatform.warehouse.WarehouseRepository;
 
@@ -35,6 +36,8 @@ class OrderServiceTest {
     private WarehouseRepository warehouseRepository;
     @Mock
     private CartRepository cartRepository;
+    @Mock
+    private PromoRepository promoRepository;
 
     private OrderService underTest;
     private AutoCloseable autoCloseable;
@@ -42,7 +45,7 @@ class OrderServiceTest {
     @BeforeEach
     void init() {
         autoCloseable = MockitoAnnotations.openMocks(this);
-        underTest = new OrderService(orderRepository, orderDtoMapper, warehouseRepository, cartRepository);
+        underTest = new OrderService(orderRepository, orderDtoMapper, warehouseRepository, cartRepository, promoRepository);
     }
 
     @AfterEach
