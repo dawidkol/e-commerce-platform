@@ -74,9 +74,9 @@ class OrderDtoMapper {
     }
 
     public OrderDto map(Order order) {
+        BigDecimal cartValue = cartDtoMapper.getCartValue(order.getCart());
         ShippingDto shippingDto = this.getShippingDto(order);
         BigDecimal shippingCost = shippingDto.shippingCost();
-
         BigDecimal totalOrderCost = order.getOrderValue().add(shippingCost);
         return OrderDto.builder()
                 .id(order.getId())
@@ -84,7 +84,7 @@ class OrderDtoMapper {
                 .status(order.getStatus().name())
                 .shippingAddress(this.getAddressDto(order))
                 .products(cartDtoMapper.getCartProductsDto(order.getCart()))
-                .cartValue(order.getOrderValue())
+                .cartValue(cartValue)
                 .shippingCost(shippingCost)
                 .totalCost(totalOrderCost)
                 .build();

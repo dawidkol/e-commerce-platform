@@ -114,7 +114,7 @@ class OrderDtoMapperTest {
                 .cart(cart)
                 .shipping(shipping)
                 .address(new Address())
-                .orderValue(totalCost)
+                .orderValue(cartValue)
                 .created(LocalDateTime.now().minusDays(1))
                 .build();
 
