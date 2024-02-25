@@ -17,10 +17,13 @@ import pl.dk.ecommerceplatform.order.dtos.OrderDto;
 import pl.dk.ecommerceplatform.order.dtos.SaveOrderDto;
 import pl.dk.ecommerceplatform.order.dtos.UpdateOrderStatusDto;
 import pl.dk.ecommerceplatform.product.Product;
+import pl.dk.ecommerceplatform.promo.Promo;
 import pl.dk.ecommerceplatform.promo.PromoRepository;
 import pl.dk.ecommerceplatform.warehouse.Item;
 import pl.dk.ecommerceplatform.warehouse.WarehouseRepository;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -330,4 +333,75 @@ class OrderServiceTest {
         verify(orderRepository, times(1)).findAllByUser_id(userId, pageRequest);
     }
 
+    @Test
+    void itShouldCreateOrderWithDiscount() {
+        // Given
+        Long userId = 1L;
+        Long shippingId = 1L;
+        Long addressId = 1L;
+
+        SaveOrderDto saveOrderDto = SaveOrderDto.builder()
+                .shippingId(shippingId)
+                .addressId(addressId)
+                .promoCode("testPromoCode")
+                .build();
+
+        Product product1 = Product.builder().id(1L).build();
+        Product product2 = Product.builder().id(2L).build();
+        List<Product> productList = List.of(product1, product1, product2, product2, product2);
+
+        Item item1 = Item.builder()
+                .id(1L)
+                .product(product1)
+                .quantity(100L)
+                .available(true)
+                .build();
+
+        Item item2 = Item.builder()
+                .id(2L)
+                .product(product2)
+                .quantity(100L)
+                .available(true)
+                .build();
+
+        Cart cart = Cart.builder()
+                .id(1L)
+                .products(productList)
+                .used(false)
+                .build();
+
+        LocalDateTime start = LocalDateTime.now();
+        LocalDateTime end = start.plusDays(1);
+        Promo promo = Promo.builder()
+                .id(1L)
+                .code("testPromoCode")
+                .discountPercent(5L)
+                .activeStart(start)
+                .activeEnd(end)
+                .active(true)
+                .usageCount(1L)
+                .maxUsageCount(5L)
+                .build();
+
+        Order order = Order.builder()
+                .id(1L)
+                .orderValue(BigDecimal.valueOf(199))
+                .build();
+
+        when(cartRepository.findCartByUserIdWhereUsedEqualsFalse(userId)).thenReturn(Optional.of(cart));
+        when(warehouseRepository.findByProduct_id(1L)).thenReturn(Optional.of(item1));
+        when(warehouseRepository.findByProduct_id(2L)).thenReturn(Optional.of(item2));
+        when(promoRepository.findByCode(saveOrderDto.promoCode())).thenReturn(Optional.of(promo));
+        when(orderDtoMapper.map(any(), any())).thenReturn(order);
+
+        // When
+        underTest.createOrder(userId, saveOrderDto);
+
+        // Then
+        verify(cartRepository, times(1)).findCartByUserIdWhereUsedEqualsFalse(userId);
+        verify(warehouseRepository, times(1)).findByProduct_id(1L);
+        verify(warehouseRepository, times(1)).findByProduct_id(2L);
+        verify(promoRepository, times(1)).findByCode(saveOrderDto.promoCode());
+        verify(orderDtoMapper, times(1)).map(any(), any());
+    }
 }
