@@ -41,6 +41,11 @@ class PromoService {
 
     @Transactional
     public PromoDto createPromo(SavePromoDto savePromoDto) {
+        boolean dateValidation = dateValidator.test(savePromoDto);
+        if (!dateValidation) {
+            throw new InvalidDateException("Promo code activeStart date [%s] is after promo code activeEnd date [%s]"
+                    .formatted(savePromoDto.activeStart(), savePromoDto.activeEnd()));
+        }
         Promo promoToSave = promoDtoMapper.map(savePromoDto);
         Promo savedPromo = promoRepository.save(promoToSave);
         return promoDtoMapper.map(savedPromo);
