@@ -1,5 +1,6 @@
 package pl.dk.ecommerceplatform.promo;
 
+import com.github.fge.jsonpatch.mergepatch.JsonMergePatch;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -10,6 +11,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.dk.ecommerceplatform.constant.PaginationConstant;
 import pl.dk.ecommerceplatform.promo.dtos.PromoDto;
 import pl.dk.ecommerceplatform.promo.dtos.SavePromoDto;
+import pl.dk.ecommerceplatform.utils.UtilsService;
 
 import java.net.URI;
 import java.util.List;
@@ -45,5 +47,11 @@ class PromoController {
                                                         @RequestParam(required = false, defaultValue = SIZE_DEFAULT) int size) {
         List<PromoDto> promoCodes = promoService.getPromoCodes(page, size);
         return ResponseEntity.ok(promoCodes);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> updatePromoCode(@PathVariable Long id, @RequestBody JsonMergePatch jsonMergePatch) {
+        promoService.updatePromoCode(id, jsonMergePatch);
+        return ResponseEntity.noContent().build();
     }
 }
