@@ -9,8 +9,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import pl.dk.ecommerceplatform.error.exceptions.promo.InvalidDateException;
 import pl.dk.ecommerceplatform.promo.dtos.PromoDto;
 import pl.dk.ecommerceplatform.promo.dtos.SavePromoDto;
+import pl.dk.ecommerceplatform.utils.UtilsService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -27,6 +29,10 @@ class PromoServiceTest {
     private PromoRepository promoRepository;
     @Mock
     private PromoDtoMapper promoDtoMapper;
+    @Mock
+    private PromoCodeDateValidator promoCodeDateValidator;
+    @Mock
+    private UtilsService utilsService;
 
     private PromoService underTest;
     private AutoCloseable autoCloseable;
@@ -34,7 +40,7 @@ class PromoServiceTest {
     @BeforeEach
     void init() {
         autoCloseable = MockitoAnnotations.openMocks(this);
-        underTest = new PromoService(promoRepository, promoDtoMapper);
+        underTest = new PromoService(promoRepository, promoDtoMapper, utilsService, promoCodeDateValidator);
     }
 
     @AfterEach
@@ -45,9 +51,17 @@ class PromoServiceTest {
     @Test
     void itShouldCreatePromo() {
         // Given
-        SavePromoDto savePromoDto = SavePromoDto.builder().build();
-        Promo promo = Promo.builder().build();
+        LocalDateTime activeStart = LocalDateTime.now();
+        LocalDateTime activeEnd = activeStart.plusDays(2L);
+        SavePromoDto savePromoDto = SavePromoDto.builder()
+                .activeStart(activeStart)
+                .activeEnd(activeEnd).build();
+        Promo promo = Promo.builder()
+                .activeStart(activeStart)
+                .activeEnd(activeEnd)
+                .build();
 
+        when(promoCodeDateValidator.test(savePromoDto)).thenReturn(true);
         when(promoDtoMapper.map(savePromoDto)).thenReturn(promo);
         when(promoRepository.save(promo)).thenReturn(promo);
 
@@ -57,6 +71,7 @@ class PromoServiceTest {
         // Then
         verify(promoDtoMapper, times(1)).map(savePromoDto);
         verify(promoRepository, times(1)).save(promo);
+        verify(promoCodeDateValidator, times(1)).test(savePromoDto);
     }
 
     @Test
@@ -127,5 +142,22 @@ class PromoServiceTest {
                 () -> assertThat(result.get(0)).isEqualTo(expectedPromoDtoList.get(0)),
                 () -> assertThat(result.get(1)).isEqualTo(expectedPromoDtoList.get(1))
         );
+    }
+
+    @Test
+    void shouldThrowInvalidDateExceptionWhenCreatingPromoWithInvalidDateRange() {
+        // Given
+        LocalDateTime activeStart = LocalDateTime.now();
+        LocalDateTime activeEnd = activeStart.plusDays(2L);
+        SavePromoDto savePromoDto = SavePromoDto.builder()
+                .activeStart(activeStart)
+                .activeEnd(activeEnd).build();
+
+        when(promoCodeDateValidator.test(savePromoDto)).thenReturn(false);
+
+        // When
+        // Then
+        assertThrows(InvalidDateException.class, () -> underTest.createPromo(savePromoDto));
+        verify(promoCodeDateValidator, times(1)).test(savePromoDto);
     }
 }
