@@ -7,7 +7,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDateTime;
 
 @Builder
-public record SavePromoDto(@NotBlank @Size(min = 5, max = 50)
+public record SavePromoDto(Long id,
+                           @NotBlank @Size(min = 5, max = 50)
                            String code,
                            @NotNull @Min(1) @Max(100)
                            Long discountPercent,

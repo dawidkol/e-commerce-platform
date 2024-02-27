@@ -22,6 +22,7 @@ class PromoDtoMapper {
 
     public Promo map(SavePromoDto savePromoDto) {
         return Promo.builder()
+                .id(savePromoDto.id())
                 .code(savePromoDto.code())
                 .discountPercent(savePromoDto.discountPercent())
                 .activeStart(savePromoDto.activeStart())
