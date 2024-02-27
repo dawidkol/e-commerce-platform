@@ -6,5 +6,6 @@ import lombok.Builder;
 
 @Builder
 public record SaveOrderDto(@NotNull @Positive Long shippingId,
-                           @NotNull @Positive Long addressId) {
+                           @NotNull @Positive Long addressId,
+                           String promoCode) {
 }

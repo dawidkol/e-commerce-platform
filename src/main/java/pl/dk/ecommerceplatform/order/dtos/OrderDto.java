@@ -14,6 +14,9 @@ public record OrderDto(Long id,
                        AddressDto shippingAddress,
                        List<CartProductDto> products,
                        BigDecimal cartValue,
+                       Long discountPercent,
+                       BigDecimal discountValue,
+                       BigDecimal cartValueAfterDiscount,
                        BigDecimal shippingCost,
                        BigDecimal totalCost) {
 }

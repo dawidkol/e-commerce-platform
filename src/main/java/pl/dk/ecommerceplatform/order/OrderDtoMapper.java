@@ -53,12 +53,31 @@ class OrderDtoMapper {
                 .build();
     }
 
+    public OrderDto map(Order order, Long discountPercent, BigDecimal discountValue) {
+        BigDecimal cartValue = cartDtoMapper.getCartValue(order.getCart());
+        ShippingDto shippingDto = this.getShippingDto(order);
+        BigDecimal shippingCost = shippingDto.shippingCost();
+        BigDecimal totalOrderCost = order.getOrderValue().add(shippingCost);
+        return OrderDto.builder()
+                .id(order.getId())
+                .username(order.getUser().getEmail())
+                .status(order.getStatus().name())
+                .shippingAddress(this.getAddressDto(order))
+                .products(cartDtoMapper.getCartProductsDto(order.getCart()))
+                .cartValue(cartValue)
+                .discountPercent(discountPercent)
+                .discountValue(discountValue)
+                .shippingCost(shippingCost)
+                .cartValueAfterDiscount(order.getOrderValue())
+                .totalCost(totalOrderCost)
+                .build();
+    }
+
     public OrderDto map(Order order) {
         BigDecimal cartValue = cartDtoMapper.getCartValue(order.getCart());
         ShippingDto shippingDto = this.getShippingDto(order);
         BigDecimal shippingCost = shippingDto.shippingCost();
-
-        BigDecimal totalOrderCost = cartValue.add(shippingCost);
+        BigDecimal totalOrderCost = order.getOrderValue().add(shippingCost);
         return OrderDto.builder()
                 .id(order.getId())
                 .username(order.getUser().getEmail())

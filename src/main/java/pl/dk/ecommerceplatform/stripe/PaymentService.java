@@ -17,6 +17,8 @@ import pl.dk.ecommerceplatform.stripe.dtos.CreatePaymentRequest;
 import pl.dk.ecommerceplatform.stripe.dtos.PaymentResponse;
 import pl.dk.ecommerceplatform.utils.UtilsService;
 
+import java.math.BigDecimal;
+
 @Service
 @RequiredArgsConstructor
 class PaymentService {
@@ -53,7 +55,7 @@ class PaymentService {
                                         .setPriceData(
                                                 SessionCreateParams.LineItem.PriceData.builder()
                                                         .setCurrency(Currency.PLN.name())
-                                                        .setUnitAmount(paymentRequest.amount().longValue() * 100L)
+                                                        .setUnitAmountDecimal(paymentRequest.amount().multiply(BigDecimal.valueOf(100)))
                                                         .setProductData(
                                                                 SessionCreateParams.LineItem.PriceData.ProductData.builder()
                                                                         .setName("Order id: %s" .formatted(orderId))
@@ -76,7 +78,7 @@ class PaymentService {
         Order order = orderRepository.findUnpaidOrder(orderId).orElseThrow(OrderNotFoundException::new);
         return CreatePaymentRequest.builder()
                 .customerEmail(order.getUser().getEmail())
-                .amount(order.getOrderValue())
+                .amount(order.getOrderValue().add(order.getShipping().getShippingCost()))
                 .build();
     }
 
