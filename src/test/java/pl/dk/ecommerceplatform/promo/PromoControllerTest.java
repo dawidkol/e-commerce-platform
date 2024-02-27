@@ -78,5 +78,16 @@ class PromoControllerTest extends BaseIntegrationTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(10)));
+
+        // 4. Admin wants to update promo code
+        String active = """
+                {
+                    "active": false
+                }
+                """.trim();
+
+        mockMvc.perform(MockMvcRequestBuilders.patch("/promos/{id}", promoDto.id()).contentType(MediaType.APPLICATION_JSON).content(active))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+
     }
 }
