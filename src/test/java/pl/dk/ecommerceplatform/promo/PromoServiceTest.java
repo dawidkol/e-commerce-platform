@@ -1,5 +1,8 @@
 package pl.dk.ecommerceplatform.promo;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.github.fge.jsonpatch.JsonPatchException;
+import com.github.fge.jsonpatch.mergepatch.JsonMergePatch;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +13,8 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import pl.dk.ecommerceplatform.error.exceptions.promo.InvalidDateException;
+import pl.dk.ecommerceplatform.error.exceptions.server.ServerException;
+import pl.dk.ecommerceplatform.order.dtos.SaveOrderDto;
 import pl.dk.ecommerceplatform.promo.dtos.PromoDto;
 import pl.dk.ecommerceplatform.promo.dtos.SavePromoDto;
 import pl.dk.ecommerceplatform.utils.UtilsService;
@@ -159,5 +164,81 @@ class PromoServiceTest {
         // Then
         assertThrows(InvalidDateException.class, () -> underTest.createPromo(savePromoDto));
         verify(promoCodeDateValidator, times(1)).test(savePromoDto);
+    }
+
+    @Test
+    void itShouldUpdatePromoCode() throws JsonPatchException, JsonProcessingException {
+        // Given
+        Long promoId = 1L;
+        Promo promo = Promo.builder().active(false).build();
+
+        LocalDateTime activeStart = LocalDateTime.now();
+        LocalDateTime activeEnd = activeStart.plusDays(1L);
+        SavePromoDto savePromoDto = SavePromoDto.builder()
+                .active(true)
+                .activeStart(activeStart)
+                .activeEnd(activeEnd)
+                .build();
+
+        JsonMergePatch jsonMergePatchMock = mock(JsonMergePatch.class);
+        when(promoRepository.findById(1L)).thenReturn(Optional.of(promo));
+        when(utilsService.applyPatch(promo, jsonMergePatchMock, SavePromoDto.class)).thenReturn(savePromoDto);
+        when(promoCodeDateValidator.test(savePromoDto)).thenReturn(true);
+        when(promoDtoMapper.map(savePromoDto)).thenReturn(promo);
+
+        ArgumentCaptor<Promo> promoArgumentCaptor = ArgumentCaptor.forClass(Promo.class);
+
+        // When
+        underTest.updatePromoCode(promoId, jsonMergePatchMock);
+
+        // Then
+        verify(promoRepository, times(1)).findById(promoId);
+        verify(utilsService, times(1)).applyPatch(promo, jsonMergePatchMock, SavePromoDto.class);
+        verify(promoCodeDateValidator, times(1)).test(savePromoDto);
+        verify(promoDtoMapper, times(1)).map(savePromoDto);
+        verify(promoRepository, times(1)).save(promoArgumentCaptor.capture());
+    }
+
+    @Test
+    void itShouldThrowInvalidDateExceptionWhenAdminWantsToUpdatePromoCodeWithInvalidDataRange() throws JsonPatchException, JsonProcessingException {
+        // Given
+        Long promoId = 1L;
+        Promo promo = Promo.builder().active(false).build();
+
+        LocalDateTime activeStart = LocalDateTime.now();
+        LocalDateTime activeEnd = activeStart.plusDays(1L);
+        SavePromoDto savePromoDto = SavePromoDto.builder()
+                .active(true)
+                .activeStart(activeStart)
+                .activeEnd(activeEnd)
+                .build();
+
+        JsonMergePatch jsonMergePatchMock = mock(JsonMergePatch.class);
+        when(promoRepository.findById(1L)).thenReturn(Optional.of(promo));
+        when(utilsService.applyPatch(promo, jsonMergePatchMock, SavePromoDto.class)).thenReturn(savePromoDto);
+        when(promoCodeDateValidator.test(savePromoDto)).thenReturn(false);
+
+
+        // When
+        // Then
+        assertThrows(InvalidDateException.class, () -> underTest.updatePromoCode(promoId, jsonMergePatchMock));
+        verify(utilsService, times(1)).applyPatch(promo, jsonMergePatchMock, SavePromoDto.class);
+        verify(promoCodeDateValidator, times(1)).test(savePromoDto);
+    }
+
+    @Test
+    void itShouldCatchJsonPatchExceptionAndThrowServerException() throws JsonPatchException, JsonProcessingException {
+        // Given
+        Long promoId = 1L;
+        Promo promo = Promo.builder().active(false).build();
+
+        JsonMergePatch jsonMergePatchMock = mock(JsonMergePatch.class);
+        when(promoRepository.findById(1L)).thenReturn(Optional.of(promo));
+        when(utilsService.applyPatch(promo, jsonMergePatchMock, SavePromoDto.class)).thenThrow(JsonPatchException.class);
+
+        // When
+        // Then
+        assertThrows(ServerException.class, () -> underTest.updatePromoCode(promoId, jsonMergePatchMock));
+        verify(utilsService, times(1)).applyPatch(promo, jsonMergePatchMock, SavePromoDto.class);
     }
 }
