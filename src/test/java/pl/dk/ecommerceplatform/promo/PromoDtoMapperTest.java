@@ -59,6 +59,7 @@ class PromoDtoMapperTest {
         LocalDateTime end = start.plusDays(1L);
 
         SavePromoDto testcode = SavePromoDto.builder()
+                .id(1L)
                 .code("TESTCODE")
                 .discountPercent(4L)
                 .activeStart(start)
@@ -72,7 +73,7 @@ class PromoDtoMapperTest {
 
         // Then
         assertAll(
-                () -> assertThat(promo.getId()).isNull(),
+                () -> assertThat(promo.getId()).isNotNull(),
                 () -> assertThat(promo.getCode()).isEqualTo(testcode.code()),
                 () -> assertThat(promo.getDiscountPercent()).isEqualTo(testcode.discountPercent()),
                 () -> assertThat(promo.getActiveStart()).isEqualTo(testcode.activeStart()),
