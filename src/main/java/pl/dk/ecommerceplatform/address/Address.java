@@ -3,8 +3,6 @@ package pl.dk.ecommerceplatform.address;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-import net.andreinc.jbvext.annotations.date.After;
-import org.hibernate.validator.constraints.pl.PESEL;
 
 @Entity
 @Table(name = "address")
