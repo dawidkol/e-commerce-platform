@@ -43,7 +43,7 @@ class OrderService {
     private final OrderDtoMapper orderDtoMapper;
     private final WarehouseRepository warehouseRepository;
     private final CartRepository cartRepository;
-    private PromoRepository promoRepository;
+    private final PromoRepository promoRepository;
     private final Logger logger = getLogger(OrderService.class);
 
     @Transactional

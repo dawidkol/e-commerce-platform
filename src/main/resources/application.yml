@@ -53,7 +53,17 @@ stripe:
     key: ${STRIPE_WEBHOOK_KEY}
 
 scheduler:
-#  promo: 0 12 * * *
-#  promo: 0 44 22 * * ?
   promo: 0 0 12 * * ?
+app:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL}
+    password: ${EMAIL_PASSWORD}
+    protocol-key: mail.transport.protocol
+    protocol-value: smtp
+    smtp-key: mail.smtp.auth
+    smtp-value: true
+    starttls-key: mail.smtp.starttls.enable
+    starttls-value: true
 

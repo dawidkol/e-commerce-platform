@@ -50,6 +50,7 @@ class SecurityConfig {
                 .requestMatchers(mvc.pattern(HttpMethod.GET, "/products/{id}/reviews")).permitAll()
                 .requestMatchers(mvc.pattern(HttpMethod.POST, "/users")).permitAll()
                 .requestMatchers(mvc.pattern("/payments/events")).permitAll()
+                .requestMatchers(mvc.pattern(HttpMethod.POST,"/email/contact")).permitAll()
                 .requestMatchers("/swagger-ui/**",
                         "/swagger-resources/**",
                         "/v3/api-docs/**")
