@@ -11,8 +11,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static pl.dk.ecommerceplatform.constant.UserRoleConstant.CUSTOMER_ROLE;
-import static pl.dk.ecommerceplatform.constant.UserRoleConstant.CUSTOMER_ROLE_DESCRIPTION;
+import static pl.dk.ecommerceplatform.user.Role.CUSTOMER;
 
 @DataJpaTest
 @ActiveProfiles(value = "test")
@@ -28,14 +27,14 @@ class UserRoleRepositoryTest {
     void itShouldName() {
         // Given
         // When
-        Optional<UserRole> optionalUserRole = underTest.findByName(CUSTOMER_ROLE);
+        Optional<UserRole> optionalUserRole = underTest.findByName(CUSTOMER.name());
 
         //Then
         assertThat(optionalUserRole).isPresent().hasValueSatisfying(
                 userRole -> {
                     assertThat(userRole.getId()).isNotNull();
-                    assertThat(userRole.getName()).isEqualTo(CUSTOMER_ROLE);
-                    assertThat(userRole.getDescription()).isEqualTo(CUSTOMER_ROLE_DESCRIPTION);
+                    assertThat(userRole.getName()).isEqualTo(CUSTOMER.name());
+                    assertThat(userRole.getDescription()).isEqualTo(CUSTOMER.getDescription());
                 }
         );
     }

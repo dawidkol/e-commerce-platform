@@ -38,7 +38,7 @@ public class User implements UserDetails {
     @NotBlank
     @Size(min = 6, max = 200)
     private String password;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "role_id")
     private UserRole userRole;
 

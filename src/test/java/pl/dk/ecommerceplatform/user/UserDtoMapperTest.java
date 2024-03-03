@@ -2,14 +2,12 @@ package pl.dk.ecommerceplatform.user;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pl.dk.ecommerceplatform.constant.UserRoleConstant;
 import pl.dk.ecommerceplatform.user.dtos.RegisterUserDto;
 import pl.dk.ecommerceplatform.user.dtos.UserDto;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static pl.dk.ecommerceplatform.constant.UserRoleConstant.CUSTOMER_ROLE;
-import static pl.dk.ecommerceplatform.constant.UserRoleConstant.CUSTOMER_ROLE_DESCRIPTION;
+import static pl.dk.ecommerceplatform.user.Role.*;
 
 class UserDtoMapperTest {
 
@@ -31,8 +29,8 @@ class UserDtoMapperTest {
 
         UserRole customerRole = UserRole.builder()
                 .id(id)
-                .name(CUSTOMER_ROLE)
-                .description(CUSTOMER_ROLE_DESCRIPTION).build();
+                .name(CUSTOMER.name())
+                .description(CUSTOMER.getDescription()).build();
 
         User user = User.builder()
                 .id(id)

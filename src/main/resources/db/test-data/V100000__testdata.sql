@@ -56,7 +56,7 @@ VALUES
 
 INSERT INTO user_role(name, description)
 VALUES ('ADMIN', 'Full authorities'),
-       ('CUSTOMER', 'Basic authorities');
+       ('CUSTOMER', 'Customer authorities');
 
 INSERT INTO users(first_name, last_name, email, password, role_id)
 VALUES ('Janusz', 'Kowalski', 'janusz.kowalski@test.pl', '{noop}password', 1),
@@ -159,3 +159,6 @@ VALUES
     ('CODE18', 20, '2024-03-08 08:00:00', '2024-03-09 08:00:00', TRUE, 0, 100),
     ('CODE19', 25, '2024-03-09 08:00:00', '2024-03-10 08:00:00', FALSE, 30, 30),
     ('CODE20', 30, '2024-03-10 08:00:00', '2024-03-11 08:00:00', FALSE, 20, 20);
+
+INSERT INTO user_role(name, description)
+VALUES ('EMPLOYEE', 'Employee authorities');

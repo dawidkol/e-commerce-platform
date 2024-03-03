@@ -14,6 +14,8 @@ import pl.dk.ecommerceplatform.user.dtos.UserDto;
 
 import java.net.URI;
 
+import static pl.dk.ecommerceplatform.user.Role.*;
+
 @RestController
 @RequestMapping("/users")
 @AllArgsConstructor
@@ -24,7 +26,7 @@ class UserController {
 
     @PostMapping("")
     public ResponseEntity<UserDto> register(@Valid @RequestBody RegisterUserDto registerUserDto) {
-        UserDto registeredUser = userService.register(registerUserDto);
+        UserDto registeredUser = userService.register(registerUserDto, CUSTOMER.name());
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(registeredUser.id())
@@ -37,6 +39,24 @@ class UserController {
     public ResponseEntity<?> updateUser(@RequestBody JsonMergePatch jsonMergePatch) {
         Long id = securityService.getIdFromSecurityContextOrThrowException();
         userService.updateUser(id, jsonMergePatch);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/employee")
+    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
+    public ResponseEntity<UserDto> registerEmployee(@Valid @RequestBody RegisterUserDto registerUserDto) {
+        UserDto registeredEmployee = userService.register(registerUserDto, EMPLOYEE.name());
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(registeredEmployee.id())
+                .toUri();
+        return ResponseEntity.created(uri).body(registeredEmployee);
+    }
+
+    @DeleteMapping("/{email}")
+    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> deleteUserByEmail(@PathVariable String email) {
+        userService.deleteUser(email);
         return ResponseEntity.noContent().build();
     }
 
