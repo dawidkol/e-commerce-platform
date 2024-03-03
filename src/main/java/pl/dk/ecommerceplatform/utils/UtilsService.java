@@ -9,10 +9,12 @@ import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import pl.dk.ecommerceplatform.user.Role;
 
 import java.util.List;
 
-import static pl.dk.ecommerceplatform.constant.UserRoleConstant.ADMIN_ROLE;
+import static pl.dk.ecommerceplatform.user.Role.ADMIN;
+
 
 @Component
 @AllArgsConstructor
@@ -32,7 +34,7 @@ public class UtilsService {
 
     public static boolean isAdmin(List<String> credentials) {
         return credentials.stream()
-                .anyMatch(c -> c.substring(5).equalsIgnoreCase(ADMIN_ROLE));
+                .anyMatch(c -> c.substring(5).equalsIgnoreCase(ADMIN.name()));
     }
 }
 
