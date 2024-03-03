@@ -1,6 +1,7 @@
 package pl.dk.ecommerceplatform.address;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Entity
@@ -14,8 +15,8 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String postalCode;
-    private String street;
-    private String buildingNumber;
-    private String phoneNumber;
+    @NotBlank private String postalCode;
+    @NotBlank private String street;
+    @NotBlank private String buildingNumber;
+    @NotBlank private String phoneNumber;
 }

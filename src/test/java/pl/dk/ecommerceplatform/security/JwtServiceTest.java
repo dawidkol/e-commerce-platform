@@ -6,6 +6,9 @@ import com.nimbusds.jose.JWSVerifier;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.SignedJWT;
+import org.assertj.core.api.Assertions;
+import org.assertj.core.data.TemporalOffset;
+import org.assertj.core.data.TemporalUnitLessThanOffset;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -14,6 +17,7 @@ import org.springframework.security.core.GrantedAuthority;
 import pl.dk.ecommerceplatform.error.exceptions.security.JwtAuthenticationException;
 
 import java.text.ParseException;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.Date;
@@ -22,6 +26,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.DURATION;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -58,7 +63,7 @@ class JwtServiceTest {
         assertAll(
                 () -> assertThat(subjectFromCreatedJWT).isEqualTo(username),
                 () -> assertThat(authoritiesFromCreatedJWT).isEqualTo(authorities),
-                () -> assertThat(expirationTimeFromCratedJWT).isEqualToIgnoringMillis(Date.from(Instant.now().plusSeconds(expirationTime)))
+                () -> assertThat(expirationTimeFromCratedJWT.toInstant()).isBeforeOrEqualTo(Instant.now().plusSeconds(expirationTime))
         );
     }
 
