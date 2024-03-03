@@ -8,12 +8,15 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.dk.ecommerceplatform.error.exceptions.server.ServerException;
+import pl.dk.ecommerceplatform.error.exceptions.user.RoleNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.user.UserExistsException;
+import pl.dk.ecommerceplatform.error.exceptions.user.UserNotFoundException;
 import pl.dk.ecommerceplatform.user.dtos.RegisterUserDto;
 import pl.dk.ecommerceplatform.user.dtos.UserDto;
 import pl.dk.ecommerceplatform.utils.UtilsService;
@@ -266,5 +269,54 @@ class UserServiceTest {
 
         // When
         assertThrows(ServerException.class, () -> underTest.updateUser(userId, patch));
+    }
+
+    @Test
+    void itShouldThrowRoleNotFoundException() {
+        // Given
+        RegisterUserDto registerUserDto = RegisterUserDto.builder().email("sample@emai.com").build();
+        String notExistingUserRole = "notExistingUserRole";
+
+        // When
+        // Then
+        assertThrows(RoleNotFoundException.class, () -> underTest.register(registerUserDto, notExistingUserRole));
+    }
+
+    @Test
+    void itShouldDeleteUserByGivenEmail() {
+        // Given
+        String email = "sebastian.kowalski@test.pl";
+
+        User user = User.builder()
+                .id(2L)
+                .firstName("Sebastian")
+                .lastName("Kowalski")
+                .email(email)
+                .password("password")
+                .build();
+
+
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
+
+        // When
+        underTest.deleteUser(email);
+        ArgumentCaptor<User> argumentCaptor = ArgumentCaptor.forClass(User.class);
+
+        // Then
+        verify(userRepository, times(1)).findByEmail(email);
+        verify(userRepository, times(1)).delete(argumentCaptor.capture());
+    }
+
+    @Test
+    void itShouldThrowUserNotFoundExceptionWhenAdminWantsToDeleteUser() {
+        // Given
+        String email = "sebastian.kowalski@test.pl";
+
+        when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
+
+        // When
+        // Then
+        assertThrows(UserNotFoundException.class, () -> underTest.deleteUser(email));
+        verify(userRepository, times(1)).findByEmail(email);
     }
 }
