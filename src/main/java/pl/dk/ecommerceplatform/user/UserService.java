@@ -7,7 +7,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.dk.ecommerceplatform.confirmationToken.TokenService;
+import pl.dk.ecommerceplatform.confirmationToken.dtos.TokenDto;
 import pl.dk.ecommerceplatform.error.exceptions.server.ServerException;
+import pl.dk.ecommerceplatform.error.exceptions.token.InvalidTokenException;
+import pl.dk.ecommerceplatform.error.exceptions.token.TokenExpiredException;
+import pl.dk.ecommerceplatform.error.exceptions.user.AccountAlreadyActivatedException;
 import pl.dk.ecommerceplatform.error.exceptions.user.RoleNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.user.UserExistsException;
 import pl.dk.ecommerceplatform.error.exceptions.user.UserNotFoundException;
@@ -15,9 +20,8 @@ import pl.dk.ecommerceplatform.user.dtos.RegisterUserDto;
 import pl.dk.ecommerceplatform.user.dtos.UserDto;
 import pl.dk.ecommerceplatform.utils.UtilsService;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
-
-import static pl.dk.ecommerceplatform.user.Role.*;
 
 
 @Service
@@ -29,6 +33,7 @@ class UserService {
     private final UserDtoMapper userDtoMapper;
     private final UtilsService utils;
     private final PasswordEncoder passwordEncoder;
+    private final TokenService tokenService;
 
     @Transactional
     public UserDto register(RegisterUserDto registerUserDto, String role) {
@@ -53,7 +58,7 @@ class UserService {
 
     private User saveUser(RegisterUserDto registerUserDto, String userRole) {
         Role roleEnum;
-        try{
+        try {
             roleEnum = Enum.valueOf(Role.class, userRole);
         } catch (IllegalArgumentException ex) {
             throw new RoleNotFoundException();
@@ -77,6 +82,26 @@ class UserService {
     public void deleteUser(String email) {
         User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
         userRepository.delete(user);
+    }
+
+    @Transactional
+    public void confirmAccount(Long userId, String token) {
+        TokenDto tokenDto = tokenService.getToken(token);
+        this.validateActivationLink(userId, tokenDto);
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        if (user.isEnabled()) {
+            throw new AccountAlreadyActivatedException();
+        }
+        user.setActive(true);
+    }
+
+    private void validateActivationLink(Long userId, TokenDto tokenDto) {
+        if (!tokenDto.expiration().isAfter(LocalDateTime.now())) {
+            throw new TokenExpiredException();
+        }
+        if (!tokenDto.userId().equals(userId)) {
+            throw new InvalidTokenException();
+        }
     }
 
 }
