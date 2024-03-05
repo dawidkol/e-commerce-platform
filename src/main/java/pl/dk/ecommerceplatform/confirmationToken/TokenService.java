@@ -4,6 +4,7 @@ import pl.dk.ecommerceplatform.confirmationToken.dtos.TokenDto;
 import pl.dk.ecommerceplatform.user.dtos.UserDto;
 
 public interface TokenService {
-    String generateConfirmationToken(UserDto userDto);
+    TokenDto generateConfirmationToken(String userEmail);
     TokenDto getToken(String token);
+    TokenDto getTokenByUserEmail(String email);
 }

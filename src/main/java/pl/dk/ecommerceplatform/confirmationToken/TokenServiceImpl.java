@@ -15,27 +15,31 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-class TokenServiceImpl implements TokenService{
+class TokenServiceImpl implements TokenService {
 
     private final TokenRepository tokenRepository;
     private final UserRepository userRepository;
 
     @Transactional
-    public String generateConfirmationToken(UserDto userDto) {
+    public TokenDto generateConfirmationToken(String userEmail) {
         String token = UUID.randomUUID().toString();
-        User user = userRepository.findByEmail(userDto.email()).orElseThrow(UserNotFoundException::new);
+        User user = userRepository.findByEmail(userEmail).orElseThrow(UserNotFoundException::new);
         Token tokenToSave = Token.builder()
                 .token(token)
                 .expiration(LocalDateTime.now().plusMinutes(15L))
                 .user(user)
                 .build();
         Token savedToken = tokenRepository.save(tokenToSave);
-        TokenDto tokenDto = TokenDtoMapper.map(savedToken);
-        return tokenDto.token();
+        return TokenDtoMapper.map(savedToken);
     }
 
     @Override
     public TokenDto getToken(String token) {
         return tokenRepository.findByToken(token).map(TokenDtoMapper::map).orElseThrow(TokenNotFoundException::new);
+    }
+
+    @Override
+    public TokenDto getTokenByUserEmail(String userEmail) {
+        return tokenRepository.findTokenByUser_Email(userEmail).map(TokenDtoMapper::map).orElseThrow(TokenNotFoundException::new);
     }
 }
