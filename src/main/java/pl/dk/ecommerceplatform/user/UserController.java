@@ -2,10 +2,8 @@ package pl.dk.ecommerceplatform.user;
 
 import com.github.fge.jsonpatch.mergepatch.JsonMergePatch;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +12,7 @@ import pl.dk.ecommerceplatform.confirmationToken.TokenService;
 import pl.dk.ecommerceplatform.confirmationToken.dtos.TokenDto;
 import pl.dk.ecommerceplatform.email.EmailService;
 import pl.dk.ecommerceplatform.security.SecurityService;
-import pl.dk.ecommerceplatform.user.dtos.RegisterUserDto;
-import pl.dk.ecommerceplatform.user.dtos.UserDto;
+import pl.dk.ecommerceplatform.user.dtos.*;
 import pl.dk.ecommerceplatform.utils.UtilsService;
 
 import java.net.URI;
@@ -41,11 +38,12 @@ class UserController {
                 .buildAndExpand(registeredUser.id())
                 .toUri();
 
-        String token = tokenService.generateConfirmationToken(registeredUser);
-        String tokenUri = ServletUriComponentsBuilder
-                .fromUri(uri).path("/{token}")
-                .buildAndExpand(token).toUriString();
-        logger.debug("Generated token: {}", token);
+        TokenDto tokenDto = tokenService.generateConfirmationToken(registeredUser.email());
+        String tokenUri = ServletUriComponentsBuilder.fromUri(uri)
+                .path("/{token}")
+                .buildAndExpand(tokenDto.token())
+                .toUriString();
+        logger.debug("Generated token: {}", tokenDto.token());
 
         emailService.createAndSendRegistrationConfirmationEmail(registeredUser, tokenUri);
         return ResponseEntity.created(uri).body(registeredUser);
@@ -81,6 +79,19 @@ class UserController {
     public ResponseEntity<?> confirmAccount(@PathVariable Long id, @PathVariable String token) {
         userService.confirmAccount(id, token);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/token")
+    public ResponseEntity<ActivationLinkDto> createAndSendConfirmationLink(@RequestBody LoginUserDto userDto) {
+        UserTokenWrapper userTokenWrapper = userService.createToken(userDto);
+
+        URI activationLinkUri  = ServletUriComponentsBuilder.newInstance()
+                .path("/{userId}/{token}")
+                .buildAndExpand(userTokenWrapper.userDto().id(), userTokenWrapper.tokenDto().token())
+                .toUri();
+
+        emailService.createAndSendRegistrationConfirmationEmail(userTokenWrapper.userDto(), activationLinkUri.toString());
+        return ResponseEntity.created(activationLinkUri).body(new ActivationLinkDto(userTokenWrapper.tokenDto().expiration()));
     }
 
 }
