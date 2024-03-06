@@ -1,5 +1,6 @@
 package pl.dk.ecommerceplatform.security;
 
+import jakarta.servlet.DispatcherType;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,6 +41,7 @@ class SecurityConfig {
         BearerTokenFilter bearerTokenFilter = new BearerTokenFilter(jwtService);
 
         httpSecurity.authorizeHttpRequests(request -> request
+                .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
                 .requestMatchers(mvc.pattern(HttpMethod.GET, "/stats")).permitAll()
                 .requestMatchers(mvc.pattern(HttpMethod.GET, "/brands/{id}")).permitAll()
                 .requestMatchers(mvc.pattern(HttpMethod.GET, "/brands")).permitAll()
@@ -51,6 +53,8 @@ class SecurityConfig {
                 .requestMatchers(mvc.pattern(HttpMethod.POST, "/users")).permitAll()
                 .requestMatchers(mvc.pattern("/payments/events")).permitAll()
                 .requestMatchers(mvc.pattern(HttpMethod.POST,"/email/contact")).permitAll()
+                .requestMatchers(mvc.pattern(HttpMethod.PATCH,"/users/{id}/{token}")).permitAll()
+                .requestMatchers(mvc.pattern(HttpMethod.POST, "/users/token")).permitAll()
                 .requestMatchers("/swagger-ui/**",
                         "/swagger-resources/**",
                         "/v3/api-docs/**")

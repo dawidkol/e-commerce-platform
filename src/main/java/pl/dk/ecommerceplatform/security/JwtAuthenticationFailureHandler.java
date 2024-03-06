@@ -15,7 +15,7 @@ class JwtAuthenticationFailureHandler implements AuthenticationFailureHandler {
     public void onAuthenticationFailure(HttpServletRequest request,
                                         HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
-        String failureMessage = "Invalid credentials";
+        String failureMessage = "Invalid credentials, or account not activated";
         response.setStatus(401);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getWriter(), new FailureWrapper(failureMessage));

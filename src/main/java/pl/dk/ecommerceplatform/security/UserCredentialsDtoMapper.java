@@ -10,6 +10,7 @@ class UserCredentialsDtoMapper {
                 .email(user.getEmail())
                 .password(user.getPassword())
                 .role(user.getUserRole().getName())
+                .enabled(user.isEnabled())
                 .build();
     }
 }
