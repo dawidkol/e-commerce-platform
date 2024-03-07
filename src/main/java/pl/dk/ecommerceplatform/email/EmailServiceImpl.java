@@ -18,7 +18,6 @@ import pl.dk.ecommerceplatform.utils.UtilsService;
 class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender javaMailSender;
-    private final TokenService tokenService;
 
     @Value("${app.mail.username}")
     private String email;
@@ -70,7 +69,11 @@ class EmailServiceImpl implements EmailService {
         simpleMailMessage.setFrom(email);
         simpleMailMessage.setTo(userDto.email());
         simpleMailMessage.setText(this.createRegistrationConfirmationMessage(userDto, uri));
-        javaMailSender.send(simpleMailMessage);
+        try {
+            javaMailSender.send(simpleMailMessage);
+        } catch (MailException ex) {
+            throw new ServerException();
+        }
     }
 
     private String createRegistrationConfirmationMessage(UserDto userDto, String uri) {
@@ -78,7 +81,7 @@ class EmailServiceImpl implements EmailService {
                 Thanks %s for registering on our service.
                 To activate your account, paste the link below into Postman or a similar app using the PATCH method:
                 %s. The activation link is valid for 15 minutes.
-                
+                                
                 ECommercePlatform Team.
                 """
                 .trim()
