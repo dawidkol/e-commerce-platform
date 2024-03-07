@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import pl.dk.ecommerceplatform.confirmationToken.TokenService;
 import pl.dk.ecommerceplatform.error.exceptions.server.ServerException;
 import pl.dk.ecommerceplatform.error.exceptions.user.RoleNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.user.UserExistsException;
@@ -41,13 +42,18 @@ class UserServiceTest {
     private UtilsService utils;
     @Mock
     private PasswordEncoder passwordEncoder;
+    @Mock
+    private TokenService tokenService;
+    @Mock
+    private UserCredentialsValidator userCredentialsValidator;
+
     private UserService underTest;
     private AutoCloseable autoCloseable;
 
     @BeforeEach
     void init() {
         autoCloseable = MockitoAnnotations.openMocks(this);
-        underTest = new UserService(userRepository, userRoleRepository, userDtoMapper, utils, passwordEncoder);
+        underTest = new UserService(userRepository, userRoleRepository, userDtoMapper, utils, passwordEncoder, tokenService, userCredentialsValidator);
     }
 
     @AfterEach
