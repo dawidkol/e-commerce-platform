@@ -19,6 +19,6 @@ class EmailController {
     @PostMapping("/contact")
     public ResponseEntity<?> sendEmail(@Valid @RequestBody CreateEmailDto createEmailDto) {
         emailService.sendContactMessage(createEmailDto);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 }
