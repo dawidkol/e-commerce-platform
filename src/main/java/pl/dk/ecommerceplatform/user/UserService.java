@@ -113,8 +113,9 @@ class UserService {
     public UserTokenWrapper createToken(LoginUserDto loginUserDto) {
         boolean test = userCredentialsValidator.test(loginUserDto);
         if (test) {
-            UserDto userDto = userRepository.findByEmail(loginUserDto.email()).map(userDtoMapper::map).orElseThrow(UserNotFoundException::new);
-            this.validateActivationLinkRequest(userDto.email());
+            User user = userRepository.findByEmail(loginUserDto.email()).orElseThrow(UserNotFoundException::new);
+            this.validateActivationLinkRequest(user);
+            UserDto userDto = userDtoMapper.map(user);
             TokenDto token = tokenService.generateConfirmationToken(userDto.email());
             return new UserTokenWrapper(userDto, token);
         } else {
@@ -122,8 +123,7 @@ class UserService {
         }
     }
 
-    private void validateActivationLinkRequest(String userEmail) {
-        User user = userRepository.findByEmail(userEmail).orElseThrow(UserNotFoundException::new);
+    private void validateActivationLinkRequest(User user) {
         if (user.isActive()) {
             throw new AccountAlreadyActivatedException();
         }
