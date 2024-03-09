@@ -11,6 +11,6 @@ interface TokenRepository extends JpaRepository<Token, Long> {
 
     Optional<Token> findByToken(String token);
 
-    @Query(value = "SELECT * FROM token WHERE expiration > NOW()", nativeQuery = true)
+    @Query(value = "SELECT token.* FROM token JOIN users ON token.user_id = users.id WHERE expiration > NOW() AND users.email= :userEmail", nativeQuery = true)
     Optional<Token> findTokenByUser_Email(String userEmail);
 }
