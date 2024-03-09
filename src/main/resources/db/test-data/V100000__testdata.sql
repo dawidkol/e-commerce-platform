@@ -60,7 +60,8 @@ VALUES ('ADMIN', 'Full authorities'),
 
 INSERT INTO users(first_name, last_name, email, password, role_id, active)
 VALUES ('Janusz', 'Kowalski', 'janusz.kowalski@test.pl', '{noop}password', 1, true),
-       ('Sebastian', 'Kowalski', 'sebastian.kowalski@test.pl', '{noop}password', 2, true);
+       ('Sebastian', 'Kowalski', 'sebastian.kowalski@test.pl', '{noop}password', 2, true),
+       ('Jan', 'Kowalski', 'jan.kowalski@test.pl', '{noop}password', 2, false);
 
 INSERT INTO warehouse (product_id, quantity, available)
 VALUES (1, 23, true),
