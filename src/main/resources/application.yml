@@ -54,6 +54,8 @@ stripe:
 
 scheduler:
   promo: 0 0 12 * * ?
+  token: 0 0 3 * * ?
+
 app:
   mail:
     host: smtp.gmail.com
