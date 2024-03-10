@@ -15,6 +15,7 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.dk.ecommerceplatform.confirmationToken.TokenService;
 import pl.dk.ecommerceplatform.confirmationToken.dtos.TokenDto;
+import pl.dk.ecommerceplatform.constant.TokenConstant;
 import pl.dk.ecommerceplatform.error.exceptions.server.ServerException;
 import pl.dk.ecommerceplatform.error.exceptions.token.ActiveTokenExistsException;
 import pl.dk.ecommerceplatform.error.exceptions.token.InvalidTokenException;
@@ -35,6 +36,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static pl.dk.ecommerceplatform.constant.TokenConstant.*;
 import static pl.dk.ecommerceplatform.user.Role.CUSTOMER;
 
 class UserServiceTest {
@@ -341,7 +343,7 @@ class UserServiceTest {
         TokenDto tokenDto = TokenDto.builder()
                 .token(token)
                 .userId(userId)
-                .expiration(LocalDateTime.now().plusMinutes(15))
+                .expiration(LocalDateTime.now().plusMinutes(VALID_TIME))
                 .build();
         User user = User.builder().id(userId).build();
         when(tokenService.getToken(token)).thenReturn(tokenDto);
@@ -364,7 +366,7 @@ class UserServiceTest {
         TokenDto tokenDto = TokenDto.builder()
                 .token(token)
                 .userId(userId)
-                .expiration(LocalDateTime.now().plusMinutes(15))
+                .expiration(LocalDateTime.now().plusMinutes(VALID_TIME))
                 .build();
 
         User user = User.builder()
@@ -391,7 +393,7 @@ class UserServiceTest {
         TokenDto tokenDto = TokenDto.builder()
                 .token(token)
                 .userId(userId)
-                .expiration(LocalDateTime.now().minusMinutes(15))
+                .expiration(LocalDateTime.now().minusMinutes(VALID_TIME))
                 .build();
 
         when(tokenService.getToken(token)).thenReturn(tokenDto);
@@ -412,7 +414,7 @@ class UserServiceTest {
         TokenDto tokenDto = TokenDto.builder()
                 .token(token)
                 .userId(userId)
-                .expiration(LocalDateTime.now().plusMinutes(15))
+                .expiration(LocalDateTime.now().plusMinutes(VALID_TIME))
                 .build();
 
         when(tokenService.getToken(token)).thenReturn(tokenDto);
@@ -443,14 +445,14 @@ class UserServiceTest {
         TokenDto tokenDto = TokenDto.builder()
                 .id(1L)
                 .token(UUID.randomUUID().toString())
-                .expiration(LocalDateTime.now().plusMinutes(15))
+                .expiration(LocalDateTime.now().plusMinutes(VALID_TIME))
                 .userId(user.getId())
                 .build();
 
         TokenDto tokenByUserId = TokenDto.builder()
                 .id(1L)
                 .token(UUID.randomUUID().toString())
-                .expiration(LocalDateTime.now().minusMinutes(15))
+                .expiration(LocalDateTime.now().minusMinutes(VALID_TIME))
                 .userId(user.getId())
                 .build();
 
@@ -569,7 +571,7 @@ class UserServiceTest {
         TokenDto tokenDto = TokenDto.builder()
                 .id(1L)
                 .token(UUID.randomUUID().toString())
-                .expiration(LocalDateTime.now().plusMinutes(15))
+                .expiration(LocalDateTime.now().plusMinutes(VALID_TIME))
                 .userId(user.getId())
                 .build();
 

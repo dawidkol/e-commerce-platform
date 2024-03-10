@@ -7,6 +7,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.dk.ecommerceplatform.confirmationToken.dtos.TokenDto;
+import pl.dk.ecommerceplatform.constant.TokenConstant;
 import pl.dk.ecommerceplatform.error.exceptions.token.TokenNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.user.UserNotFoundException;
 import pl.dk.ecommerceplatform.user.User;
@@ -16,6 +17,8 @@ import pl.dk.ecommerceplatform.utils.UtilsService;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
+
+import static pl.dk.ecommerceplatform.constant.TokenConstant.VALID_TIME;
 
 @Service
 @AllArgsConstructor
@@ -31,7 +34,7 @@ class TokenServiceImpl implements TokenService {
         User user = userRepository.findByEmail(userEmail).orElseThrow(UserNotFoundException::new);
         Token tokenToSave = Token.builder()
                 .token(token)
-                .expiration(LocalDateTime.now().plusMinutes(15L))
+                .expiration(LocalDateTime.now().plusMinutes(VALID_TIME))
                 .user(user)
                 .build();
         Token savedToken = tokenRepository.save(tokenToSave);
