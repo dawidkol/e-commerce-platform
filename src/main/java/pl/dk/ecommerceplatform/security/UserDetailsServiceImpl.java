@@ -26,6 +26,7 @@ class UserDetailsServiceImpl implements UserDetailsService {
                 .username(userCredentialsDto.email())
                 .password(userCredentialsDto.password())
                 .roles(userCredentialsDto.role())
+                .disabled(!userCredentialsDto.enabled())
                 .build();
     }
 }

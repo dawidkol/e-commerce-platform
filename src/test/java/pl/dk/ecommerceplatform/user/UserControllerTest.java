@@ -12,11 +12,12 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import pl.dk.ecommerceplatform.BaseIntegrationTest;
+import pl.dk.ecommerceplatform.confirmationToken.TokenService;
+import pl.dk.ecommerceplatform.confirmationToken.dtos.TokenDto;
 import pl.dk.ecommerceplatform.user.dtos.RegisterUserDto;
 import pl.dk.ecommerceplatform.user.dtos.UserDto;
 import pl.dk.ecommerceplatform.utils.UtilsService;
 
-import java.io.PrintWriter;
 
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -29,6 +30,8 @@ class UserControllerTest extends BaseIntegrationTest {
     private MockMvc mockMvc;
     private ObjectMapper objectMapper;
     private Logger logger;
+    @Autowired
+    private TokenService tokenService;
 
     @BeforeEach
     void init() {
@@ -87,6 +90,16 @@ class UserControllerTest extends BaseIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(validJsonString))
                 .andExpect(status().isCreated());
+
+        TokenDto tokenByUserEmail = tokenService.getTokenByUserEmail(validEmail);
+        Long userId = tokenByUserEmail.userId();
+        String token = tokenByUserEmail.token();
+        logger.debug(tokenByUserEmail.token());
+
+        //4. User wants to confirm account
+        String confirmationLinkString = "/users/%d/%s".formatted(userId, token);
+        mockMvc.perform(MockMvcRequestBuilders.patch(confirmationLinkString).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
 
     @Test
@@ -100,7 +113,7 @@ class UserControllerTest extends BaseIntegrationTest {
                 }
                 """
                 .formatted(email)
-                        .trim();
+                .trim();
 
         // When
         // Then
@@ -134,5 +147,19 @@ class UserControllerTest extends BaseIntegrationTest {
         String email = userDto.email();
         mockMvc.perform(MockMvcRequestBuilders.delete("/users/{email}", email))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
+    @Test
+    void userWantsToRegenerateActivationLink() throws Exception {
+        // 1. User wants to regenerate activation link
+        String contentJson = """
+                {
+                    "email": "jan.kowalski@test.pl",
+                    "password": "password"
+                }
+                """;
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/users/token").contentType(MediaType.APPLICATION_JSON).content(contentJson))
+                .andExpect(MockMvcResultMatchers.status().isCreated());
     }
 }
