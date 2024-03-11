@@ -44,5 +44,7 @@ public class Product {
     private Brand brand;
     @NotNull
     private LocalDate added;
+    @PositiveOrZero
+    private BigDecimal promotionPrice;
 
 }
