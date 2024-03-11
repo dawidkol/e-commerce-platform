@@ -20,6 +20,7 @@ import java.time.LocalDate;
 @Data
 @Builder
 @AllArgsConstructor
+@PromotionConstraint
 public class Product {
 
     @Id
