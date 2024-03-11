@@ -12,6 +12,9 @@ public class PromotionValidator implements ConstraintValidator<PromotionConstrai
 
     @Override
     public boolean isValid(Product value, ConstraintValidatorContext context) {
+        context.disableDefaultConstraintViolation();
+        String message = "Promotion price: %s must be lower than regular price: %s".formatted(value.getPromotionPrice(), value.getPrice());
+        context.buildConstraintViolationWithTemplate(message).addConstraintViolation();
         if (value.getPromotionPrice() == null) {
             return true;
         } else return value.getPrice().compareTo(value.getPromotionPrice()) > 0;
