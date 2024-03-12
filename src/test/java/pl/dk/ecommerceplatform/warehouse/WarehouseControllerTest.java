@@ -47,7 +47,7 @@ class WarehouseControllerTest extends BaseIntegrationTest {
                 .andExpect(MockMvcResultMatchers.status().isConflict());
 
         // 2. Test saving an item with valid product ID
-        Long validProductId = 11L;
+        Long validProductId = 28L;
 
         SaveItemDto saveItemDtoWithValidProductId = SaveItemDto.builder()
                 .productId(validProductId)
