@@ -36,7 +36,12 @@ public class CartDtoMapper {
         Long quantity = cartProductsDAO.getQuantity(product.getId(), cartId);
         String quantityString = String.valueOf(quantity);
         BigDecimal quantityBigDecimal = new BigDecimal(quantityString);
-        BigDecimal productPrice = product.getPrice();
+        BigDecimal productPrice;
+        if (product.getPromotionPrice() != null) {
+            productPrice = product.getPromotionPrice();
+        } else {
+            productPrice = product.getPrice();
+        }
         BigDecimal totalPrice = productPrice.multiply(quantityBigDecimal);
         return CartProductDto.builder()
                 .name(product.getName())
@@ -49,7 +54,13 @@ public class CartDtoMapper {
     public BigDecimal getCartValue(Cart cart) {
         return cart.getProducts()
                 .stream()
-                .map(Product::getPrice)
+                .map(product -> {
+                    if (product.getPromotionPrice() != null) {
+                        return product.getPromotionPrice();
+                    } else {
+                        return product.getPrice();
+                    }
+                })
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
