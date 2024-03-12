@@ -163,3 +163,17 @@ VALUES
 
 INSERT INTO user_role(name, description)
 VALUES ('EMPLOYEE', 'Employee authorities');
+
+INSERT INTO product (name, description, price, category_id, brand_id, added, promotion_price)
+VALUES
+    ('Product 17', 'Description for Product 17', 100.00, 1, 1, '2024-03-10', 90.00),
+    ('Product 18', 'Description for Product 18', 150.00, 1, 2, '2024-03-11', 140.00),
+    ('Product 19', 'Description for Product 19', 200.00, 2, 1, '2024-03-12', 190.00),
+    ('Product 20', 'Description for Product 20', 120.00, 2, 2, '2024-03-13', 110.00),
+    ('Product 21', 'Description for Product 21', 180.00, 1, 1, '2024-03-14', 170.00),
+    ('Product 22', 'Description for Product 22', 220.00, 1, 2, '2024-03-15', 210.00),
+    ('Product 23', 'Description for Product 23', 130.00, 2, 1, '2024-03-16', 120.00),
+    ('Product 24', 'Description for Product 24', 160.00, 2, 2, '2024-03-17', 150.00),
+    ('Product 25', 'Description for Product 25', 190.00, 1, 1, '2024-03-18', 180.00),
+    ('Product 26', 'Description for Product 26', 210.00, 1, 2, '2024-03-19', 200.00),
+    ('Product 27', 'Description for Product 27', 200.00, 1, 2, '2024-03-19', 199.00);
