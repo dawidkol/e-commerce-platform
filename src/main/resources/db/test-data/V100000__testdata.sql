@@ -176,4 +176,24 @@ VALUES
     ('Product 24', 'Description for Product 24', 160.00, 2, 2, '2024-03-17', 150.00),
     ('Product 25', 'Description for Product 25', 190.00, 1, 1, '2024-03-18', 180.00),
     ('Product 26', 'Description for Product 26', 210.00, 1, 2, '2024-03-19', 200.00),
-    ('Product 27', 'Description for Product 27', 200.00, 1, 2, '2024-03-19', 199.00);
+    ('Product 27', 'Description for Product 27', 200.00, 1, 2, '2024-03-19', 199.00),
+    ('Product 28', 'Description for Product 28', 200.00, 1, 2, '2024-03-19', 199.00);
+
+INSERT INTO warehouse (product_id, quantity, available)
+VALUES (11, 23, true),
+       (12, 24, true),
+       (13, 10, true),
+       (14, 14, false),
+       (15, 8, true),
+       (16, 16, true),
+       (17, 12, true),
+       (18, 3, true),
+       (19, 2, true),
+       (20, 5, false),
+       (21, 24, true),
+       (22, 10, true),
+       (23, 14, false),
+       (24, 8, true),
+       (25, 16, true),
+       (26, 12, true),
+       (27, 2, true);
