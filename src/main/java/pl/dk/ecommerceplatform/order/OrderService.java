@@ -145,15 +145,15 @@ class OrderService {
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
     }
 
-    private DiscountResult getDiscountResult(SaveOrderDto saveOrderDto, Order orderToSave) {
+    private DiscountResult getDiscountResult(SaveOrderDto saveOrderDto, Order order) {
         Long discountPercent = 0L;
         BigDecimal discountValue = BigDecimal.ZERO;
-        BigDecimal totalCost = orderToSave.getOrderValue();
+        BigDecimal totalCost = order.getOrderValue();
 
         discountPercent = this.getDiscountPercent(saveOrderDto.promoCode());
-        discountValue = this.calculateOrderValueAfterDiscount(discountPercent, orderToSave);
+        discountValue = this.calculateOrderValueAfterDiscount(discountPercent, order);
         totalCost = totalCost.subtract(discountValue);
-        orderToSave.setOrderValue(totalCost);
+        order.setOrderValue(totalCost);
 
         return new DiscountResult(discountPercent, discountValue);
     }
