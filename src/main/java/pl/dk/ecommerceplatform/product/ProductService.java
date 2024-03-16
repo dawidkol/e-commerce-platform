@@ -58,4 +58,12 @@ class ProductService {
                 .map(productDtoMapper::map)
                 .getContent();
     }
+
+    public List<ProductDto> getAllProductPromotion(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return productRepository.findAllPromotionProducts(pageRequest)
+                .stream()
+                .map(productDtoMapper::map)
+                .toList();
+    }
 }

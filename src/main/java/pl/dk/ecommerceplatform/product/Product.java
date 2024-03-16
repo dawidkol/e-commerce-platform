@@ -20,6 +20,7 @@ import java.time.LocalDate;
 @Data
 @Builder
 @AllArgsConstructor
+@PromotionConstraint
 public class Product {
 
     @Id
@@ -44,5 +45,7 @@ public class Product {
     private Brand brand;
     @NotNull
     private LocalDate added;
+    @PositiveOrZero
+    private BigDecimal promotionPrice;
 
 }

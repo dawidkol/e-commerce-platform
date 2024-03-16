@@ -15,7 +15,8 @@ public record ProductDto(
         String category,
         String brand,
         boolean available,
-        LocalDate added
+        LocalDate added,
+        BigDecimal promotionPrice
 ) {
 }
 

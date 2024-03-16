@@ -114,6 +114,7 @@ class OrderDtoMapper {
         Address address = order.getAddress();
         return AddressDto
                 .builder()
+                .id(order.getAddress().getId())
                 .postalCode(address.getPostalCode())
                 .street(address.getStreet())
                 .buildingNumber(address.getBuildingNumber())

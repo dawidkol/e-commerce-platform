@@ -91,4 +91,19 @@ class ProductRepositoryTest {
         assertThat(productOptional).isPresent().hasValueSatisfying(
                 product -> assertThat(product.getName()).isEqualTo(productName));
     }
+
+    @Test
+    void itShouldFindAllPromotionProducts() {
+        // Given
+        int page = 0;
+        int size = 1;
+
+        PageRequest pageRequest = PageRequest.of(page, size);
+
+        // When
+        List<Product> allPromotionProducts = underTest.findAllPromotionProducts(pageRequest);
+
+        // Then
+        assertThat(allPromotionProducts).hasAtLeastOneElementOfType(Product.class);
+    }
 }

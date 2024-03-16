@@ -22,6 +22,7 @@ public record SaveProductDto(
         Long categoryId,
         @NotNull
         @Positive
-        Long brandId
+        Long brandId,
+        BigDecimal promotionPrice
 ) {
 }

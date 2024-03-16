@@ -33,6 +33,7 @@ public class ProductDtoMapper {
                 .category(categoryRepository.findById(saveProductDto.categoryId()).orElseThrow(CategoryNotFoundException::new))
                 .brand(brandRepository.findById(saveProductDto.brandId()).orElseThrow(BrandNotFoundException::new))
                 .added(LocalDate.now())
+                .promotionPrice(saveProductDto.promotionPrice())
                 .build();
     }
 
@@ -47,6 +48,7 @@ public class ProductDtoMapper {
                 .brand(product.getBrand().getName())
                 .available(getPropertyValue(product, Item::isAvailable, DEFAULT_AVAILABILITY))
                 .added(product.getAdded())
+                .promotionPrice(product.getPromotionPrice())
                 .build();
     }
 

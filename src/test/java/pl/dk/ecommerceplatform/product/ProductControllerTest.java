@@ -5,10 +5,12 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import pl.dk.ecommerceplatform.BaseIntegrationTest;
 import pl.dk.ecommerceplatform.product.dtos.ProductDto;
 import pl.dk.ecommerceplatform.product.dtos.SaveProductDto;
@@ -77,6 +79,22 @@ class ProductControllerTest extends BaseIntegrationTest {
         String locationHeader = resultActions.andReturn().getResponse().getHeader("Location");
 
         assertThat(locationHeader).contains("http://localhost/products/%d".formatted(productDto.id()));
+
+        // 3. Admin wants to save product with promotion price lower that regular price
+        SaveProductDto invalidProductData = SaveProductDto.builder()
+                .name("Product with invalid promotion price")
+                .description(description)
+                .price(price)
+                .promotionPrice(BigDecimal.valueOf(100.99))
+                .categoryId(categoryId)
+                .brandId(brandId)
+                .build();
+
+        String invalidPromotionPriceJson = objectMapper.writeValueAsString(invalidProductData);
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/products").content(invalidPromotionPriceJson).contentType(APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+
     }
 
     @Test
@@ -163,5 +181,14 @@ class ProductControllerTest extends BaseIntegrationTest {
         Long notExistingId = 99L;
         mockMvc.perform(MockMvcRequestBuilders.get("/products/{id}/reviews", notExistingId))
                 .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void itShouldRetrieveAllPromotionProducts() throws Exception {
+        // 1. User wants to retrieve all promotion products with default pagination
+        mockMvc.perform(MockMvcRequestBuilders.get("/products/promotions"))
+                .andExpect(MockMvcResultMatchers.content().contentType(APPLICATION_JSON))
+                .andExpect(jsonPath("$", hasSize(greaterThan(0))));
+
     }
 }

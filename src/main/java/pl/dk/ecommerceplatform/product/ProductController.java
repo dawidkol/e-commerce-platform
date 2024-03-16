@@ -72,4 +72,11 @@ class ProductController {
         }
     }
 
+    @GetMapping("/promotions")
+    public ResponseEntity<List<ProductDto>> getAllPromotionProducts(@RequestParam(required = false, defaultValue = PAGE_DEFAULT)  int page,
+                                                                    @RequestParam(required = false, defaultValue = SIZE_DEFAULT) int size) {
+        List<ProductDto> allProductPromotion = productService.getAllProductPromotion(page, size);
+        return ResponseEntity.ok(allProductPromotion);
+    }
+
 }

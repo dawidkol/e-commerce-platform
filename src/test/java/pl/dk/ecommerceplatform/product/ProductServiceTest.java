@@ -244,4 +244,24 @@ class ProductServiceTest {
         verify(productRepository, times(1)).findAllByName(name);
         verify(productDtoMapper, times(1)).map(productMock);
     }
+
+    @Test
+    void itShouldGetAllPromotionProducts() {
+        // Given
+        int page = 0;
+        int size = 1;
+
+        Product product1 = Product.builder().price(BigDecimal.valueOf(100.00)).promotionPrice(BigDecimal.valueOf(99.99)).build();
+        Product product2 = Product.builder().price(BigDecimal.valueOf(200.00)).promotionPrice(BigDecimal.valueOf(129.99)).build();
+        PageRequest pageRequest = PageRequest.of(page, size);
+        List<Product> productList = List.of(product1, product2);
+        when(productRepository.findAllPromotionProducts(pageRequest)).thenReturn(productList);
+
+        // When
+        List<ProductDto> allProductPromotion = underTest.getAllProductPromotion(page, size);
+
+        //Then
+        verify(productRepository, times(1)).findAllPromotionProducts(pageRequest);
+        assertThat(allProductPromotion.size()).isEqualTo(productList.size());
+    }
 }
