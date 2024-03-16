@@ -76,4 +76,57 @@ class CartDtoMapperTest {
         );
     }
 
+        @Test
+        void itShouldMapToCartDtoWhenProductHasPromotionPrice() {
+            // Given
+            String email = "john.doe@example.com";
+            String password = "testPassword";
+            String fistName = "John";
+            String lastName = "Doe";
+            Long id = 1L;
+
+            UserRole customerRole = UserRole.builder()
+                    .id(id)
+                    .name("CUSTOMER")
+                    .description("description").build();
+
+            User user = User.builder()
+                    .id(id)
+                    .firstName(fistName)
+                    .lastName(lastName)
+                    .email(email)
+                    .password(password)
+                    .userRole(customerRole)
+                    .build();
+
+            Product product1 = Product.builder()
+                    .id(1L)
+                    .price(new BigDecimal("99.99"))
+                    .promotionPrice(new BigDecimal("89.99"))
+                    .build();
+
+            Product product2 = Product.builder()
+                    .id(2L)
+                    .price(new BigDecimal("0.01"))
+                    .build();
+
+            Cart cart = Cart.builder()
+                    .id(id)
+                    .products(List.of(product1, product2))
+                    .user(user)
+                    .used(false)
+                    .build();
+
+            // When
+            CartDto cartDto = underTest.map(cart);
+
+            // Then
+            assertAll(
+                    () -> assertThat(cartDto.id()).isEqualTo(id),
+                    () -> assertThat(cartDto.userId()).isEqualTo(id),
+                    () -> assertThat(cartDto.products()).hasSize(2),
+                    () -> assertThat(cartDto.currentCartValue()).isEqualTo(new BigDecimal("90.00"))
+            );
+    }
+
 }
