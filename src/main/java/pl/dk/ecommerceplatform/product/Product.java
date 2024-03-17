@@ -11,9 +11,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import pl.dk.ecommerceplatform.brand.Brand;
 import pl.dk.ecommerceplatform.category.Category;
+import pl.dk.ecommerceplatform.productImage.ImageFileData;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -47,5 +50,7 @@ public class Product {
     private LocalDate added;
     @PositiveOrZero
     private BigDecimal promotionPrice;
+    @OneToMany(mappedBy = "product")
+    private Set<ImageFileData> images = new HashSet<>();
 
 }
