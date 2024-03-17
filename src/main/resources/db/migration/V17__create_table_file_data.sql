@@ -1,0 +1,7 @@
+CREATE TABLE image_file_data
+(
+    id BIGSERIAL NOT NULL PRIMARY KEY,
+    name VARCHAR(500) NOT NULL,
+    type VARCHAR(500) NOT NULL,
+    file_patch VARCHAR(500) NOT NULL
+);
