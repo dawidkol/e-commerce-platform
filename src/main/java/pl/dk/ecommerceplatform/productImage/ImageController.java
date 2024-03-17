@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -16,13 +17,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/images")
 @AllArgsConstructor
+@Validated
 class ImageController {
 
     private final StorageService storageService;
 
     @PostMapping("/{productId}")
     @PreAuthorize(value = "hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
-    public ResponseEntity<List<ImageDto>> uploadImage(@PathVariable Long productId, @RequestParam("image") MultipartFile[] file) throws IOException {
+    public ResponseEntity<List<ImageDto>> uploadImage(@PathVariable Long productId, @ImageConstraint @RequestParam("image") MultipartFile[] file) throws IOException {
         List<ImageDto> imageList = storageService.uploadImage(file, productId);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{productId}")
