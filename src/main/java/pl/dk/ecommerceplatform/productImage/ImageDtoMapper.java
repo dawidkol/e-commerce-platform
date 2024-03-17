@@ -10,6 +10,7 @@ class ImageDtoMapper {
                 .name(imageFileData.getName())
                 .type(imageFileData.getType())
                 .filePatch(imageFileData.getFilePatch())
+                .productId(imageFileData.getProduct().getId())
                 .build();
     }
 }
