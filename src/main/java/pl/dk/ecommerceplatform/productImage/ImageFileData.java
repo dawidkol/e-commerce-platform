@@ -21,8 +21,6 @@ public class ImageFileData {
     private String type;
     private String filePatch;
     @ManyToOne
-    @JoinTable(name = "products_images",
-            joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "image_file_data_id", referencedColumnName = "id"))
+    @JoinColumn(name = "product_id")
     private Product product;
 }
