@@ -69,3 +69,6 @@ app:
     starttls-key: mail.smtp.starttls.enable
     starttls-value: true
 
+  storage:
+    location:
+      images: ./uploads/product_images
