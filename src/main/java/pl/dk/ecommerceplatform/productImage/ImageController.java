@@ -22,7 +22,7 @@ class ImageController {
 
     @PostMapping("/{productId}")
     @PreAuthorize(value = "hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
-    public ResponseEntity<List<ImageDto>> uploadImage(@PathVariable Long productId, @RequestParam("images") MultipartFile[] file) throws IOException {
+    public ResponseEntity<List<ImageDto>> uploadImage(@PathVariable Long productId, @RequestParam("image") MultipartFile[] file) throws IOException {
         List<ImageDto> imageList = storageService.uploadImage(file, productId);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{productId}")
@@ -37,5 +37,12 @@ class ImageController {
         return ResponseEntity.ok()
                 .contentType(MediaType.IMAGE_JPEG)
                 .body(bytes);
+    }
+
+    @DeleteMapping
+    @PreAuthorize(value = "hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
+    public ResponseEntity<?> deleteImage(@RequestParam(name = "id") List<Long> imageIds) {
+        storageService.deleteAllByIds(imageIds);
+        return ResponseEntity.noContent().build();
     }
 }

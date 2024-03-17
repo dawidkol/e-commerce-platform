@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import pl.dk.ecommerceplatform.error.exceptions.productImage.ImageAlreadyExistsException;
+import pl.dk.ecommerceplatform.error.exceptions.productImage.ImageFilePatchNotFoundException;
+import pl.dk.ecommerceplatform.error.exceptions.productImage.ImageNoFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.productImage.MultipartFilenameException;
 import pl.dk.ecommerceplatform.error.exceptions.server.ServerException;
 import pl.dk.ecommerceplatform.product.Product;
@@ -20,6 +22,7 @@ import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -81,6 +84,29 @@ class StorageService {
             throw new ServerException();
         }
         return bytes;
+    }
+
+    @Transactional
+    public void deleteAllByIds(List<Long> imagesIds) {
+        List<ImageFileData> imageList = imagesIds.stream()
+                .map(id -> imageFileDataRepository.findById(id)
+                        .orElseThrow(() -> new ImageNoFoundException("Image with id = %d not exists".formatted(id)))
+                )
+                .toList();
+        imageFileDataRepository.deleteAll(imageList);
+
+        String deleteAndCreateMessage = imageList.stream()
+                .map(image -> {
+                            try {
+                                Files.delete(Path.of(image.getFilePatch()));
+                            } catch (IOException e) {
+                                throw new ImageFilePatchNotFoundException("FilePatch: %s not found".formatted(image.getFilePatch()));
+                            }
+                            return String.valueOf(image.getId());
+                        }
+                )
+                .reduce("Deleted images[ids]: ", (first, next) -> first + next + " ");
+        logger.warn(deleteAndCreateMessage);
     }
 
 }
