@@ -6,9 +6,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import pl.dk.ecommerceplatform.error.exceptions.product.ProductNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.productImage.ImageAlreadyExistsException;
 import pl.dk.ecommerceplatform.error.exceptions.productImage.ImageFilePatchNotFoundException;
-import pl.dk.ecommerceplatform.error.exceptions.productImage.ImageNoFoundException;
+import pl.dk.ecommerceplatform.error.exceptions.productImage.ImageNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.productImage.MultipartFilenameException;
 import pl.dk.ecommerceplatform.error.exceptions.server.ServerException;
 import pl.dk.ecommerceplatform.product.Product;
@@ -20,9 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +35,7 @@ class StorageService {
 
     @Transactional
     public List<ImageDto> uploadImage(MultipartFile[] file, Long productId) throws IOException {
-        Product product = productRepository.findById(productId).orElseThrow(ProviderNotFoundException::new);
+        Product product = productRepository.findById(productId).orElseThrow(ProductNotFoundException::new);
         List<ImageDto> imageList = new ArrayList<>();
         for (int i = 0; i < file.length; i++) {
             String fileName = file[i].getOriginalFilename();
@@ -75,7 +74,7 @@ class StorageService {
     }
 
     public byte[] downloadImage(Long id) {
-        ImageFileData imageFileData = imageFileDataRepository.findById(id).orElseThrow();
+        ImageFileData imageFileData = imageFileDataRepository.findById(id).orElseThrow(() -> new ImageNotFoundException("Image with id; %d not found".formatted(id)));
         Path path = new File(imageFileData.getFilePatch()).toPath();
         byte[] bytes;
         try {
@@ -90,7 +89,7 @@ class StorageService {
     public void deleteAllByIds(List<Long> imagesIds) {
         List<ImageFileData> imageList = imagesIds.stream()
                 .map(id -> imageFileDataRepository.findById(id)
-                        .orElseThrow(() -> new ImageNoFoundException("Image with id = %d not exists".formatted(id)))
+                        .orElseThrow(() -> new ImageNotFoundException("Image with id = %d not exists".formatted(id)))
                 )
                 .toList();
         imageFileDataRepository.deleteAll(imageList);
