@@ -13,6 +13,7 @@ import pl.dk.ecommerceplatform.error.exceptions.brand.BrandNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.category.CategoryNotFoundException;
 import pl.dk.ecommerceplatform.product.dtos.ProductDto;
 import pl.dk.ecommerceplatform.product.dtos.SaveProductDto;
+import pl.dk.ecommerceplatform.productImage.ImageFileDataRepository;
 import pl.dk.ecommerceplatform.warehouse.Item;
 import pl.dk.ecommerceplatform.warehouse.WarehouseRepository;
 
@@ -32,13 +33,15 @@ class ProductDtoMapperTest {
     private BrandRepository brandRepository;
     @Mock
     private WarehouseRepository warehouseRepository;
+    @Mock
+    private  ImageFileDataRepository imageFileDataRepository;
     private ProductDtoMapper underTest;
     private AutoCloseable autoCloseable;
 
     @BeforeEach
     void init() {
         autoCloseable = MockitoAnnotations.openMocks(this);
-        underTest = new ProductDtoMapper(categoryRepository, brandRepository, warehouseRepository);
+        underTest = new ProductDtoMapper(categoryRepository, brandRepository, warehouseRepository, imageFileDataRepository);
     }
 
     @AfterEach
