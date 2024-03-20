@@ -46,7 +46,7 @@ class StorageService {
             String pathFolder = storageFolder.concat("/%d").formatted(productId);
             File folder = new File(pathFolder);
             if (!folder.exists()) {
-                folder.mkdir();
+                folder.mkdirs();
                 logger.debug("Created new folder for product id: {}", productId);
             }
 
