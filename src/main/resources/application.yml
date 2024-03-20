@@ -28,6 +28,11 @@ spring:
     ansi:
       enabled: ALWAYS
 
+  servlet:
+    multipart:
+      max-file-size: 3MB
+      max-request-size: 3MB
+
 logging:
   level:
     pl:
@@ -69,3 +74,6 @@ app:
     starttls-key: mail.smtp.starttls.enable
     starttls-value: true
 
+  storage:
+    location:
+      images: ./uploads/product_images

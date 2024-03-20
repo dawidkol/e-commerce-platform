@@ -8,10 +8,13 @@ import pl.dk.ecommerceplatform.error.exceptions.brand.BrandNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.category.CategoryNotFoundException;
 import pl.dk.ecommerceplatform.product.dtos.ProductDto;
 import pl.dk.ecommerceplatform.product.dtos.SaveProductDto;
+import pl.dk.ecommerceplatform.productImage.ImageFileData;
+import pl.dk.ecommerceplatform.productImage.ImageFileDataRepository;
 import pl.dk.ecommerceplatform.warehouse.Item;
 import pl.dk.ecommerceplatform.warehouse.WarehouseRepository;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.function.Function;
 
 import static pl.dk.ecommerceplatform.constant.ProductConstant.DEFAULT_AVAILABILITY;
@@ -24,6 +27,7 @@ public class ProductDtoMapper {
     private final CategoryRepository categoryRepository;
     private final BrandRepository brandRepository;
     private final WarehouseRepository warehouseRepository;
+    private final ImageFileDataRepository imageFileDataRepository;
 
     public Product map(SaveProductDto saveProductDto) {
         return Product.builder()
@@ -38,6 +42,11 @@ public class ProductDtoMapper {
     }
 
     public ProductDto map(Product product) {
+        List<Long> imageIds = imageFileDataRepository.findAllByProduct_id(product.getId())
+                .stream()
+                .map(ImageFileData::getId)
+                .toList();
+
         return ProductDto.builder()
                 .id(product.getId())
                 .name(product.getName())
@@ -49,6 +58,7 @@ public class ProductDtoMapper {
                 .available(getPropertyValue(product, Item::isAvailable, DEFAULT_AVAILABILITY))
                 .added(product.getAdded())
                 .promotionPrice(product.getPromotionPrice())
+                .imageIds(imageIds)
                 .build();
     }
 
