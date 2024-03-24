@@ -8,12 +8,16 @@ import pl.dk.ecommerceplatform.address.dtos.AddressDto;
 import pl.dk.ecommerceplatform.cart.Cart;
 import pl.dk.ecommerceplatform.cart.CartDtoMapper;
 import pl.dk.ecommerceplatform.cart.CartRepository;
-import pl.dk.ecommerceplatform.cart.CartService;
+import pl.dk.ecommerceplatform.currency.Currency;
+import pl.dk.ecommerceplatform.currency.CurrencyCode;
+import pl.dk.ecommerceplatform.currency.CurrencyRepository;
 import pl.dk.ecommerceplatform.error.exceptions.address.AddressNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.cart.CartNotFoundException;
+import pl.dk.ecommerceplatform.error.exceptions.currency.CurrencyNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.shipping.ShippingNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.user.UserNotFoundException;
 import pl.dk.ecommerceplatform.order.dtos.OrderDto;
+import pl.dk.ecommerceplatform.order.dtos.OrderValueDto;
 import pl.dk.ecommerceplatform.order.dtos.SaveOrderDto;
 import pl.dk.ecommerceplatform.shipping.Shipping;
 import pl.dk.ecommerceplatform.shipping.ShippingMethod;
@@ -23,6 +27,7 @@ import pl.dk.ecommerceplatform.user.User;
 import pl.dk.ecommerceplatform.user.UserRepository;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 
 @Service
@@ -34,6 +39,7 @@ class OrderDtoMapper {
     private final ShippingRepository shippingRepository;
     private final AddressRepository addressRepository;
     private final CartDtoMapper cartDtoMapper;
+    private final CurrencyRepository currencyRepository;
 
     public Order map(Long userId, SaveOrderDto saveOrderDto) {
         User user = this.getUser(userId);
@@ -129,6 +135,17 @@ class OrderDtoMapper {
                 .id(shipping.getId())
                 .name(shippingMethod.name())
                 .shippingCost(shipping.getShippingCost())
+                .build();
+    }
+
+    public OrderValueDto map(Order order, CurrencyCode code) {
+        Currency currency = currencyRepository.findByCode(code)
+                .orElseThrow(() -> new CurrencyNotFoundException("Currency code: %s not found".formatted(code.name())));
+        BigDecimal orderValue = order.getOrderValue().divide(currency.getAsk(), RoundingMode.HALF_UP);
+        return OrderValueDto.builder()
+                .id(order.getId())
+                .currencyCode(code)
+                .orderValue(orderValue)
                 .build();
     }
 

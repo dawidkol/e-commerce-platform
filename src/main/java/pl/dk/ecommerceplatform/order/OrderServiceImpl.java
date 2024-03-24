@@ -9,7 +9,6 @@ import pl.dk.ecommerceplatform.cart.Cart;
 import pl.dk.ecommerceplatform.cart.CartRepository;
 import pl.dk.ecommerceplatform.currency.CurrencyCode;
 import pl.dk.ecommerceplatform.currency.CurrencyService;
-import pl.dk.ecommerceplatform.error.exceptions.currency.CurrencyNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.order.OrderNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.order.OrderStatusNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.promo.PromoCodeExpiredException;
@@ -29,7 +28,6 @@ import pl.dk.ecommerceplatform.warehouse.Item;
 import pl.dk.ecommerceplatform.warehouse.WarehouseRepository;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -41,16 +39,16 @@ import static pl.dk.ecommerceplatform.utils.UtilsService.isAdmin;
 
 @Service
 @AllArgsConstructor
-class OrderService {
+class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final OrderDtoMapper orderDtoMapper;
     private final WarehouseRepository warehouseRepository;
     private final CartRepository cartRepository;
     private final PromoRepository promoRepository;
-    private final CurrencyService currencyService;
-    private final Logger logger = getLogger(OrderService.class);
+    private final Logger logger = getLogger(OrderServiceImpl.class);
 
+    @Override
     @Transactional
     public OrderDto createOrder(Long userId, SaveOrderDto saveOrderDto) {
         Map<Long, Long> productsMap = this.getProductsMap(userId);
@@ -65,6 +63,7 @@ class OrderService {
         return orderDtoMapper.map(savedOrder, result.discountPercent(), result.discountValue());
     }
 
+    @Override
     @Transactional
     public void updateOrderStatus(UpdateOrderStatusDto updateOrderStatusDto) {
         Long orderId = updateOrderStatusDto.orderId();
@@ -79,6 +78,7 @@ class OrderService {
         order.setStatus(newStatus);
     }
 
+    @Override
     public OrderDto getOrder(List<String> credentials, Long orderId, Long userId) {
         boolean isAdmin = isAdmin(credentials);
         if (isAdmin) {
@@ -92,6 +92,7 @@ class OrderService {
         }
     }
 
+    @Override
     public List<OrderDto> getOrders(List<String> credentials, Long userId, int page, int size) {
         List<OrderDto> orders;
         boolean isAdmin = isAdmin(credentials);
@@ -185,8 +186,9 @@ class OrderService {
     private record DiscountResult(Long discountPercent, BigDecimal discountValue) {
     }
 
+    @Override
     public OrderValueDto calculateOrderValueWithAnotherValue(Long orderId, String code) {
-        CurrencyCode currencyCode = currencyService.getCurrency(code);
+        CurrencyCode currencyCode = CurrencyCode.getCurrency(code);
         Order order = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
         return orderDtoMapper.map(order, currencyCode);
     }
