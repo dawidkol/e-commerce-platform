@@ -7,6 +7,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.dk.ecommerceplatform.order.dtos.OrderDto;
+import pl.dk.ecommerceplatform.order.dtos.OrderValueDto;
 import pl.dk.ecommerceplatform.order.dtos.SaveOrderDto;
 import pl.dk.ecommerceplatform.order.dtos.UpdateOrderStatusDto;
 import pl.dk.ecommerceplatform.security.SecurityService;
@@ -22,7 +23,7 @@ import static pl.dk.ecommerceplatform.constant.PaginationConstant.SIZE_DEFAULT;
 @AllArgsConstructor
 class OrderController {
 
-    private final OrderService orderService;
+    private final OrderServiceImpl orderService;
     private final SecurityService securityService;
 
     @PostMapping("")
@@ -68,5 +69,11 @@ class OrderController {
     }
 
     private record SecurityResult(List<String> credentials, Long userId) {
+    }
+
+    @GetMapping("/{id}/value")
+    public ResponseEntity<OrderValueDto> calculateOrderValueWithAnotherCurrency(@PathVariable Long id, @RequestParam String code) {
+        OrderValueDto orderValueDto = orderService.calculateOrderValueWithAnotherValue(id, code);
+        return ResponseEntity.ok(orderValueDto);
     }
 }
