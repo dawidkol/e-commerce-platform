@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.dk.ecommerceplatform.cart.Cart;
 import pl.dk.ecommerceplatform.cart.CartRepository;
+import pl.dk.ecommerceplatform.currency.CurrencyCode;
+import pl.dk.ecommerceplatform.currency.CurrencyService;
+import pl.dk.ecommerceplatform.error.exceptions.currency.CurrencyNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.order.OrderNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.order.OrderStatusNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.promo.PromoCodeExpiredException;
@@ -16,6 +19,7 @@ import pl.dk.ecommerceplatform.error.exceptions.promo.PromoCodeUsedException;
 import pl.dk.ecommerceplatform.error.exceptions.warehouse.ItemNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.warehouse.QuantityException;
 import pl.dk.ecommerceplatform.order.dtos.OrderDto;
+import pl.dk.ecommerceplatform.order.dtos.OrderValueDto;
 import pl.dk.ecommerceplatform.order.dtos.SaveOrderDto;
 import pl.dk.ecommerceplatform.order.dtos.UpdateOrderStatusDto;
 import pl.dk.ecommerceplatform.product.Product;
@@ -44,6 +48,7 @@ class OrderService {
     private final WarehouseRepository warehouseRepository;
     private final CartRepository cartRepository;
     private final PromoRepository promoRepository;
+    private final CurrencyService currencyService;
     private final Logger logger = getLogger(OrderService.class);
 
     @Transactional
@@ -52,7 +57,7 @@ class OrderService {
         this.checkProductAvailability(productsMap);
         Order orderToSave = orderDtoMapper.map(userId, saveOrderDto);
         DiscountResult result = new DiscountResult(0L, BigDecimal.ZERO);
-        if (saveOrderDto.promoCode() !=  null){
+        if (saveOrderDto.promoCode() != null) {
             result = getDiscountResult(saveOrderDto, orderToSave);
         }
         this.updateWarehouse(productsMap);
@@ -178,5 +183,11 @@ class OrderService {
     }
 
     private record DiscountResult(Long discountPercent, BigDecimal discountValue) {
+    }
+
+    public OrderValueDto calculateOrderValueWithAnotherValue(Long orderId, String code) {
+        CurrencyCode currencyCode = currencyService.getCurrency(code);
+        Order order = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
+        return orderDtoMapper.map(order, currencyCode);
     }
 }
