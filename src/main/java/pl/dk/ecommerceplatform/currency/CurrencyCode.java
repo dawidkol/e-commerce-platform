@@ -19,7 +19,7 @@ public enum CurrencyCode {
         this.paymentMethods = paymentMethods;
     }
 
-    private Set<PaymentMethodType> paymentMethods;
+    private final Set<PaymentMethodType> paymentMethods;
 
     public static CurrencyCode getCurrency(String code) {
         CurrencyCode currencyCode;
