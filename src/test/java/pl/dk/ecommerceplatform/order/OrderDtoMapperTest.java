@@ -10,6 +10,7 @@ import pl.dk.ecommerceplatform.address.AddressRepository;
 import pl.dk.ecommerceplatform.cart.Cart;
 import pl.dk.ecommerceplatform.cart.CartDtoMapper;
 import pl.dk.ecommerceplatform.cart.CartRepository;
+import pl.dk.ecommerceplatform.currency.CurrencyRepository;
 import pl.dk.ecommerceplatform.error.exceptions.cart.CartNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.shipping.ShippingNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.user.UserNotFoundException;
@@ -41,13 +42,16 @@ class OrderDtoMapperTest {
     private AddressRepository addressRepository;
     @Mock
     private CartDtoMapper cartDtoMapper;
+    @Mock
+    private CurrencyRepository currencyRepository;
+
     private OrderDtoMapper underTest;
     private AutoCloseable autoCloseable;
 
     @BeforeEach
     void init() {
         autoCloseable = MockitoAnnotations.openMocks(this);
-        underTest = new OrderDtoMapper(userRepository, cartRepository, shippingRepository, addressRepository, cartDtoMapper);
+        underTest = new OrderDtoMapper(userRepository, cartRepository, shippingRepository, addressRepository, cartDtoMapper, currencyRepository);
     }
 
     @AfterEach

@@ -48,7 +48,7 @@ class OrderServiceTest {
     @BeforeEach
     void init() {
         autoCloseable = MockitoAnnotations.openMocks(this);
-        underTest = new OrderService(orderRepository, orderDtoMapper, warehouseRepository, cartRepository, promoRepository);
+        underTest = new OrderServiceImpl(orderRepository, orderDtoMapper, warehouseRepository, cartRepository, promoRepository);
     }
 
     @AfterEach
@@ -392,7 +392,7 @@ class OrderServiceTest {
         when(warehouseRepository.findByProduct_id(1L)).thenReturn(Optional.of(item1));
         when(warehouseRepository.findByProduct_id(2L)).thenReturn(Optional.of(item2));
         when(promoRepository.findByCode(saveOrderDto.promoCode())).thenReturn(Optional.of(promo));
-        when(orderDtoMapper.map(any(), any())).thenReturn(order);
+        when(orderDtoMapper.map(any(Long.class), any(SaveOrderDto.class))).thenReturn(order);
 
         // When
         underTest.createOrder(userId, saveOrderDto);
@@ -402,6 +402,6 @@ class OrderServiceTest {
         verify(warehouseRepository, times(1)).findByProduct_id(1L);
         verify(warehouseRepository, times(1)).findByProduct_id(2L);
         verify(promoRepository, times(1)).findByCode(saveOrderDto.promoCode());
-        verify(orderDtoMapper, times(1)).map(any(), any());
+        verify(orderDtoMapper, times(1)).map(any(Long.class), any(SaveOrderDto.class));
     }
 }
