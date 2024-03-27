@@ -4,7 +4,10 @@ import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
 import pl.dk.ecommerceplatform.currency.CurrencyCode;
 import pl.dk.ecommerceplatform.currency.Currency;
@@ -25,6 +28,9 @@ class CurrencyHttpClient {
     private final Logger logger = UtilsService.getLogger(this.getClass());
 
     @PostConstruct
+    @Async
+    @Transactional
+    @Scheduled(cron = "${scheduler.currency}")
     public void retrieveAndSaveCurrencyValues() {
         CurrencyCode[] codes = CurrencyCode.values();
         logger.debug("Starting fetching currencies");
