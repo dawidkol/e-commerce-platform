@@ -15,8 +15,6 @@ class CurrencyDtoMapperTest {
     @Test
     void itShouldCurrencyToCurrencyDto() {
         // Given
-
-
         Currency euro = Currency.builder()
                 .id(1L)
                 .name("euro")

@@ -37,7 +37,6 @@ class CurrencyServiceTest {
     @Test
     void itShouldReturnAllCurrencies() {
         // Given
-
         Currency euro = Currency.builder()
                 .id(1L)
                 .name("euro")
