@@ -15,11 +15,11 @@ public enum CurrencyCode {
     USD(Set.of(PAYPAL, CARD)),
     GBP(Set.of(PAYPAL, CARD));
 
+    private final Set<PaymentMethodType> paymentMethods;
+
     CurrencyCode(Set<PaymentMethodType> paymentMethods) {
         this.paymentMethods = paymentMethods;
     }
-
-    private final Set<PaymentMethodType> paymentMethods;
 
     public static CurrencyCode getCurrency(String code) {
         CurrencyCode currencyCode;
