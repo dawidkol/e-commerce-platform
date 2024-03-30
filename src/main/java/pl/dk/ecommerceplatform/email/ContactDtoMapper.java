@@ -17,6 +17,7 @@ class ContactDtoMapper {
 
     public static ContactDto map(Contact contact) {
         return ContactDto.builder()
+                .id(contact.getId())
                 .sender(contact.getEmail())
                 .subject(contact.getSubject())
                 .message(contact.getMessage())
