@@ -7,7 +7,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.dk.ecommerceplatform.email.dtos.CreateEmailDto;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import pl.dk.ecommerceplatform.email.dtos.ContactDto;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/email")
@@ -17,8 +20,12 @@ class EmailController {
     private final EmailService emailService;
 
     @PostMapping("/contact")
-    public ResponseEntity<?> sendEmail(@Valid @RequestBody CreateEmailDto createEmailDto) {
-        emailService.sendContactMessage(createEmailDto);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<ContactDto> sendEmail(@Valid @RequestBody ContactDto contactDto) {
+        ContactDto createdContactDto = emailService.sendContactMessage(contactDto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(createdContactDto.id())
+                .toUri();
+        return ResponseEntity.created(uri).build();
     }
 }

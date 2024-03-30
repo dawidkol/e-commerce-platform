@@ -7,8 +7,8 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-import pl.dk.ecommerceplatform.confirmationToken.TokenService;
-import pl.dk.ecommerceplatform.email.dtos.CreateEmailDto;
+import org.springframework.transaction.annotation.Transactional;
+import pl.dk.ecommerceplatform.email.dtos.ContactDto;
 import pl.dk.ecommerceplatform.error.exceptions.server.ServerException;
 import pl.dk.ecommerceplatform.user.dtos.UserDto;
 import pl.dk.ecommerceplatform.utils.UtilsService;
@@ -18,35 +18,30 @@ import pl.dk.ecommerceplatform.utils.UtilsService;
 class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender javaMailSender;
+    private final ContactRepository contactRepository;
 
     @Value("${app.mail.username}")
     private String email;
     private final Logger logger = UtilsService.getLogger(this.getClass());
 
-    public void sendContactMessage(CreateEmailDto createEmailDto) {
+    @Override
+    @Transactional
+    public ContactDto sendContactMessage(ContactDto contactDto) {
+        Contact contactToSave = ContactDtoMapper.map(contactDto);
+        Contact savedContact = contactRepository.save(contactToSave);
+        ContactDto dto = ContactDtoMapper.map(savedContact);
         try {
-            this.createAndSendContactEmail(createEmailDto);
-            this.createAndSendConfirmationEmail(createEmailDto);
+            this.createAndSendConfirmationEmail(contactDto);
         } catch (MailException ex) {
             throw new ServerException();
         }
+        return dto;
     }
 
-    private void createAndSendContactEmail(CreateEmailDto createEmailDto) {
+    private void createAndSendConfirmationEmail(ContactDto contactDto) {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setReplyTo(createEmailDto.sender());
-        simpleMailMessage.setTo(email);
-        simpleMailMessage.setSubject(createEmailDto.subject());
-        simpleMailMessage.setText(createEmailDto.message());
-        logger.debug("Starting sending email");
-        javaMailSender.send(simpleMailMessage);
-        logger.debug("Email sent");
-    }
-
-    private void createAndSendConfirmationEmail(CreateEmailDto createEmailDto) {
-        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        String sender = createEmailDto.sender();
-        simpleMailMessage.setSubject("Auto response - \"%s\"".formatted(createEmailDto.subject()));
+        String sender = contactDto.sender();
+        simpleMailMessage.setSubject("Auto response - \"%s\"".formatted(contactDto.subject()));
         simpleMailMessage.setTo(sender);
         simpleMailMessage.setFrom(email);
         simpleMailMessage.setText(this.createAutoResponseMessage(sender));
@@ -63,6 +58,7 @@ class EmailServiceImpl implements EmailService {
                 """.formatted(email);
     }
 
+    @Override
     public void createAndSendRegistrationConfirmationEmail(UserDto userDto, String uri) {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setSubject("Registration confirmation");
