@@ -21,13 +21,12 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-class CurrencyHttpClient {
+public class CurrencyHttpClient {
 
     private final RestClient restClient;
     private final CurrencyRepository currencyRepository;
     private final Logger logger = UtilsService.getLogger(this.getClass());
 
-    @PostConstruct
     @Async
     @Transactional
     @Scheduled(cron = "${scheduler.currency}")
