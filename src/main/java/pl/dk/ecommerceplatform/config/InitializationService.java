@@ -8,7 +8,7 @@ import pl.dk.ecommerceplatform.currency.http.CurrencyHttpClient;
 
 @Component
 @AllArgsConstructor
-@Profile("default")
+@Profile(value = {"prod", "dev"})
 class InitializationService implements InitializingBean {
 
     private final CurrencyHttpClient currencyHttpClient;
