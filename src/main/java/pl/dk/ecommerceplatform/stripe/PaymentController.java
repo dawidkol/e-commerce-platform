@@ -16,9 +16,9 @@ class PaymentController {
     private final SecurityService securityService;
 
     @PostMapping("/{orderId}")
-    public ResponseEntity<PaymentResponse> createPayment(@PathVariable Long orderId) throws StripeException {
+    public ResponseEntity<PaymentResponse> createPayment(@PathVariable Long orderId, @RequestParam(name = "code", required = false, defaultValue = "PLN") String currencyCode) throws StripeException {
         String emailFromSecurityContext = securityService.getEmailFromSecurityContext();
-        PaymentResponse payment = paymentService.createPayment(orderId, emailFromSecurityContext);
+        PaymentResponse payment = paymentService.createPayment(orderId, emailFromSecurityContext, currencyCode);
         return ResponseEntity.ok(payment);
     }
 }

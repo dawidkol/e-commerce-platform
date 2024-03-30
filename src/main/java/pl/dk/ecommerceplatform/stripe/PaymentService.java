@@ -9,61 +9,70 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import pl.dk.ecommerceplatform.currency.CurrencyCode;
 import pl.dk.ecommerceplatform.error.exceptions.order.OrderNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.stripe.UserNotMatchException;
 import pl.dk.ecommerceplatform.order.Order;
 import pl.dk.ecommerceplatform.order.OrderRepository;
+import pl.dk.ecommerceplatform.order.OrderService;
+import pl.dk.ecommerceplatform.order.dtos.OrderValueDto;
 import pl.dk.ecommerceplatform.stripe.dtos.CreatePaymentRequest;
 import pl.dk.ecommerceplatform.stripe.dtos.PaymentResponse;
 import pl.dk.ecommerceplatform.utils.UtilsService;
 
 import java.math.BigDecimal;
+import java.util.List;
+
+import static com.stripe.param.checkout.SessionCreateParams.*;
 
 @Service
 @RequiredArgsConstructor
 class PaymentService {
 
     private final OrderRepository orderRepository;
+    private final OrderService orderService;
     private static final Logger logger = UtilsService.getLogger(PaymentService.class);
 
     @Value("${stripe.api.key}")
     private String stripeApiKey;
-
 
     @PostConstruct
     public void init() {
         Stripe.apiKey = stripeApiKey;
     }
 
-    public PaymentResponse createPayment(Long orderId, String emailFromSecurityContext) throws StripeException {
+    public PaymentResponse createPayment(Long orderId, String emailFromSecurityContext, String currencyCode) throws StripeException {
+        OrderValueDto orderValueDto = orderService.calculateOrderValueWithAnotherValue(orderId, currencyCode);
         CreatePaymentRequest paymentRequest = this.createPaymentRequest(orderId);
 
         if (!emailFromSecurityContext.equals(paymentRequest.customerEmail())) {
-            throw new UserNotMatchException("User %s not match with user from Token" .formatted(paymentRequest.customerEmail()));
+            throw new UserNotMatchException("User %s not match with user from Token".formatted(paymentRequest.customerEmail()));
         }
 
+        CurrencyCode currency = CurrencyCode.getCurrency(currencyCode);
+        List<PaymentMethodType> list = currency.getPaymentMethods()
+                .stream()
+                .toList();
+
         SessionCreateParams params =
-                SessionCreateParams.builder()
-                        .addPaymentMethodType(SessionCreateParams.PaymentMethodType.BLIK)
-                        .addPaymentMethodType(SessionCreateParams.PaymentMethodType.P24)
-                        .addPaymentMethodType(SessionCreateParams.PaymentMethodType.PAYPAL)
-                        .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
+                builder()
+                        .addAllPaymentMethodType(list)
                         .setCustomerEmail(paymentRequest.customerEmail())
                         .putMetadata("orderId", orderId.toString())
                         .addLineItem(
-                                SessionCreateParams.LineItem.builder()
+                                LineItem.builder()
                                         .setPriceData(
-                                                SessionCreateParams.LineItem.PriceData.builder()
-                                                        .setCurrency(Currency.PLN.name())
-                                                        .setUnitAmountDecimal(paymentRequest.amount().multiply(BigDecimal.valueOf(100)))
+                                                LineItem.PriceData.builder()
+                                                        .setCurrency(orderValueDto.currencyCode().name())
+                                                        .setUnitAmountDecimal(orderValueDto.orderValue().multiply(BigDecimal.valueOf(100)))
                                                         .setProductData(
-                                                                SessionCreateParams.LineItem.PriceData.ProductData.builder()
-                                                                        .setName("Order id: %s" .formatted(orderId))
+                                                                LineItem.PriceData.ProductData.builder()
+                                                                        .setName("Order id: %s".formatted(orderId))
                                                                         .build())
                                                         .build())
                                         .setQuantity(1L)
                                         .build())
-                        .setMode(SessionCreateParams.Mode.PAYMENT)
+                        .setMode(Mode.PAYMENT)
                         .setSuccessUrl("https://example.com/success")
                         .setCancelUrl("https://example.com/cancel")
                         .build();
