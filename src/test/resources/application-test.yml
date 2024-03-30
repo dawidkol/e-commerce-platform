@@ -11,6 +11,13 @@ spring:
   flyway:
     enabled: true
     clean-disabled: false
+    locations: classpath:/db/migration, classpath:/db/test-data
+
+scheduler:
+  promo: 0 0 12 * * ?
+  token: 0 0 3 * * ?
+  currency: 0 0 8 * * ?
+
 jws:
   sharedKey: ${JWS_SHARED_KEY}
 stripe:
@@ -19,3 +26,19 @@ stripe:
   webhook:
     key: ${STRIPE_WEBHOOK_KEY}
 
+app:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL}
+    password: ${EMAIL_PASSWORD}
+    protocol-key: mail.transport.protocol
+    protocol-value: smtp
+    smtp-key: mail.smtp.auth
+    smtp-value: true
+    starttls-key: mail.smtp.starttls.enable
+    starttls-value: true
+
+  storage:
+    location:
+      images: ./uploads/product_images

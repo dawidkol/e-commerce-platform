@@ -17,7 +17,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @ActiveProfiles("test")
 @AutoConfigureMockMvc(addFilters = false)
 @Testcontainers
-@DirtiesContext
 public class BaseIntegrationTest {
 
     @LocalServerPort

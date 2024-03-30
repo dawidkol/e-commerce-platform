@@ -7,10 +7,13 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.transaction.annotation.Transactional;
 import pl.dk.ecommerceplatform.BaseIntegrationTest;
 import pl.dk.ecommerceplatform.confirmationToken.TokenService;
 import pl.dk.ecommerceplatform.confirmationToken.dtos.TokenDto;
@@ -104,6 +107,7 @@ class UserControllerTest extends BaseIntegrationTest {
 
     @Test
     @WithMockUser(username = "sebastian.kowalski@test.pl", roles = "CUSTOMER")
+    @Transactional
     void testCustomerUpdateEmail() throws Exception {
         // Given
         String email = "newemail@test.pl";
