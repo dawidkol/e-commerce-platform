@@ -36,6 +36,6 @@ class EmailControllerTest extends BaseIntegrationTest {
                 }
                 """.trim();
         mockMvc.perform(MockMvcRequestBuilders.post("/email/contact").contentType(MediaType.APPLICATION_JSON).content(createEmailDtoWithValidDataJson))
-                .andExpect(MockMvcResultMatchers.status().isOk());
+                .andExpect(MockMvcResultMatchers.status().isCreated());
     }
 }
