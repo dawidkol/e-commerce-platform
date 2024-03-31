@@ -9,7 +9,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import pl.dk.ecommerceplatform.BaseIntegrationTest;
 
 
-class EmailControllerTest extends BaseIntegrationTest {
+class ContactControllerTest extends BaseIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -24,7 +24,7 @@ class EmailControllerTest extends BaseIntegrationTest {
                     "message": "test message"
                 }
                 """.trim();
-        mockMvc.perform(MockMvcRequestBuilders.post("/email/contact").contentType(MediaType.APPLICATION_JSON).content(createEmailDtoWithInvalidDataJson))
+        mockMvc.perform(MockMvcRequestBuilders.post("/contact").contentType(MediaType.APPLICATION_JSON).content(createEmailDtoWithInvalidDataJson))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
 
         // 2. User wants to send email with valid data
@@ -35,7 +35,7 @@ class EmailControllerTest extends BaseIntegrationTest {
                     "message": "test message"
                 }
                 """.trim();
-        mockMvc.perform(MockMvcRequestBuilders.post("/email/contact").contentType(MediaType.APPLICATION_JSON).content(createEmailDtoWithValidDataJson))
+        mockMvc.perform(MockMvcRequestBuilders.post("/contact").contentType(MediaType.APPLICATION_JSON).content(createEmailDtoWithValidDataJson))
                 .andExpect(MockMvcResultMatchers.status().isCreated());
     }
 }
