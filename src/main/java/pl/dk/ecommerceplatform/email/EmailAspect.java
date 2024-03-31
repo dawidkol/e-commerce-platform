@@ -3,7 +3,6 @@ package pl.dk.ecommerceplatform.email;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +11,6 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.dk.ecommerceplatform.confirmationToken.TokenService;
 import pl.dk.ecommerceplatform.confirmationToken.dtos.TokenDto;
@@ -40,9 +38,10 @@ class EmailAspect {
     @Value("${app.mail.username}")
     private String email;
 
-    @AfterReturning(pointcut = "execution(* pl.dk.ecommerceplatform.email.ContactService.sendContactMessage(..))", returning = "contactDto")
+    @AfterReturning(pointcut = "execution(* pl.dk.ecommerceplatform.email.ContactController.postContactMessage(..))", returning = "responseEntity")
     @Async
-    public void createAndSendContactConfirmationEmail(ContactDto contactDto) {
+    public void sendAutoResponseEmailAfterContact(ResponseEntity<ContactDto> responseEntity) {
+        ContactDto contactDto = responseEntity.getBody();
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         String sender = contactDto.sender();
         simpleMailMessage.setSubject("Auto response - \"%s\"".formatted(contactDto.subject()));
@@ -150,9 +149,9 @@ class EmailAspect {
         simpleMailMessage.setSubject("Response:".concat(contact.getSubject()));
         simpleMailMessage.setTo(contact.getEmail());
         simpleMailMessage.setText(response);
-        logger.debug("Starting sending response");
+        logger.debug("Starting sending response email to {}", contact.getEmail());
         javaMailSender.send(simpleMailMessage);
-        logger.debug("Response email sent");
+        logger.debug("Response email sent to {}", contact.getEmail());
         contact.setReplyDate(LocalDateTime.now());
     }
 }

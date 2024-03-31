@@ -26,7 +26,7 @@ class ContactServiceImpl implements ContactService {
 
     @Override
     @Transactional
-    public ContactDto sendContactMessage(ContactDto contactDto) {
+    public ContactDto postContactMessage(ContactDto contactDto) {
         Contact contactToSave = ContactDtoMapper.map(contactDto);
         Contact savedContact = contactRepository.save(contactToSave);
         return ContactDtoMapper.map(savedContact);
@@ -34,7 +34,7 @@ class ContactServiceImpl implements ContactService {
 
     @Override
     @Transactional
-    public void sendResponseMessage(ContactResponseDto contactResponseDto) {
+    public void createResponseMessage(ContactResponseDto contactResponseDto) {
         Long contactId = contactResponseDto.contactId();
         String replyMessage = contactResponseDto.response();
         Contact contact = contactRepository.findById(contactId).

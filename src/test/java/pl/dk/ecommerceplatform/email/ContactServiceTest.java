@@ -3,15 +3,11 @@ package pl.dk.ecommerceplatform.email;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import pl.dk.ecommerceplatform.email.dtos.ContactDto;
-import pl.dk.ecommerceplatform.error.exceptions.server.ServerException;
-import pl.dk.ecommerceplatform.user.dtos.UserDto;
 
 import java.time.LocalDateTime;
 
@@ -62,7 +58,7 @@ class ContactServiceTest {
         when(contactRepository.save(any())).thenReturn(contact);
 
         // Then
-        ContactDto dto = underTest.sendContactMessage(contactDto);
+        ContactDto dto = underTest.postContactMessage(contactDto);
 
         assertAll(
                 () -> assertThat(dto.id()).isNotNull(),
@@ -71,4 +67,6 @@ class ContactServiceTest {
                 () -> assertThat(dto.message()).isEqualTo(contact.getMessage())
         );
     }
+
+
 }

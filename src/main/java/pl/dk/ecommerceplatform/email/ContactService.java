@@ -5,6 +5,6 @@ import pl.dk.ecommerceplatform.email.dtos.ContactResponseDto;
 
 interface ContactService {
 
-    ContactDto sendContactMessage(ContactDto contactDto);
-    void sendResponseMessage(ContactResponseDto ContactResponseDto);
+    ContactDto postContactMessage(ContactDto contactDto);
+    void createResponseMessage(ContactResponseDto ContactResponseDto);
 }

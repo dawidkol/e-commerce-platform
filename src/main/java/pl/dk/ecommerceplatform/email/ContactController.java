@@ -19,19 +19,19 @@ class ContactController {
     private final ContactService contactService;
 
     @PostMapping("")
-    public ResponseEntity<ContactDto> sendContactMessage(@Valid @RequestBody ContactDto contactDto) {
-        ContactDto dto = contactService.sendContactMessage(contactDto);
+    public ResponseEntity<ContactDto> postContactMessage(@Valid @RequestBody ContactDto contactDto) {
+        ContactDto dto = contactService.postContactMessage(contactDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(dto.id())
                 .toUri();
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.created(uri).body(dto);
     }
 
     @PostMapping("/response")
     @PreAuthorize(value = "hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
     public ResponseEntity<ContactResponseDto> sendResponse(@Valid @RequestBody ContactResponseDto contactResponseDto) {
-        contactService.sendResponseMessage(contactResponseDto);
+        contactService.createResponseMessage(contactResponseDto);
         return ResponseEntity.ok(contactResponseDto);
     }
 }
