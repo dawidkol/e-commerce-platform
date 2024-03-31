@@ -3,13 +3,17 @@ package pl.dk.ecommerceplatform.email;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import pl.dk.ecommerceplatform.email.dtos.ContactDto;
+import pl.dk.ecommerceplatform.email.dtos.ContactResponseDto;
+import pl.dk.ecommerceplatform.error.exceptions.email.ContactNotFoundException;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -68,5 +72,46 @@ class ContactServiceTest {
         );
     }
 
+    @Test
+    void itShouldCreateResponseMessage() {
+        // Given
+        ContactResponseDto contactResponseDto = new ContactResponseDto(1L, "This is example response message");
+        Contact contact = Contact.builder()
+                .id(1L)
+                .email("john@doe.com")
+                .subject("test subject")
+                .message("This is example message")
+                .dateOfPosting(LocalDateTime.now().minusDays(1))
+                .build();
 
+        when(contactRepository.findById(contactResponseDto.contactId())).thenReturn(Optional.of(contact));
+
+        // When
+        underTest.createResponseMessage(contactResponseDto);
+
+        // Then
+        verify(contactRepository, times(1)).findById(contactResponseDto.contactId());
+
+    }
+
+    @Test
+    void itShouldThrowContactNotFoundExceptionWhenUserProvideInvalidID() {
+        // Given
+        ContactResponseDto contactResponseDto = new ContactResponseDto(1L, "This is example response message");
+        Contact contact = Contact.builder()
+                .id(1L)
+                .email("john@doe.com")
+                .subject("test subject")
+                .message("This is example message")
+                .dateOfPosting(LocalDateTime.now().minusDays(1))
+                .build();
+
+        when(contactRepository.findById(contactResponseDto.contactId())).thenReturn(Optional.empty());
+
+        // When
+        // Then
+        assertThrows(ContactNotFoundException.class, () -> underTest.createResponseMessage(contactResponseDto));
+        verify(contactRepository, times(1)).findById(contactResponseDto.contactId());
+
+    }
 }
