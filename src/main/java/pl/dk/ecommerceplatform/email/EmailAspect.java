@@ -152,6 +152,5 @@ class EmailAspect {
         logger.debug("Starting sending response email to {}", contact.getEmail());
         javaMailSender.send(simpleMailMessage);
         logger.debug("Response email sent to {}", contact.getEmail());
-        contact.setReplyDate(LocalDateTime.now());
     }
 }
