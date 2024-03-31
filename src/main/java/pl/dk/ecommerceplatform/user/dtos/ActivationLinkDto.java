@@ -5,5 +5,5 @@ import lombok.Builder;
 import java.time.LocalDateTime;
 
 @Builder
-public record ActivationLinkDto(LocalDateTime expirationTime) {
+public record ActivationLinkDto(UserDto userDto, LocalDateTime expirationTime) {
 }

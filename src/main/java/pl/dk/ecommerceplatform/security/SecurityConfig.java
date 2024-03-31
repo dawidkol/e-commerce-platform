@@ -53,7 +53,7 @@ class SecurityConfig {
                 .requestMatchers(mvc.pattern(HttpMethod.GET, "/products/promotion")).permitAll()
                 .requestMatchers(mvc.pattern(HttpMethod.POST, "/users")).permitAll()
                 .requestMatchers(mvc.pattern("/payments/events")).permitAll()
-                .requestMatchers(mvc.pattern(HttpMethod.POST,"/email/contact")).permitAll()
+                .requestMatchers(mvc.pattern(HttpMethod.POST,"/contact")).permitAll()
                 .requestMatchers(mvc.pattern(HttpMethod.PATCH,"/users/{id}/{token}")).permitAll()
                 .requestMatchers(mvc.pattern(HttpMethod.POST, "/users/token")).permitAll()
                 .requestMatchers(mvc.pattern(HttpMethod.GET, "/images/{productId}")).permitAll()
