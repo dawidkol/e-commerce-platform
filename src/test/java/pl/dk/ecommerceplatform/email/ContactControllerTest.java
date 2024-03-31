@@ -3,6 +3,7 @@ package pl.dk.ecommerceplatform.email;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -24,7 +25,9 @@ class ContactControllerTest extends BaseIntegrationTest {
                     "message": "test message"
                 }
                 """.trim();
-        mockMvc.perform(MockMvcRequestBuilders.post("/contact").contentType(MediaType.APPLICATION_JSON).content(createEmailDtoWithInvalidDataJson))
+        mockMvc.perform(MockMvcRequestBuilders.post("/contact")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(createEmailDtoWithInvalidDataJson))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
 
         // 2. User wants to send email with valid data
@@ -35,7 +38,25 @@ class ContactControllerTest extends BaseIntegrationTest {
                     "message": "test message"
                 }
                 """.trim();
-        mockMvc.perform(MockMvcRequestBuilders.post("/contact").contentType(MediaType.APPLICATION_JSON).content(createEmailDtoWithValidDataJson))
+        mockMvc.perform(MockMvcRequestBuilders.post("/contact")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(createEmailDtoWithValidDataJson))
                 .andExpect(MockMvcResultMatchers.status().isCreated());
+    }
+
+    @Test
+    @WithMockUser(username = "janusz.kowalski@test.pl", roles = "ADMIN")
+    void itShouldSendResponseMessage() throws Exception {
+        String contactResponseDtoJson = """
+                {
+                    "contactId": 1,
+                    "response": "This is example response message."
+                }
+                """;
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/contact/response")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(contactResponseDtoJson))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 }
