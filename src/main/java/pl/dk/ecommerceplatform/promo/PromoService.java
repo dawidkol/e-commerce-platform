@@ -30,7 +30,6 @@ import static pl.dk.ecommerceplatform.utils.UtilsService.getLogger;
 
 @Service
 @AllArgsConstructor
-@EnableAsync
 class PromoService {
 
     private PromoRepository promoRepository;
