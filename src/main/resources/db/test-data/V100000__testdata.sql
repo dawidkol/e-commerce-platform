@@ -76,8 +76,8 @@ VALUES (1, 23, true),
        (10, 5, false);
 
 INSERT INTO shipping (name, shipping_cost)
-VALUES ('STANDARD', 10.99),
-       ('EXPRESS', 19.99),
+VALUES ('UPS', 10.99),
+       ('DHL', 19.99),
        ('PERSONAL_COLLECTION', 0);
 
 INSERT INTO address(postal_code, street, building_number, phone_number)

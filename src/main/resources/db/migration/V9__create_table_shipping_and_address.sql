@@ -1,7 +1,7 @@
 CREATE TABLE shipping
 (
     id   BIGSERIAL NOT NULL PRIMARY KEY,
-    name VARCHAR(50),
+    name VARCHAR(50) UNIQUE,
     shipping_cost NUMERIC(38,2)
 );
 
