@@ -19,8 +19,7 @@ public class Shipping {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Enumerated(EnumType.STRING)
-    private ShippingMethod name;
+    private String name;
     private BigDecimal shippingCost;
 
 }
