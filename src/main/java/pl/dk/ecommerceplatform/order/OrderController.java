@@ -72,6 +72,7 @@ class OrderController {
     }
 
     @GetMapping("/{id}/value")
+    @PreAuthorize(value = "hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
     public ResponseEntity<OrderValueDto> calculateOrderValueWithAnotherCurrency(@PathVariable Long id, @RequestParam String code) {
         OrderValueDto orderValueDto = orderService.calculateOrderValueWithAnotherValue(id, code);
         return ResponseEntity.ok(orderValueDto);

@@ -10,19 +10,22 @@ import pl.dk.ecommerceplatform.address.AddressRepository;
 import pl.dk.ecommerceplatform.cart.Cart;
 import pl.dk.ecommerceplatform.cart.CartDtoMapper;
 import pl.dk.ecommerceplatform.cart.CartRepository;
+import pl.dk.ecommerceplatform.currency.Currency;
+import pl.dk.ecommerceplatform.currency.CurrencyCode;
 import pl.dk.ecommerceplatform.currency.CurrencyRepository;
 import pl.dk.ecommerceplatform.error.exceptions.cart.CartNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.shipping.ShippingNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.user.UserNotFoundException;
 import pl.dk.ecommerceplatform.order.dtos.OrderDto;
+import pl.dk.ecommerceplatform.order.dtos.OrderValueDto;
 import pl.dk.ecommerceplatform.order.dtos.SaveOrderDto;
 import pl.dk.ecommerceplatform.shipping.Shipping;
-import pl.dk.ecommerceplatform.shipping.ShippingMethod;
 import pl.dk.ecommerceplatform.shipping.ShippingRepository;
 import pl.dk.ecommerceplatform.user.User;
 import pl.dk.ecommerceplatform.user.UserRepository;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -105,7 +108,7 @@ class OrderDtoMapperTest {
         BigDecimal totalCost = cartValue.add(shippingCost);
 
         Shipping shipping = Shipping.builder()
-                .name(ShippingMethod.STANDARD)
+                .name("DHL")
                 .shippingCost(shippingCost)
                 .build();
         Cart cart = Cart.builder()
@@ -202,5 +205,38 @@ class OrderDtoMapperTest {
         verify(userRepository, times(1)).findById(userId);
         verify(cartRepository, times(1)).findCartByUserIdWhereUsedEqualsFalse(userId);
         verify(shippingRepository, times(1)).findById(saveOrderDto.shippingId());
+    }
+
+    @Test
+    void itShouldMapToOrderValueDto() {
+        // Given
+        Currency currency = Currency.builder()
+                .id(1L)
+                .name("euro")
+                .code(CurrencyCode.EUR)
+                .effectiveDate(LocalDate.of(2024, 4, 5))
+                .ask(BigDecimal.valueOf(4.33))
+                .ask(BigDecimal.valueOf(4.25))
+                .build();
+
+        Order order = Order.builder()
+                .id(1L)
+                .status(OrderStatus.NEW)
+                .address(new Address())
+                .orderValue(BigDecimal.valueOf(1000))
+                .created(LocalDateTime.now().minusDays(1))
+                .build();
+
+        when(currencyRepository.findByCode(CurrencyCode.EUR)).thenReturn(Optional.of(currency));
+
+        // When
+        OrderValueDto orderValueDto = underTest.map(order, CurrencyCode.EUR);
+
+        // Then
+        assertAll(
+                () -> assertThat(orderValueDto.id()).isEqualTo(order.getId()),
+                () -> assertThat(orderValueDto.currencyCode()).isEqualTo(CurrencyCode.EUR),
+                () -> assertThat(orderValueDto.orderValue()).isLessThan(order.getOrderValue())
+        );
     }
 }

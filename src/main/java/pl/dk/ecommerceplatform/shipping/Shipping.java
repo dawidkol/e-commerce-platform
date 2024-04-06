@@ -1,6 +1,10 @@
 package pl.dk.ecommerceplatform.shipping;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,8 +23,11 @@ public class Shipping {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Enumerated(EnumType.STRING)
-    private ShippingMethod name;
+    @Column(unique = true)
+    @NotBlank
+    private String name;
+    @NotNull
+    @PositiveOrZero
     private BigDecimal shippingCost;
 
 }

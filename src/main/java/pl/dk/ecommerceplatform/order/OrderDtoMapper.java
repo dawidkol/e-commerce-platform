@@ -20,7 +20,6 @@ import pl.dk.ecommerceplatform.order.dtos.OrderDto;
 import pl.dk.ecommerceplatform.order.dtos.OrderValueDto;
 import pl.dk.ecommerceplatform.order.dtos.SaveOrderDto;
 import pl.dk.ecommerceplatform.shipping.Shipping;
-import pl.dk.ecommerceplatform.shipping.ShippingMethod;
 import pl.dk.ecommerceplatform.shipping.ShippingRepository;
 import pl.dk.ecommerceplatform.shipping.dtos.ShippingDto;
 import pl.dk.ecommerceplatform.user.User;
@@ -130,10 +129,9 @@ class OrderDtoMapper {
 
     private ShippingDto getShippingDto(Order order) {
         Shipping shipping = order.getShipping();
-        ShippingMethod shippingMethod = shipping.getName();
         return ShippingDto.builder()
                 .id(shipping.getId())
-                .name(shippingMethod.name())
+                .name(shipping.getName())
                 .shippingCost(shipping.getShippingCost())
                 .build();
     }
