@@ -14,7 +14,7 @@ class CartProductsMapper implements RowMapper<CartProductsDto> {
     @Override
     public CartProductsDto mapRow(ResultSet rs, int rowNum) throws SQLException {
         long productId = rs.getLong(1);
-        String uriString = ServletUriComponentsBuilder.fromCurrentServletMapping()
+        String uriString = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/products/{id}").buildAndExpand(productId)
                 .toUriString();
         String productName = rs.getString(2);

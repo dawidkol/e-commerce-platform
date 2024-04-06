@@ -3,6 +3,7 @@ package pl.dk.ecommerceplatform.shipping;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.dk.ecommerceplatform.shipping.dtos.ShippingDto;
@@ -13,6 +14,7 @@ import java.net.URI;
 @RestController
 @RequestMapping("/shipping")
 @AllArgsConstructor
+@PreAuthorize(value = "hasRole('ROLE_ADMIN')")
 class ShippingController {
 
     private final ShippingService shippingService;
@@ -32,5 +34,11 @@ class ShippingController {
                 .buildAndExpand(dto.id())
                 .toUri();
         return ResponseEntity.created(uri).body(dto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteShippingMethod(@PathVariable Long id) {
+        shippingService.deleteShipping(id);
+        return ResponseEntity.noContent().build();
     }
 }

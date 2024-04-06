@@ -9,11 +9,13 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import pl.dk.ecommerceplatform.cart.Cart;
 import pl.dk.ecommerceplatform.cart.CartRepository;
+import pl.dk.ecommerceplatform.currency.CurrencyCode;
 import pl.dk.ecommerceplatform.error.exceptions.order.OrderNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.order.OrderStatusNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.warehouse.ItemNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.warehouse.QuantityException;
 import pl.dk.ecommerceplatform.order.dtos.OrderDto;
+import pl.dk.ecommerceplatform.order.dtos.OrderValueDto;
 import pl.dk.ecommerceplatform.order.dtos.SaveOrderDto;
 import pl.dk.ecommerceplatform.order.dtos.UpdateOrderStatusDto;
 import pl.dk.ecommerceplatform.product.Product;
@@ -403,5 +405,33 @@ class OrderServiceTest {
         verify(warehouseRepository, times(1)).findByProduct_id(2L);
         verify(promoRepository, times(1)).findByCode(saveOrderDto.promoCode());
         verify(orderDtoMapper, times(1)).map(any(Long.class), any(SaveOrderDto.class));
+    }
+
+    @Test
+    void itShouldCalculateOrderValueWithEurCurrency() {
+        // Given
+        Long orderId = 1L;
+
+        Order order = Order.builder()
+                .id(orderId)
+                .orderValue(BigDecimal.valueOf(1000))
+                .build();
+
+        OrderValueDto orderValueDto = OrderValueDto.builder()
+                .id(1L)
+                .currencyCode(CurrencyCode.EUR)
+                .orderValue(order.getOrderValue().multiply(BigDecimal.valueOf(0.4)))
+                .build();
+
+        when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
+        when(orderDtoMapper.map(order, CurrencyCode.EUR)).thenReturn(orderValueDto);
+        String currencyCodeString = CurrencyCode.EUR.name();
+
+        // When
+        underTest.calculateOrderValueWithAnotherValue(orderId, currencyCodeString);
+
+        // Then
+        verify(orderRepository, times(1)).findById(orderId);
+        verify(orderDtoMapper, times(1)).map(order, CurrencyCode.EUR);
     }
 }

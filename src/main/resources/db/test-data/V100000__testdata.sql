@@ -198,3 +198,9 @@ VALUES (11, 23, true),
 
 INSERT INTO contact(email, subject, message, date_of_posting)
 VALUES ('contact.ecommerceplatformdemo@gmail.com', 'Test subject', 'This is test messagge', NOW());
+
+INSERT INTO currency(name, code, effective_date, ask, bid)
+VALUES ('polski złoty', 'PLN', '2024-04-06', 1.00, 1.00),
+       ('euro', 'EUR', '2024-04-05', 4.33, 4.25),
+       ('dolar amerykański', 'USD', '2024-04-05', 3.98, 3.91),
+       ('funt szterling', 'GBP', '2024-04-05', 5.05, 4.95);
