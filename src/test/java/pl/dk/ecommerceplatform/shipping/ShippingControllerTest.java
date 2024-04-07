@@ -52,4 +52,11 @@ class ShippingControllerTest extends BaseIntegrationTest {
         mockMvc.perform(MockMvcRequestBuilders.delete("/shipping/{id}", shippingDto.id()))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
+
+    @Test
+    void userWantsToRetrieveAllShippingMethod() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/shipping"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
+    }
 }

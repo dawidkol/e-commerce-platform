@@ -8,6 +8,7 @@ import pl.dk.ecommerceplatform.error.exceptions.shipping.ShippingNotFoundExcepti
 import pl.dk.ecommerceplatform.shipping.dtos.ShippingDto;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,5 +41,12 @@ class ShippingService {
     public void deleteShipping(Long id) {
         shippingRepository.findById(id)
                 .ifPresentOrElse(shippingRepository::delete, ShippingNotFoundException::new);
+    }
+
+    public List<ShippingDto> getShippingMethods() {
+        return shippingRepository.findAll()
+                .stream()
+                .map(ShippingDtoMapper::map)
+                .toList();
     }
 }

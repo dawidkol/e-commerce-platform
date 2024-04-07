@@ -8,6 +8,7 @@ import pl.dk.ecommerceplatform.error.exceptions.shipping.ShippingNotFoundExcepti
 import pl.dk.ecommerceplatform.shipping.dtos.ShippingDto;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -118,5 +119,23 @@ class ShippingServiceTest {
         assertThrows(ShippingMethodExistException.class, () ->  underTest.saveShippingMethod(shippingDtoDHL));
         verify(shippingRepository, times(1)).findByName(name);
 
+    }
+
+    @Test
+    void itShouldRetrieveAllShippingMethods() {
+        // Given
+        Shipping dhl = Shipping.builder().name("DHL").shippingCost(BigDecimal.valueOf(10.99)).build();
+        Shipping ups = Shipping.builder().name("UPS").shippingCost(BigDecimal.valueOf(11.99)).build();
+        Shipping dpd = Shipping.builder().name("DPD").shippingCost(BigDecimal.valueOf(12.99)).build();
+        List<Shipping> shippingMethods = List.of(dhl, ups, dpd);
+
+        when(shippingRepository.findAll()).thenReturn(shippingMethods);
+
+        // When
+        List<ShippingDto> resultList = underTest.getShippingMethods();
+
+        // Then
+        verify(shippingRepository, times(1)).findAll();
+        assertThat(resultList.size()).isEqualTo(shippingMethods.size());
     }
 }
