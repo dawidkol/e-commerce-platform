@@ -7,6 +7,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.dk.ecommerceplatform.shipping.dtos.ShippingDto;
+import pl.dk.ecommerceplatform.shipping.dtos.UpdateShippingPriceDto;
 
 import java.math.BigDecimal;
 import java.net.URI;
@@ -19,10 +20,10 @@ class ShippingController {
 
     private final ShippingService shippingService;
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> updateShippingCost(@PathVariable Long id, @RequestParam BigDecimal newPrice) {
-        shippingService.updateShippingCost(id, newPrice);
+    public ResponseEntity<?> updateShippingCost(@PathVariable Long id, @RequestBody UpdateShippingPriceDto updateShippingPriceDto) {
+        shippingService.updateShippingCost(id, updateShippingPriceDto.newPrice());
         return ResponseEntity.noContent().build();
     }
 

@@ -42,10 +42,13 @@ class ShippingControllerTest extends BaseIntegrationTest {
         // 2. Admin wants to update shipping price
         String contentAsString = resultActions.andReturn().getResponse().getContentAsString();
         ShippingDto shippingDto = objectMapper.readValue(contentAsString, ShippingDto.class);
-        String newPrice = "14.00";
+        String newPriceJson = """
+                {
+                    "newPrice": 14.00
+                }""";
 
         mockMvc.perform(MockMvcRequestBuilders.put("/shipping/{id}", shippingDto.id())
-                        .param("newPrice", newPrice))
+                        .contentType(MediaType.APPLICATION_JSON).content(newPriceJson))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
 
         // 3. Admin wants to delete shipping method

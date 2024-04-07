@@ -1,5 +1,5 @@
 CREATE TABLE brand
 (
     id   BIGSERIAL NOT NULL PRIMARY KEY,
-    name VARCHAR(100)
+    name VARCHAR(100) UNIQUE
 );

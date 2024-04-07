@@ -36,7 +36,7 @@ class StatisticsControllerTest extends BaseIntegrationTest {
     @Test
     void itShouldReturnTop3SoldProducts() throws Exception {
         // 1. Perform GET request to /stats endpoint
-        mockMvc.perform(MockMvcRequestBuilders.get("/stats"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/stats/top3"))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(equalTo(3))))
                 .andReturn();

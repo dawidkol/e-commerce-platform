@@ -23,6 +23,7 @@ public class Brand {
     private Long id;
     @NotBlank
     @Size(min = 3, max = 100)
+    @Column(unique = true)
     private String name;
     @OneToMany(mappedBy = "brand")
     private List<Product> products = new ArrayList<>();

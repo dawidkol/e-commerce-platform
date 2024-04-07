@@ -42,7 +42,7 @@ class SecurityConfig {
 
         httpSecurity.authorizeHttpRequests(request -> request
                 .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
-                .requestMatchers(mvc.pattern(HttpMethod.GET, "/stats")).permitAll()
+                .requestMatchers(mvc.pattern(HttpMethod.GET, "/stats/top3")).permitAll()
                 .requestMatchers(mvc.pattern(HttpMethod.GET, "/brands/{id}")).permitAll()
                 .requestMatchers(mvc.pattern(HttpMethod.GET, "/brands")).permitAll()
                 .requestMatchers(mvc.pattern(HttpMethod.GET, "/category")).permitAll()

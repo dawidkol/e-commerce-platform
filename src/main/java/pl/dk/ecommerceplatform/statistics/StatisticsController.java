@@ -24,10 +24,10 @@ class StatisticsController {
 
     private final StatisticsService statisticsService;
 
-    @GetMapping("")
+    @GetMapping("/top3")
     public ResponseEntity<List<CartProductsDto>> getTop3SoldProducts() {
-        List<CartProductsDto> top10SoldProducts = statisticsService.getTop3SoldProducts();
-        return ResponseEntity.ok(top10SoldProducts);
+        List<CartProductsDto> top3SoldProducts = statisticsService.getTop3SoldProducts();
+        return ResponseEntity.ok(top3SoldProducts);
     }
 
     @GetMapping("/avg")
