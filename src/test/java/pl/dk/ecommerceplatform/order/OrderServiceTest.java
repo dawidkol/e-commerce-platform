@@ -181,57 +181,57 @@ class OrderServiceTest {
     @Test
     void itShouldUpdateOrderStatus() {
         // Given
+        Long orderId = 1L;
         UpdateOrderStatusDto orderStatusDto = UpdateOrderStatusDto.builder()
-                .orderId(1L)
                 .status("PAID")
                 .build();
 
         Order order = Order.builder()
                 .id(1L)
                 .build();
-        when(orderRepository.findById(orderStatusDto.orderId())).thenReturn(Optional.of(order));
+        when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
 
         // When
-        underTest.updateOrderStatus(orderStatusDto);
+        underTest.updateOrderStatus(orderId, orderStatusDto);
 
         // Then
-        verify(orderRepository, times(1)).findById(orderStatusDto.orderId());
+        verify(orderRepository, times(1)).findById(orderId);
 
     }
 
     @Test
     void itShouldThrowOrderNotFoundExceptionWhenUserTryToUpdateStatus() {
         // Given
+        Long orderId = 1L;
         UpdateOrderStatusDto orderStatusDto = UpdateOrderStatusDto.builder()
-                .orderId(1L)
                 .status("PAID")
                 .build();
 
-        when(orderRepository.findById(orderStatusDto.orderId())).thenReturn(Optional.empty());
+        when(orderRepository.findById(orderId)).thenReturn(Optional.empty());
 
         // When
         // Then
-        assertThrows(OrderNotFoundException.class, () -> underTest.updateOrderStatus(orderStatusDto));
-        verify(orderRepository, times(1)).findById(orderStatusDto.orderId());
+        assertThrows(OrderNotFoundException.class, () -> underTest.updateOrderStatus(orderId, orderStatusDto));
+        verify(orderRepository, times(1)).findById(orderId);
     }
 
     @Test
     void itShouldThrowOrderStatusNotFoundExceptionWhenUserWantsToSetOrderThatNotExists() {
         // Given
+        Long orderId = 1L;
         UpdateOrderStatusDto orderStatusDto = UpdateOrderStatusDto.builder()
-                .orderId(1L)
                 .status("WRONG STATUS")
                 .build();
 
         Order order = Order.builder()
                 .id(1L)
                 .build();
-        when(orderRepository.findById(orderStatusDto.orderId())).thenReturn(Optional.of(order));
+        when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
 
         // When
         // Then
-        assertThrows(OrderStatusNotFoundException.class, () -> underTest.updateOrderStatus(orderStatusDto));
-        verify(orderRepository, times(1)).findById(orderStatusDto.orderId());
+        assertThrows(OrderStatusNotFoundException.class, () -> underTest.updateOrderStatus(orderId, orderStatusDto));
+        verify(orderRepository, times(1)).findById(orderId);
     }
 
     @Test

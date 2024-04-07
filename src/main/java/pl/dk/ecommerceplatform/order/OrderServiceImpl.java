@@ -65,9 +65,8 @@ class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public void updateOrderStatus(UpdateOrderStatusDto updateOrderStatusDto) {
-        Long orderId = updateOrderStatusDto.orderId();
-        Order order = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
+    public void updateOrderStatus(Long id, UpdateOrderStatusDto updateOrderStatusDto) {
+        Order order = orderRepository.findById(id).orElseThrow(OrderNotFoundException::new);
         OrderStatus newStatus;
         try {
             String orderUpperCase = updateOrderStatusDto.status().toUpperCase();

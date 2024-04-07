@@ -74,15 +74,15 @@ class OrderControllerTest extends BaseIntegrationTest {
     @WithMockUser(username = "janusz.kowalski@test.pl", roles = "ADMIN")
     void itShouldUpdateOrderStatusSuccessfully() throws Exception {
         // 1. Admin wants to update OrderStatus
+        Long orderId = 2L;
         UpdateOrderStatusDto orderStatusDto = UpdateOrderStatusDto.builder()
-                .orderId(2L)
-                .status("paid")
+                .status(OrderStatus.PAID.name())
                 .build();
 
         String orderStatusJson = objectMapper.writeValueAsString(orderStatusDto);
 
         // When
-        mockMvc.perform(MockMvcRequestBuilders.put("/orders").content(orderStatusJson).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(MockMvcRequestBuilders.put("/orders/{id}", orderId).content(orderStatusJson).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
 }

@@ -38,10 +38,10 @@ class OrderController {
         return ResponseEntity.created(uri).body(orderDto);
     }
 
-    @PutMapping("")
+    @PatchMapping("/{id}")
     @PreAuthorize(value = "hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<?> updateOrderStatus(@Valid @RequestBody UpdateOrderStatusDto orderStatusDto) {
-        orderService.updateOrderStatus(orderStatusDto);
+    public ResponseEntity<?> updateOrderStatus(@PathVariable Long id, @Valid @RequestBody UpdateOrderStatusDto orderStatusDto) {
+        orderService.updateOrderStatus(id, orderStatusDto);
         return ResponseEntity.noContent().build();
     }
 

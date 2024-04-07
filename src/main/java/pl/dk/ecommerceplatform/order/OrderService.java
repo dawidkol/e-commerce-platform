@@ -12,7 +12,7 @@ public interface OrderService {
 
     OrderDto createOrder(Long userId, SaveOrderDto saveOrderDto);
 
-    void updateOrderStatus(UpdateOrderStatusDto updateOrderStatusDto);
+    void updateOrderStatus(Long id, UpdateOrderStatusDto updateOrderStatusDto);
 
     OrderDto getOrder(List<String> credentials, Long orderId, Long userId);
 
