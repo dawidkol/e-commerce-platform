@@ -18,5 +18,6 @@ public class Address {
     @NotBlank private String postalCode;
     @NotBlank private String street;
     @NotBlank private String buildingNumber;
+    @NotBlank private String apartmentNumber;
     @NotBlank private String phoneNumber;
 }

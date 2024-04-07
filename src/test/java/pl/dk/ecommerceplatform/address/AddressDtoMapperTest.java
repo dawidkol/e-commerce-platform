@@ -27,6 +27,7 @@ class AddressDtoMapperTest {
                 .postalCode("22-400")
                 .street("testowa ulica")
                 .buildingNumber("13A")
+                .apartmentNumber("20")
                 .phoneNumber("666666666")
                 .build();
 
@@ -39,6 +40,7 @@ class AddressDtoMapperTest {
                 () -> assertThat(addressDto.postalCode()).isEqualTo(address.getPostalCode()),
                 () -> assertThat(addressDto.street()).isEqualTo(address.getStreet()),
                 () -> assertThat(addressDto.buildingNumber()).isEqualTo(address.getBuildingNumber()),
+                () -> assertThat(addressDto.apartmentNumber()).isEqualTo(address.getApartmentNumber()),
                 () -> assertThat(addressDto.phoneNumber()).isEqualTo(address.getPhoneNumber())
 
         );
@@ -52,6 +54,7 @@ class AddressDtoMapperTest {
                 .postalCode("22-400")
                 .street("testowa ulica")
                 .buildingNumber("13A")
+                .apartmentNumber("20a")
                 .phoneNumber("666666666")
                 .build();
 
@@ -65,6 +68,7 @@ class AddressDtoMapperTest {
                 () -> assertThat(address.getPostalCode()).isEqualTo(saveAddressDto.postalCode()),
                 () -> assertThat(address.getStreet()).isEqualTo(saveAddressDto.street()),
                 () -> assertThat(address.getBuildingNumber()).isEqualTo(saveAddressDto.buildingNumber()),
+                () -> assertThat(address.getApartmentNumber()).isEqualTo(saveAddressDto.apartmentNumber()),
                 () -> assertThat(address.getPhoneNumber()).isEqualTo(saveAddressDto.phoneNumber())
 
         );

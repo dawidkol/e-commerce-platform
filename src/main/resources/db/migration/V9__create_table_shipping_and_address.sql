@@ -11,5 +11,6 @@ CREATE TABLE address
     postal_code     VARCHAR(6),
     street          VARCHAR(100),
     building_number VARCHAR(15),
+    apartment_number VARCHAR(15),
     phone_number    VARCHAR(20)
 )

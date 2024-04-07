@@ -44,6 +44,7 @@ class AddressServiceTest {
                 .postalCode("22-400")
                 .street("testowa ulica")
                 .buildingNumber("13A")
+                .apartmentNumber("20a")
                 .phoneNumber("666666666")
                 .build();
 
@@ -52,6 +53,7 @@ class AddressServiceTest {
                 .postalCode("22-400")
                 .street("testowa ulica")
                 .buildingNumber("13A")
+                .apartmentNumber("20a")
                 .phoneNumber("666666666")
                 .build();
 
@@ -60,6 +62,7 @@ class AddressServiceTest {
                 .postalCode("22-400")
                 .street("testowa ulica")
                 .buildingNumber("13A")
+                .apartmentNumber("20a")
                 .phoneNumber("666666666")
                 .build();
 
@@ -84,6 +87,7 @@ class AddressServiceTest {
                 .postalCode("22-400")
                 .street("testowa ulica")
                 .buildingNumber("13A")
+                .apartmentNumber("20a")
                 .phoneNumber("666666666")
                 .build();
 
@@ -92,6 +96,7 @@ class AddressServiceTest {
                 .postalCode("22-400")
                 .street("testowa ulica")
                 .buildingNumber("13A")
+                .apartmentNumber("20a")
                 .phoneNumber("666666666")
                 .build();
 
@@ -114,6 +119,7 @@ class AddressServiceTest {
                 .postalCode("22-400")
                 .street("testowa ulica")
                 .buildingNumber("13A")
+                .apartmentNumber("20a")
                 .phoneNumber("666666666")
                 .build();
 
@@ -130,6 +136,7 @@ class AddressServiceTest {
                 .postalCode("22-400")
                 .street("testowa ulica")
                 .buildingNumber("13A")
+                .apartmentNumber("20a")
                 .phoneNumber("666666666")
                 .build();
 

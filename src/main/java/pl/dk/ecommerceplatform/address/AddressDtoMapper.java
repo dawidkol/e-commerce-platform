@@ -14,6 +14,7 @@ class AddressDtoMapper {
                 .postalCode(saveAddressDto.postalCode())
                 .street(saveAddressDto.street())
                 .buildingNumber(saveAddressDto.buildingNumber())
+                .apartmentNumber(saveAddressDto.apartmentNumber())
                 .phoneNumber(saveAddressDto.phoneNumber())
                 .build();
     }
@@ -24,6 +25,7 @@ class AddressDtoMapper {
                 .postalCode(address.getPostalCode())
                 .street(address.getStreet())
                 .buildingNumber(address.getBuildingNumber())
+                .apartmentNumber(address.getApartmentNumber())
                 .phoneNumber(address.getPhoneNumber())
                 .build();
     }

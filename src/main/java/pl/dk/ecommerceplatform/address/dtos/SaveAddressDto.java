@@ -9,5 +9,6 @@ public record SaveAddressDto(
         @NotBlank String postalCode,
         @NotBlank String street,
         @NotBlank String buildingNumber,
+        @NotBlank String apartmentNumber,
         @NotBlank String phoneNumber) {
 }

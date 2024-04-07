@@ -34,6 +34,7 @@ class AddressControllerTest extends BaseIntegrationTest {
                     "postalCode": "22-400",
                     "street": "testow ulica",
                     "buildingNumber": "20",
+                    "apartmentNumber": "20a",
                     "phoneNumber": "666666666"
                 }
                 """;
@@ -53,6 +54,7 @@ class AddressControllerTest extends BaseIntegrationTest {
                     "postalCode": "22-400",
                     "street": "testowa ulica",
                     "buildingNumber": "20",
+                    "apartmentNumber": "20a",
                     "phoneNumber": "666666666"
                 }
                 """.formatted(id);
