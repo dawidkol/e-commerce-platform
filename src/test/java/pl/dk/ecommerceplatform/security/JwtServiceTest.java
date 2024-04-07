@@ -12,9 +12,12 @@ import org.assertj.core.data.TemporalUnitLessThanOffset;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import pl.dk.ecommerceplatform.error.exceptions.security.JwtAuthenticationException;
+import pl.dk.ecommerceplatform.user.UserRepository;
 
 import java.text.ParseException;
 import java.time.Duration;
@@ -36,12 +39,15 @@ class JwtServiceTest {
     private JWSSigner jwsSigner;
     private JWSVerifier jwsVerifier;
     private String sharedKeyForTests = "8e55772b-26c5-4114-bbe9-cb6d44af2ce4";
+    @Mock
+    private UserRepository userRepository;
 
     @BeforeEach
     void init() throws JOSEException {
+        MockitoAnnotations.openMocks(this);
         jwsSigner = new MACSigner(sharedKeyForTests.getBytes());
         jwsVerifier = new MACVerifier(sharedKeyForTests.getBytes());
-        underTest = new JwtService(sharedKeyForTests);
+        underTest = new JwtService(sharedKeyForTests, userRepository);
     }
 
     @Test

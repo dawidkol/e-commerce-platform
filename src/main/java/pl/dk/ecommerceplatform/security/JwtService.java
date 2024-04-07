@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import pl.dk.ecommerceplatform.error.exceptions.security.JwtAuthenticationException;
+import pl.dk.ecommerceplatform.user.UserRepository;
 
 import java.text.ParseException;
 import java.time.LocalDateTime;
@@ -25,8 +26,10 @@ class JwtService {
     private final JWSAlgorithm jwsAlgorithm = JWSAlgorithm.HS256;
     private final JWSSigner jwsSigner;
     private final JWSVerifier jwsVerifier;
+    private final UserRepository userRepository;
 
-    public JwtService(@Value("${jws.sharedKey}") String sharedKey) {
+    public JwtService(@Value("${jws.sharedKey}") String sharedKey, UserRepository userRepository) {
+        this.userRepository = userRepository;
         try {
             this.jwsSigner = new MACSigner(sharedKey.getBytes());
             this.jwsVerifier = new MACVerifier(sharedKey.getBytes());
@@ -57,10 +60,10 @@ class JwtService {
         try {
             boolean verify = signedJWT.verify(jwsVerifier);
             if (!verify) {
-                throw new JwtAuthenticationException("JWT verification failed for token: [%s]" .formatted(signedJWT.serialize()));
+                throw new JwtAuthenticationException("JWT verification failed for token: [%s]".formatted(signedJWT.serialize()));
             }
         } catch (JOSEException e) {
-            throw new JwtAuthenticationException("JWT verification failed for token: [%s]" .formatted(signedJWT.serialize()));
+            throw new JwtAuthenticationException("JWT verification failed for token: [%s]".formatted(signedJWT.serialize()));
         }
     }
 
@@ -72,10 +75,23 @@ class JwtService {
                     .atZone(ZoneId.systemDefault())
                     .toLocalDateTime();
             if (LocalDateTime.now().isAfter(expirationTime)) {
-                throw new JwtAuthenticationException("Token expired at: [%s]" .formatted(expirationTime));
+                throw new JwtAuthenticationException("Token expired at: [%s]".formatted(expirationTime));
             }
         } catch (ParseException e) {
             throw new JwtAuthenticationException("Token does not hava exp claims");
+        }
+    }
+
+    public void verifyEmailFromToken(SignedJWT signedJWT) {
+        try {
+            JWTClaimsSet jwtClaimsSet = signedJWT.getJWTClaimsSet();
+            String userEmail = jwtClaimsSet.getSubject();
+            if (userEmail != null) {
+                userRepository.findByEmail(userEmail)
+                        .orElseThrow(() -> new JwtAuthenticationException("Username [%s] from token not exists".formatted(userEmail)));
+            }
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
         }
     }
 

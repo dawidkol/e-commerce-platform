@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import pl.dk.ecommerceplatform.BaseIntegrationTest;
 import pl.dk.ecommerceplatform.cart.dtos.AddToCartDto;
+import pl.dk.ecommerceplatform.user.UserRepository;
 import pl.dk.ecommerceplatform.utils.UtilsService;
 
 import java.io.IOException;
@@ -81,7 +82,8 @@ class BearerTokenFilterTest extends BaseIntegrationTest {
         FilterChain filterChain = mock(FilterChain.class);
 
         String sharedKeyForTests = "8e55772b-26c5-4114-bbe9-cb6d44af2ce4";
-        BearerTokenFilter bearerTokenFilter = new BearerTokenFilter(new JwtService(sharedKeyForTests));
+        UserRepository userRepositoryMock = mock(UserRepository.class);
+        BearerTokenFilter bearerTokenFilter = new BearerTokenFilter(new JwtService(sharedKeyForTests, userRepositoryMock));
         Mockito.when(request.getHeader("Authorization")).thenReturn("Bearer invalidToken");
 
         // When

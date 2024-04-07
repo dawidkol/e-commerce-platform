@@ -60,6 +60,7 @@ class BearerTokenFilter extends HttpFilter {
     }
 
     private void verifyJwt(SignedJWT signedJWT) {
+        jwtService.verifyEmailFromToken(signedJWT);
         jwtService.verifySignature(signedJWT);
         jwtService.verifyExpirationTime(signedJWT);
     }
