@@ -82,8 +82,9 @@ class AddressServiceTest {
     @Test
     void itShouldUpdateShippingAddress() {
         // Given
+        Long id = 1L;
         SaveAddressDto saveAddressDto = SaveAddressDto.builder()
-                .id(1L)
+                .id(id)
                 .postalCode("22-400")
                 .street("testowa ulica")
                 .buildingNumber("13A")
@@ -92,7 +93,7 @@ class AddressServiceTest {
                 .build();
 
         Address address = Address.builder()
-                .id(1L)
+                .id(id)
                 .postalCode("22-400")
                 .street("testowa ulica")
                 .buildingNumber("13A")
@@ -105,7 +106,7 @@ class AddressServiceTest {
         when(addressRepository.save(address)).thenReturn(address);
 
         // When
-        underTest.updateShippingAddress(saveAddressDto);
+        underTest.updateShippingAddress(id, saveAddressDto);
 
         // Then
         verify(addressDtoMapper, times(1)).map(saveAddressDto);
@@ -115,6 +116,7 @@ class AddressServiceTest {
     @Test
     void itShouldThrowUpdateAddressException() {
         // Given
+        Long id = 1L;
         SaveAddressDto saveAddressDto = SaveAddressDto.builder()
                 .postalCode("22-400")
                 .street("testowa ulica")
@@ -125,14 +127,14 @@ class AddressServiceTest {
 
         // When
         // Then
-        assertThrows(UpdateAddressException.class, () -> underTest.updateShippingAddress(saveAddressDto));
+        assertThrows(AddressNotFoundException.class, () -> underTest.updateShippingAddress(id, saveAddressDto));
     }
 
     @Test
     void itShouldThrowAddressNotFoundException() {
         // Given
+        Long id = 1L;
         SaveAddressDto saveAddressDto = SaveAddressDto.builder()
-                .id(1L)
                 .postalCode("22-400")
                 .street("testowa ulica")
                 .buildingNumber("13A")
@@ -144,8 +146,8 @@ class AddressServiceTest {
 
         // When
         // Then
-        assertThrows(AddressNotFoundException.class, () -> underTest.updateShippingAddress(saveAddressDto));
-        verify(addressRepository, times(1)).findById(saveAddressDto.id());
+        assertThrows(AddressNotFoundException.class, () -> underTest.updateShippingAddress(id, saveAddressDto));
+        verify(addressRepository, times(1)).findById(id);
     }
 
 }

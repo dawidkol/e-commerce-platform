@@ -28,10 +28,10 @@ class AddressController {
         return ResponseEntity.created(uri).body(shippingAddress);
     }
 
-    @PutMapping("")
+    @PutMapping("/{id}")
     @PreAuthorize(value = "hasAnyRole('ROLE_CUSTOMER', 'ROLE_ADMIN')")
-    public ResponseEntity<?> updateShippingAddress(@Valid @RequestBody SaveAddressDto saveAddressDto) {
-        addressService.updateShippingAddress(saveAddressDto);
+    public ResponseEntity<?> updateShippingAddress(@PathVariable Long id, @Valid @RequestBody SaveAddressDto saveAddressDto) {
+        addressService.updateShippingAddress(id, saveAddressDto);
         return ResponseEntity.noContent().build();
     }
 }

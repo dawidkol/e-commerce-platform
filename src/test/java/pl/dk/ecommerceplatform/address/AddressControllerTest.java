@@ -45,20 +45,19 @@ class AddressControllerTest extends BaseIntegrationTest {
 
         String header = resultActions.andReturn().getResponse().getHeader("Location");
         List<String> pathSegments = ServletUriComponentsBuilder.fromUriString(Objects.requireNonNull(header)).build().getPathSegments();
-        Long id = Long.valueOf(pathSegments.get(pathSegments.size() -1));
+        Long id = Long.valueOf(pathSegments.get(pathSegments.size() - 1));
 
         // 2. User wants to update shipping address
         String newAddressJson = """
                 {
-                    "id": %d,
                     "postalCode": "22-400",
                     "street": "testowa ulica",
                     "buildingNumber": "20",
                     "apartmentNumber": "20a",
                     "phoneNumber": "666666666"
                 }
-                """.formatted(id);
-        mockMvc.perform(MockMvcRequestBuilders.put("/address").content(newAddressJson).contentType(MediaType.APPLICATION_JSON))
+                """;
+        mockMvc.perform(MockMvcRequestBuilders.put("/address/{id}", id).content(newAddressJson).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
 
     }

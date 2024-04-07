@@ -24,11 +24,8 @@ class AddressService {
     }
 
     @Transactional
-    public void updateShippingAddress(SaveAddressDto saveAddressDto) {
-        if (saveAddressDto.id() == null) {
-            throw new UpdateAddressException("Missing id property");
-        }
-        addressRepository.findById(saveAddressDto.id()).orElseThrow(AddressNotFoundException::new);
+    public void updateShippingAddress(Long id, SaveAddressDto saveAddressDto) {
+        addressRepository.findById(id).orElseThrow(AddressNotFoundException::new);
         Address newAddress = addressDtoMapper.map(saveAddressDto);
         addressRepository.save(newAddress);
     }

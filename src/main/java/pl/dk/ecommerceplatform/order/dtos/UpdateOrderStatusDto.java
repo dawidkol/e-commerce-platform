@@ -7,7 +7,5 @@ import jakarta.websocket.OnOpen;
 import lombok.Builder;
 
 @Builder
-public record UpdateOrderStatusDto(
-        @NotNull @Positive Long orderId,
-        @NotBlank String status) {
+public record UpdateOrderStatusDto(@NotBlank String status) {
 }
