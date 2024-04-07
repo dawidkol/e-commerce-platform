@@ -80,10 +80,10 @@ VALUES ('UPS', 10.99),
        ('DHL', 19.99),
        ('PERSONAL_COLLECTION', 0);
 
-INSERT INTO address(postal_code, street, building_number, phone_number)
-VALUES ('22-400', 'Orzeszkowej', '17b', '666666666'),
-       ('11-222', 'Wrocławska', '20', '666996669'),
-       ('50-400', 'Grunwaldzka', '12', '554455778');
+INSERT INTO address(postal_code, street, building_number, apartment_number, phone_number)
+VALUES ('22-400', 'Orzeszkowej', '17b','20', '666666666'),
+       ('11-222', 'Wrocławska', '20', '20','666996669'),
+       ('50-400', 'Grunwaldzka', '12','20', '554455778');
 
 INSERT INTO cart(user_id, used)
 VALUES (1, true),

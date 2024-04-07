@@ -216,13 +216,14 @@ class OrderDtoMapperTest {
                 .code(CurrencyCode.EUR)
                 .effectiveDate(LocalDate.of(2024, 4, 5))
                 .ask(BigDecimal.valueOf(4.33))
-                .ask(BigDecimal.valueOf(4.25))
+                .bid(BigDecimal.valueOf(4.25))
                 .build();
 
         Order order = Order.builder()
                 .id(1L)
                 .status(OrderStatus.NEW)
                 .address(new Address())
+                .shipping(Shipping.builder().shippingCost(BigDecimal.valueOf(10.99)).build())
                 .orderValue(BigDecimal.valueOf(1000))
                 .created(LocalDateTime.now().minusDays(1))
                 .build();

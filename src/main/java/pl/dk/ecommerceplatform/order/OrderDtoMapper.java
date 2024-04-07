@@ -123,6 +123,7 @@ class OrderDtoMapper {
                 .postalCode(address.getPostalCode())
                 .street(address.getStreet())
                 .buildingNumber(address.getBuildingNumber())
+                .apartmentNumber(address.getApartmentNumber())
                 .phoneNumber(address.getPhoneNumber())
                 .build();
     }
@@ -139,11 +140,13 @@ class OrderDtoMapper {
     public OrderValueDto map(Order order, CurrencyCode code) {
         Currency currency = currencyRepository.findByCode(code)
                 .orElseThrow(() -> new CurrencyNotFoundException("Currency code: %s not found".formatted(code.name())));
-        BigDecimal orderValue = order.getOrderValue().divide(currency.getAsk(), RoundingMode.HALF_UP);
+        BigDecimal orderValue = order.getOrderValue();
+        BigDecimal shippingCost = order.getShipping().getShippingCost();
+        BigDecimal orderWithDifferentCurrency = orderValue.add(shippingCost).divide(currency.getBid(), RoundingMode.HALF_UP);
         return OrderValueDto.builder()
                 .id(order.getId())
                 .currencyCode(code)
-                .orderValue(orderValue)
+                .orderValue(orderWithDifferentCurrency)
                 .build();
     }
 
