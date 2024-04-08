@@ -186,7 +186,7 @@ class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderValueDto calculateOrderValueWithAnotherValue(Long orderId, String code) {
+    public OrderValueDto calculateOrderValueWithOtherCurrency(Long orderId, String code) {
         CurrencyCode currencyCode = CurrencyCode.getCurrency(code);
         Order order = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
         return orderDtoMapper.map(order, currencyCode);

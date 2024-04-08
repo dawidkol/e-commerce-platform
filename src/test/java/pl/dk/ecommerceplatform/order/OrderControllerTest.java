@@ -82,7 +82,7 @@ class OrderControllerTest extends BaseIntegrationTest {
         String orderStatusJson = objectMapper.writeValueAsString(orderStatusDto);
 
         // When
-        mockMvc.perform(MockMvcRequestBuilders.put("/orders/{id}", orderId).content(orderStatusJson).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(MockMvcRequestBuilders.patch("/orders/{id}", orderId).content(orderStatusJson).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
 }

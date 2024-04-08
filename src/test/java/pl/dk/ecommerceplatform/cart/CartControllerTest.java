@@ -51,7 +51,7 @@ class CartControllerTest extends BaseIntegrationTest {
 
         String updateQuantityJson = objectMapper.writeValueAsString(updateQuantityDto);
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/carts").contentType(MediaType.APPLICATION_JSON).content(updateQuantityJson))
+        mockMvc.perform(MockMvcRequestBuilders.patch("/carts").contentType(MediaType.APPLICATION_JSON).content(updateQuantityJson))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
 
         // 3. User wants to delete all products in cart

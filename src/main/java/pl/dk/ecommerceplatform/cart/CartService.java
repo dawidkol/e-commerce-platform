@@ -55,15 +55,24 @@ public class CartService {
         Cart cart = cartRepository.findCartByUserIdWhereUsedEqualsFalse(userId).orElseThrow(CartNotFoundException::new);
         this.validateProductAndItemData(dto);
 
+        long currentQuantityOfProductInCart = cart.getProducts().stream()
+                .filter(p -> p.getId().equals(dto.productId()))
+                .count();
         Long cartId = cart.getId();
         Long productId = cart.getProducts().stream()
                 .filter(p -> p.getId().equals(dto.productId()))
                 .findFirst()
                 .map(Product::getId)
                 .orElseThrow(ProductNotFoundException::new);
-        cartProductsDAO.deleteProductsInCart(cartId, productId);
-        for (int i = 0; i < dto.quantity(); i++) {
-            cartProductsDAO.insertProductToCart(cartId, productId);
+        if (currentQuantityOfProductInCart > dto.quantity()) {
+            cartProductsDAO.deleteProductsInCart(cartId, productId);
+            for (int i = 0; i < dto.quantity(); i++) {
+                cartProductsDAO.insertProductToCart(cartId, productId);
+            }
+        } else {
+            for (int i = 0; i < dto.quantity() - currentQuantityOfProductInCart; i++) {
+                cartProductsDAO.insertProductToCart(cartId, productId);
+            }
         }
     }
 
@@ -71,7 +80,7 @@ public class CartService {
         Product product = productRepository.findById(dto.productId()).orElseThrow(ProductNotFoundException::new);
         Item item = this.getItem(product.getId()).orElseThrow(ItemNotFoundException::new);
         if (item.getQuantity() < dto.quantity())
-            throw new QuantityException("Insufficient stock of the product in the warehouse. Product id = %d" .formatted(product.getId()));
+            throw new QuantityException("Insufficient stock of the product in the warehouse. Product id = %d".formatted(product.getId()));
         return new ProductItemChecker(product, item);
     }
 

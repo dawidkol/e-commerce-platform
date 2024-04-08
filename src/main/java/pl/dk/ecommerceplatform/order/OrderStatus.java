@@ -5,7 +5,7 @@ public enum OrderStatus {
     PAID,
     ORDER_HANDED_FOR_PROCESSING,
     PROCESSING_ORDER,
-    SEND,
+    SENT,
     DELIVERED,
     RECEIVED
 

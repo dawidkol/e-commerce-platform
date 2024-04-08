@@ -246,7 +246,7 @@ class CartServiceTest {
         verify(cartRepository, times(1)).findCartByUserIdWhereUsedEqualsFalse(userId);
         verify(productRepository, times(1)).findById(productId);
         verify(warehouseRepository, times(1)).findByProduct_id(productId);
-        verify(cartProductsDAO, times(2)).insertProductToCart(longArgumentCaptor.capture(), longArgumentCaptor.capture());
+        verify(cartProductsDAO, times(1)).insertProductToCart(longArgumentCaptor.capture(), longArgumentCaptor.capture());
     }
 
     @Test

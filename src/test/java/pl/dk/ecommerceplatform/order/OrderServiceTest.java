@@ -428,7 +428,7 @@ class OrderServiceTest {
         String currencyCodeString = CurrencyCode.EUR.name();
 
         // When
-        underTest.calculateOrderValueWithAnotherValue(orderId, currencyCodeString);
+        underTest.calculateOrderValueWithOtherCurrency(orderId, currencyCodeString);
 
         // Then
         verify(orderRepository, times(1)).findById(orderId);

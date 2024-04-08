@@ -37,7 +37,7 @@ class CartController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("")
+    @PatchMapping("")
     public ResponseEntity<?> updateProductQuantityInCart(@Valid @RequestBody AddToCartDto addToCartDto) {
         Long userIdFromSecurityContext = securityService.getIdFromSecurityContextOrThrowException();
         cartService.updateProductQuantityInCart(userIdFromSecurityContext, addToCartDto);

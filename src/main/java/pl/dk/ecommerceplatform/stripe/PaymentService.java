@@ -42,7 +42,7 @@ class PaymentService {
     }
 
     public PaymentResponse createPayment(Long orderId, String emailFromSecurityContext, String currencyCode) throws StripeException {
-        OrderValueDto orderValueDto = orderService.calculateOrderValueWithAnotherValue(orderId, currencyCode);
+        OrderValueDto orderValueDto = orderService.calculateOrderValueWithOtherCurrency(orderId, currencyCode);
         CreatePaymentRequest paymentRequest = this.createPaymentRequest(orderId);
 
         if (!emailFromSecurityContext.equals(paymentRequest.customerEmail())) {

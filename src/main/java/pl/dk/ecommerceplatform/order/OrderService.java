@@ -1,6 +1,5 @@
 package pl.dk.ecommerceplatform.order;
 
-import org.springframework.transaction.annotation.Transactional;
 import pl.dk.ecommerceplatform.order.dtos.OrderDto;
 import pl.dk.ecommerceplatform.order.dtos.OrderValueDto;
 import pl.dk.ecommerceplatform.order.dtos.SaveOrderDto;
@@ -18,5 +17,5 @@ public interface OrderService {
 
     List<OrderDto> getOrders(List<String> credentials, Long userId, int page, int size);
 
-    OrderValueDto calculateOrderValueWithAnotherValue(Long orderId, String code);
+    OrderValueDto calculateOrderValueWithOtherCurrency(Long orderId, String code);
 }

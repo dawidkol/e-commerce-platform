@@ -47,7 +47,7 @@ class ShippingControllerTest extends BaseIntegrationTest {
                     "newPrice": 14.00
                 }""";
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/shipping/{id}", shippingDto.id())
+        mockMvc.perform(MockMvcRequestBuilders.patch("/shipping/{id}", shippingDto.id())
                         .contentType(MediaType.APPLICATION_JSON).content(newPriceJson))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
 
