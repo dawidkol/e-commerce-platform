@@ -55,10 +55,10 @@ public class UserController {
         return ResponseEntity.created(uri).body(registeredEmployee);
     }
 
-    @DeleteMapping("/{email}")
+    @DeleteMapping("/{id}")
     @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> deleteUserByEmail(@PathVariable String email) {
-        userService.deleteUser(email);
+    public ResponseEntity<?> deleteUserByEmail(@PathVariable Long id) {
+        userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
 

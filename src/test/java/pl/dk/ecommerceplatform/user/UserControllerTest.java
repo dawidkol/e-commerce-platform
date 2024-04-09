@@ -148,8 +148,8 @@ class UserControllerTest extends BaseIntegrationTest {
         UserDto userDto = objectMapper.readValue(contentAsString, UserDto.class);
 
         // 2. Admin wants to delete employee by given email
-        String email = userDto.email();
-        mockMvc.perform(MockMvcRequestBuilders.delete("/users/{email}", email))
+        Long userId = userDto.id();
+        mockMvc.perform(MockMvcRequestBuilders.delete("/users/{email}", userId))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
 

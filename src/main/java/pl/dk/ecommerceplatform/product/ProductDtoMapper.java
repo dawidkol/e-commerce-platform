@@ -31,6 +31,7 @@ public class ProductDtoMapper {
 
     public Product map(SaveProductDto saveProductDto) {
         return Product.builder()
+                .id(saveProductDto.id())
                 .name(saveProductDto.name())
                 .description(saveProductDto.description())
                 .price(saveProductDto.price())

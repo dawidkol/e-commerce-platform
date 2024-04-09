@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -80,7 +81,19 @@ class ProductControllerTest extends BaseIntegrationTest {
 
         assertThat(locationHeader).contains("http://localhost/products/%d".formatted(productDto.id()));
 
-        // 3. Admin wants to save product with promotion price lower that regular price
+        // 3. Admin wants to update product
+        String productJson = resultActions.andReturn().getResponse().getContentAsString();
+        Long productId = objectMapper.readValue(productJson, ProductDto.class).id();
+        String newDescription = """
+                {
+                    "description": "This is new product description"
+                }
+                """;
+
+        mockMvc.perform(MockMvcRequestBuilders.patch("/products/{id}", productId).content(newDescription).contentType(APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+        // 4. Admin wants to save product with promotion price lower that regular price
         SaveProductDto invalidProductData = SaveProductDto.builder()
                 .name("Product with invalid promotion price")
                 .description(description)
@@ -93,8 +106,7 @@ class ProductControllerTest extends BaseIntegrationTest {
         String invalidPromotionPriceJson = objectMapper.writeValueAsString(invalidProductData);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/products").content(invalidPromotionPriceJson).contentType(APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
-
+                .andExpect(status().isBadRequest());
     }
 
     @Test

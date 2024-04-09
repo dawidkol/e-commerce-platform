@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 
 @Builder
 public record SaveProductDto(
+        Long id,
         @NotBlank
         @Size(min = 3, max = 100)
         String name,

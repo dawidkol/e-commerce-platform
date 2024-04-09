@@ -299,39 +299,39 @@ class UserServiceTest {
     @Test
     void itShouldDeleteUserByGivenEmail() {
         // Given
-        String email = "sebastian.kowalski@test.pl";
+        Long userId = 2L;
 
         User user = User.builder()
-                .id(2L)
+                .id(userId)
                 .firstName("Sebastian")
                 .lastName("Kowalski")
-                .email(email)
+                .email("sebastian.kowalski@test.pl")
                 .password("password")
                 .build();
 
 
-        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
         // When
-        underTest.deleteUser(email);
+        underTest.deleteUser(userId);
         ArgumentCaptor<User> argumentCaptor = ArgumentCaptor.forClass(User.class);
 
         // Then
-        verify(userRepository, times(1)).findByEmail(email);
+        verify(userRepository, times(1)).findById(userId);
         verify(userRepository, times(1)).delete(argumentCaptor.capture());
     }
 
     @Test
     void itShouldThrowUserNotFoundExceptionWhenAdminWantsToDeleteUser() {
         // Given
-        String email = "sebastian.kowalski@test.pl";
+        Long userId = 1L;
 
-        when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
         // When
         // Then
-        assertThrows(UserNotFoundException.class, () -> underTest.deleteUser(email));
-        verify(userRepository, times(1)).findByEmail(email);
+        assertThrows(UserNotFoundException.class, () -> underTest.deleteUser(userId));
+        verify(userRepository, times(1)).findById(userId);
     }
 
     @Test

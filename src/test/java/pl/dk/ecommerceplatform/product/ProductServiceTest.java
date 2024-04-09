@@ -1,5 +1,9 @@
 package pl.dk.ecommerceplatform.product;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.fge.jsonpatch.JsonPatchException;
+import com.github.fge.jsonpatch.mergepatch.JsonMergePatch;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,11 +14,14 @@ import pl.dk.ecommerceplatform.brand.Brand;
 import pl.dk.ecommerceplatform.category.Category;
 import pl.dk.ecommerceplatform.constant.PaginationConstant;
 import pl.dk.ecommerceplatform.error.exceptions.product.ProductExistsException;
+import pl.dk.ecommerceplatform.error.exceptions.server.ServerException;
 import pl.dk.ecommerceplatform.product.dtos.ProductDto;
 import pl.dk.ecommerceplatform.product.dtos.SaveProductDto;
+import pl.dk.ecommerceplatform.utils.UtilsService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,11 +37,14 @@ class ProductServiceTest {
     private ProductDtoMapper productDtoMapper;
     private ProductService underTest;
     private AutoCloseable autoCloseable;
+    @Mock
+    private UtilsService utilsService;
 
     @BeforeEach
     void init() {
         autoCloseable = MockitoAnnotations.openMocks(this);
-        underTest = new ProductService(productRepository, productDtoMapper);
+//        utilsService = new UtilsService(new ObjectMapper());
+        underTest = new ProductService(productRepository, productDtoMapper, utilsService);
     }
 
     @AfterEach
@@ -263,5 +273,116 @@ class ProductServiceTest {
         //Then
         verify(productRepository, times(1)).findAllPromotionProducts(pageRequest);
         assertThat(allProductPromotion.size()).isEqualTo(productList.size());
+    }
+
+    @Test
+    void itShouldUpdateProduct() throws JsonPatchException, JsonProcessingException {
+        // Given
+        Long productId = 1L;
+        JsonMergePatch jsonMergePatchMock = mock(JsonMergePatch.class);
+
+        SaveProductDto saveProductDto = SaveProductDto.builder()
+                .id(productId)
+                .name("Product Name")
+                .description("Product Description")
+                .brandId(1L)
+                .categoryId(1L)
+                .price(BigDecimal.valueOf(120.00))
+                .promotionPrice(BigDecimal.valueOf(100.00))
+                .build();
+
+        Product product = Product.builder()
+                .id(productId)
+                .name("Product Name")
+                .description("Product Description")
+                .brand(Brand.builder().id(1L).build())
+                .category(Category.builder().id(1L).build())
+                .price(BigDecimal.valueOf(120.00))
+                .promotionPrice(BigDecimal.valueOf(100.00))
+                .build();
+
+        ProductDto productDto =  ProductDto.builder()
+                .id(productId)
+                .name("Product Name")
+                .description("Product Description")
+                .price(BigDecimal.valueOf(120.00))
+                .quantity(1L)
+                .category("Electronics")
+                .brand("newBrandance")
+                .available(true)
+                .added(LocalDate.now().minusMonths(1))
+                .imageIds(Collections.emptyList())
+                .promotionPrice(BigDecimal.valueOf(100.00))
+                .build();
+
+
+        when(productRepository.findById(productId)).thenReturn(Optional.of(product));
+        when(productDtoMapper.map(product)).thenReturn(productDto);
+        when(utilsService.applyPatch(saveProductDto, jsonMergePatchMock, SaveProductDto.class)).thenReturn(saveProductDto);
+        when(productDtoMapper.map(saveProductDto)).thenReturn(product);
+        when(productRepository.save(product)).thenReturn(product);
+
+        // When
+        underTest.updateProduct(productId, jsonMergePatchMock);
+
+        // Then
+        verify(productRepository, times(1)).findById(productId);
+        verify(productDtoMapper, times(1)).map(product);
+        verify(utilsService, times(1)).applyPatch(saveProductDto, jsonMergePatchMock, SaveProductDto.class);
+        verify(productDtoMapper, times(1)).map(saveProductDto);
+        verify(productRepository, times(1)).save(product);
+    }
+
+    @Test
+    void itShouldThrowJsonPatchExceptionWhenUpdateProduct() throws JsonPatchException, JsonProcessingException {
+        // Given
+        Long productId = 1L;
+        JsonMergePatch jsonMergePatchMock = mock(JsonMergePatch.class);
+
+        SaveProductDto saveProductDto = SaveProductDto.builder()
+                .id(productId)
+                .name("Product Name")
+                .description("Product Description")
+                .brandId(1L)
+                .categoryId(1L)
+                .price(BigDecimal.valueOf(120.00))
+                .promotionPrice(BigDecimal.valueOf(100.00))
+                .build();
+
+        Product product = Product.builder()
+                .id(productId)
+                .name("Product Name")
+                .description("Product Description")
+                .brand(Brand.builder().id(1L).build())
+                .category(Category.builder().id(1L).build())
+                .price(BigDecimal.valueOf(120.00))
+                .promotionPrice(BigDecimal.valueOf(100.00))
+                .build();
+
+        ProductDto productDto =  ProductDto.builder()
+                .id(productId)
+                .name("Product Name")
+                .description("Product Description")
+                .price(BigDecimal.valueOf(120.00))
+                .quantity(1L)
+                .category("Electronics")
+                .brand("newBrandance")
+                .available(true)
+                .added(LocalDate.now().minusMonths(1))
+                .imageIds(Collections.emptyList())
+                .promotionPrice(BigDecimal.valueOf(100.00))
+                .build();
+
+
+        when(productRepository.findById(productId)).thenReturn(Optional.of(product));
+        when(productDtoMapper.map(product)).thenReturn(productDto);
+        when(utilsService.applyPatch(saveProductDto, jsonMergePatchMock, SaveProductDto.class)).thenThrow(JsonPatchException.class);
+
+        // When
+        // Then
+        assertThrows(ServerException.class, () -> underTest.updateProduct(productId, jsonMergePatchMock));
+        verify(productRepository, times(1)).findById(productId);
+        verify(productDtoMapper, times(1)).map(product);
+        verify(utilsService, times(1)).applyPatch(saveProductDto, jsonMergePatchMock, SaveProductDto.class);
     }
 }

@@ -1,5 +1,6 @@
 package pl.dk.ecommerceplatform.product;
 
+import com.github.fge.jsonpatch.mergepatch.JsonMergePatch;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort.Direction;
@@ -77,6 +78,13 @@ class ProductController {
                                                                     @RequestParam(required = false, defaultValue = SIZE_DEFAULT) int size) {
         List<ProductDto> allProductPromotion = productService.getAllProductPromotion(page, size);
         return ResponseEntity.ok(allProductPromotion);
+    }
+
+    @PatchMapping("/{id}")
+    @PreAuthorize(value = "hasAnyRole('ROLE_ADMIN')")
+    public ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestBody JsonMergePatch jsonMergePatch) {
+        productService.updateProduct(id, jsonMergePatch);
+        return ResponseEntity.noContent().build();
     }
 
 }
