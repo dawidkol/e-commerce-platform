@@ -24,7 +24,6 @@ public class Item {
     private Long id;
     @OneToOne
     @JoinColumn(name = "product_id")
-    @JsonBackReference
     private Product product;
     @NotNull
     @PositiveOrZero

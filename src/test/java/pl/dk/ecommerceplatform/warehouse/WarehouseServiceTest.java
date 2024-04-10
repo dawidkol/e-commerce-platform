@@ -6,6 +6,7 @@ import com.github.fge.jsonpatch.mergepatch.JsonMergePatch;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.PageImpl;
@@ -124,8 +125,16 @@ class WarehouseServiceTest {
         Long quantity = 10L;
         boolean available = true;
 
-        Item item = Item.builder()
+        Product product = Product.builder()
+                .id(productId)
                 .build();
+
+        Item item = Item.builder()
+                .quantity(quantity)
+                .available(available)
+                .product(product)
+                .build();
+
 
         SaveItemDto saveItemDto = SaveItemDto.builder()
                 .productId(productId)
@@ -135,32 +144,42 @@ class WarehouseServiceTest {
 
         JsonMergePatch jsonMergePatchMock = mock(JsonMergePatch.class);
         when(warehouseRepository.findById(itemId)).thenReturn(Optional.of(item));
-        when(utilsService.applyPatch(item, jsonMergePatchMock, SaveItemDto.class)).thenReturn(saveItemDto);
+        when(utilsService.applyPatch(saveItemDto, jsonMergePatchMock, SaveItemDto.class)).thenReturn(saveItemDto);
 
         // When
         underTest.updateItem(itemId, jsonMergePatchMock);
 
         // Then
         verify(warehouseRepository, times(1)).findById(itemId);
-        verify(utilsService, times(1)).applyPatch(item, jsonMergePatchMock, SaveItemDto.class);
+        verify(utilsService, times(1)).applyPatch(saveItemDto, jsonMergePatchMock, SaveItemDto.class);
     }
 
     @Test
-    void itShouldThrowJsonJsonPatchException() throws JsonPatchException, JsonProcessingException {
+    void itShouldThrowJsonPatchException() throws JsonPatchException, JsonProcessingException {
         // Given
         Long itemId = 10L;
+        Product product = Product.builder()
+                .id(itemId)
+                .build();
+
         Item item = Item.builder()
+                .id(itemId)
+                .product(product)
+                .quantity(100L)
+                .available(true)
                 .build();
 
         JsonMergePatch jsonMergePatchMock = mock(JsonMergePatch.class);
         when(warehouseRepository.findById(itemId)).thenReturn(Optional.of(item));
-        when(utilsService.applyPatch(item, jsonMergePatchMock, SaveItemDto.class)).thenThrow(JsonPatchException.class);
+        when(utilsService.applyPatch(any(SaveItemDto.class), any(JsonMergePatch.class), eq(SaveItemDto.class))).thenThrow(JsonPatchException.class);
 
         // When
         // Then
-        assertThrows(ServerException.class, () ->underTest.updateItem(itemId, jsonMergePatchMock));
+        assertThrows(ServerException.class, () -> underTest.updateItem(itemId, jsonMergePatchMock));
+        ArgumentCaptor<SaveItemDto> saveItemDtoArgumentCaptor = ArgumentCaptor.forClass(SaveItemDto.class);
+        ArgumentCaptor<JsonMergePatch> jsonMergePatchArgumentCaptor = ArgumentCaptor.forClass(JsonMergePatch.class);
         verify(warehouseRepository, times(1)).findById(itemId);
-        verify(utilsService, times(1)).applyPatch(item, jsonMergePatchMock, SaveItemDto.class);
+        verify(utilsService, times(1)).applyPatch(saveItemDtoArgumentCaptor.capture(), jsonMergePatchArgumentCaptor.capture(), eq(SaveItemDto.class));
     }
 
     @Test
@@ -204,7 +223,7 @@ class WarehouseServiceTest {
         underTest.deleteItem(itemId);
 
         // Then
-        verify(warehouseRepository,times(1)).findById(itemId);
+        verify(warehouseRepository, times(1)).findById(itemId);
     }
 
     @Test
@@ -216,7 +235,7 @@ class WarehouseServiceTest {
         // When
         // Then
         assertThrows(ItemNotFoundException.class, () -> underTest.deleteItem(itemId));
-        verify(warehouseRepository,times(1)).findById(itemId);
+        verify(warehouseRepository, times(1)).findById(itemId);
     }
 
 }

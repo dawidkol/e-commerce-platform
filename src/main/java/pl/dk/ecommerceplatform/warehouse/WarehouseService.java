@@ -5,10 +5,8 @@ import com.github.fge.jsonpatch.JsonPatchException;
 import com.github.fge.jsonpatch.mergepatch.JsonMergePatch;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.dk.ecommerceplatform.constant.PaginationConstant;
 import pl.dk.ecommerceplatform.error.exceptions.product.ProductNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.server.ServerException;
 import pl.dk.ecommerceplatform.error.exceptions.warehouse.ItemExistsException;
@@ -46,15 +44,30 @@ class WarehouseService {
 
     @Transactional
     public void updateItem(Long id, JsonMergePatch jsonMergePatch) {
-        Item item = warehouseRepository.findById(id).orElseThrow(ItemNotFoundException::new);
-        Product product = item.getProduct();
+        SaveItemDto dataToUpdate = this.prepareDataToUpdate(id);
         try {
-            SaveItemDto updateItemDto = utils.applyPatch(item, jsonMergePatch, SaveItemDto.class);
+            SaveItemDto updateItemDto = utils.applyPatch(dataToUpdate, jsonMergePatch, SaveItemDto.class);
+            Product product = productRepository.findById(updateItemDto.productId()).orElseThrow(ProductNotFoundException::new);
             Item itemToUpdate = itemDtoMapper.map(updateItemDto, product);
             warehouseRepository.save(itemToUpdate);
         } catch (JsonPatchException | JsonProcessingException e) {
             throw new ServerException();
         }
+    }
+
+    private SaveItemDto prepareDataToUpdate(Long id) {
+        Optional<Item> optionalItem = warehouseRepository.findById(id);
+        Item item = optionalItem.orElseThrow(ItemNotFoundException::new);
+        Product product = item.getProduct();
+        return SaveItemDto.builder()
+                .id(item.getId())
+                .productId(product.getId())
+                .quantity(item.getQuantity())
+                .available(item.isAvailable())
+                .build();
+    }
+
+    private record ItemUpdateWrapper(SaveItemDto saveItemDto, Product product) {
     }
 
     public List<ItemDto> getItems(int page, int size) {

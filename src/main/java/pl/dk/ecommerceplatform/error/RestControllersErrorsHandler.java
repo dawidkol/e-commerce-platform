@@ -1,7 +1,10 @@
 package pl.dk.ecommerceplatform.error;
 
 import jakarta.validation.ConstraintViolationException;
+import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -36,6 +39,13 @@ class RestControllersErrorsHandler {
                 .toList();
     }
 
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public DataIntegrityViolationWrapper handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+        String message = ex.getMessage();
+        return new DataIntegrityViolationWrapper(message);
+    }
+
     record SqlErrorWrapper(String message) {
     }
 
@@ -43,6 +53,9 @@ class RestControllersErrorsHandler {
     }
 
     record ConstraintViolationWrapper(String value, String message) {
+    }
+
+    record DataIntegrityViolationWrapper(String message) {
     }
 
 }
