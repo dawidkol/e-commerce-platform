@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -152,5 +153,18 @@ class CategoryServiceTest {
         // Then
         assertThrows(CategoryExistsException.class, () -> underTest.saveCategory(categoryDto));
         verify(categoryRepository, times(1)).findByNameIgnoreCase(categoryDto.name());
+    }
+
+    @Test
+    void itShouldRetrieveAllCategory() {
+        // Given
+        when(categoryRepository.findAll()).thenReturn(List.of(new Category(), new Category()));
+
+        // When
+        List<CategoryDto> allCategories = underTest.getCategories();
+
+        // Then
+        verify(categoryRepository, times(1)).findAll();
+        assertThat(allCategories).hasSize(2);
     }
 }

@@ -23,8 +23,8 @@ class CategoryController {
 
     private final CategoryService categoryService;
 
-    @GetMapping("")
-    public ResponseEntity<List<ProductDto>> getProductsByCategory(@RequestParam String name,
+    @GetMapping("/{name}")
+    public ResponseEntity<List<ProductDto>> getProductsByCategory(@PathVariable String name,
                                                                   @RequestParam(required = false, defaultValue = PAGE_DEFAULT) int page,
                                                                   @RequestParam(required = false, defaultValue = SIZE_DEFAULT) int size) {
         List<ProductDto> productsByCategory = categoryService.getProductsByCategory(name, page, size);
@@ -39,6 +39,12 @@ class CategoryController {
                 .buildAndExpand(categoryDto.id())
                 .toUri();
         return ResponseEntity.created(uri).body(categoryDto);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<List<CategoryDto>> getCategories() {
+        List<CategoryDto> categoryDtoList = categoryService.getCategories();
+        return ResponseEntity.ok(categoryDtoList);
     }
 
 }

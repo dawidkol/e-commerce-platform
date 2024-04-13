@@ -46,6 +46,7 @@ class SecurityConfig {
                 .requestMatchers(mvc.pattern(HttpMethod.GET, "/brands/{id}")).permitAll()
                 .requestMatchers(mvc.pattern(HttpMethod.GET, "/brands")).permitAll()
                 .requestMatchers(mvc.pattern(HttpMethod.GET, "/category")).permitAll()
+                .requestMatchers(mvc.pattern(HttpMethod.GET, "/category/{name}")).permitAll()
                 .requestMatchers(mvc.pattern(HttpMethod.GET, "/products/{id}")).permitAll()
                 .requestMatchers(mvc.pattern(HttpMethod.GET, "/products")).permitAll()
                 .requestMatchers(mvc.pattern(HttpMethod.GET, "/products/search")).permitAll()

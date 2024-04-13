@@ -144,6 +144,7 @@ class WarehouseServiceTest {
 
         JsonMergePatch jsonMergePatchMock = mock(JsonMergePatch.class);
         when(warehouseRepository.findById(itemId)).thenReturn(Optional.of(item));
+        when(productRepository.findById(productId)).thenReturn(Optional.of(product));
         when(utilsService.applyPatch(saveItemDto, jsonMergePatchMock, SaveItemDto.class)).thenReturn(saveItemDto);
 
         // When

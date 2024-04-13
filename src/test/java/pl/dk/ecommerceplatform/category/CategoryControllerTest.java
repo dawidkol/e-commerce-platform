@@ -13,6 +13,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import pl.dk.ecommerceplatform.BaseIntegrationTest;
 import pl.dk.ecommerceplatform.category.dtos.SaveCategoryDto;
 
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 
 @AutoConfigureMockMvc
 class CategoryControllerTest extends BaseIntegrationTest {
@@ -29,13 +33,19 @@ class CategoryControllerTest extends BaseIntegrationTest {
     @Test
     void testRetrievingProductsWithValidAndInvalidData() throws Exception {
         // 1. User wants to retrieve products from Electronics category
-        mockMvc.perform(MockMvcRequestBuilders.get("/category").param("name", "electronics"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/category/{name}", "electronics"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
 
         // 2. User want to retrieve all products from category that does not exist
-        mockMvc.perform(MockMvcRequestBuilders.get("/category").param("name", "not existing category"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/category/{name}", "not existing category"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
+
+        // 3. User wants to retrieve all categories
+        mockMvc.perform(MockMvcRequestBuilders.get("/category"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$", hasSize(greaterThan(1))));
     }
 
     @Test

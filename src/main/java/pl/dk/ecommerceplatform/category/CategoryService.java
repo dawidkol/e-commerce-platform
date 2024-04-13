@@ -45,4 +45,10 @@ class CategoryService {
         }
     }
 
+    public List<CategoryDto> getCategories() {
+        return categoryRepository.findAll()
+                .stream()
+                .map(categoryDtoMapper::map)
+                .toList();
+    }
 }
