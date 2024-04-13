@@ -25,9 +25,9 @@ class ImageController {
     @PostMapping("/{productId}")
     @PreAuthorize(value = "hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
     public ResponseEntity<List<ImageDto>> uploadImage(@PathVariable Long productId, @ImageConstraint @RequestParam("image") MultipartFile[] file) throws IOException {
-        List<ImageDto> imageList = storageService.uploadImage(file, productId);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{productId}")
+        List<ImageDto> imageList = storageService.uploadImage(productId, file);
+        URI uri = ServletUriComponentsBuilder.fromCurrentServletMapping()
+                .path("/images/{productId}")
                 .buildAndExpand(productId)
                 .toUri();
         return ResponseEntity.created(uri).body(imageList);
@@ -41,9 +41,9 @@ class ImageController {
                 .body(bytes);
     }
 
-    @DeleteMapping
+    @DeleteMapping("{id}")
     @PreAuthorize(value = "hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
-    public ResponseEntity<?> deleteImage(@RequestParam(name = "id") List<Long> imageIds) {
+    public ResponseEntity<?> deleteImage(@PathVariable(name = "id") List<Long> imageIds) {
         storageService.deleteAllByIds(imageIds);
         return ResponseEntity.noContent().build();
     }

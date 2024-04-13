@@ -59,6 +59,7 @@ class SecurityConfig {
                 .requestMatchers(mvc.pattern(HttpMethod.POST, "/users/token")).permitAll()
                 .requestMatchers(mvc.pattern(HttpMethod.GET, "/images/{productId}")).permitAll()
                 .requestMatchers(mvc.pattern(HttpMethod.GET, "/currency")).permitAll()
+                .requestMatchers(mvc.pattern(HttpMethod.GET, "/shipping")).permitAll()
                 .requestMatchers("/swagger-ui/**",
                         "/swagger-resources/**",
                         "/v3/api-docs/**")

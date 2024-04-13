@@ -34,7 +34,7 @@ class StorageService {
     private String storageFolder;
 
     @Transactional
-    public List<ImageDto> uploadImage(MultipartFile[] file, Long productId) throws IOException {
+    public List<ImageDto> uploadImage(Long productId, MultipartFile[] file) throws IOException {
         Product product = productRepository.findById(productId).orElseThrow(ProductNotFoundException::new);
         List<ImageDto> imageList = new ArrayList<>();
         for (int i = 0; i < file.length; i++) {
