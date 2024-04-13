@@ -684,6 +684,8 @@ Body raw (json):
 ---
 
 ## Test coverage: 
+![Screenshot 2024-04-13 at 23 22 01](https://github.com/dawidkol/e-commerce-platform/assets/15035709/1d0e31c0-b408-45d8-ae97-4cb6519a9b60)
+
 
 
 
