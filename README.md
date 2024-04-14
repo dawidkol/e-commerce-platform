@@ -683,6 +683,19 @@ Body raw (json):
 ```
 ---
 
+### Get statistics form period:
+```http request
+GET http://localhost:8080/stats/avg?start=2024-01-01&end=2024-02-02
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwMjg0MDU3ODEsInN1YiI6ImphbnVzei5rb3dhbHNraUB0ZXN0LnBsIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.b0ylAcStwPGn9NzJHtWxbR5ugwZnhavWlBfUzdGMz9A
+```
+```
+Optional property:
+- "start"
+- "end"
+If you do not provide properties, statistics for the last month will be generated.
+```
+---
+
 ## Test coverage: 
 ![Screenshot 2024-04-13 at 23 22 01](https://github.com/dawidkol/e-commerce-platform/assets/15035709/1d0e31c0-b408-45d8-ae97-4cb6519a9b60)
 
