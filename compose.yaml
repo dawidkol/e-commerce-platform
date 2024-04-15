@@ -1,7 +1,7 @@
 services:
   postgres:
     image: 'postgres:latest'
-    container_name: e-commerce
+    container_name: postgres
     restart: always
     environment:
       POSTGRES_DB: e-commerce
