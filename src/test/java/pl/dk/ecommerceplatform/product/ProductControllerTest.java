@@ -123,7 +123,7 @@ class ProductControllerTest extends BaseIntegrationTest {
         // 2. User wants to get product that not exists by given id = 99;
         Long notExistingId = 99L;
         ResultActions resultActionsNoContent = mockMvc.perform(MockMvcRequestBuilders.get("/products/{id}", notExistingId))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isNotFound());
 
         String emptyContentString = resultActionsNoContent.andReturn().getResponse().getContentAsString();
         assertThat(emptyContentString).isEmpty();

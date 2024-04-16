@@ -42,7 +42,7 @@ class ProductController {
     public ResponseEntity<ProductDto> getProductById(@PathVariable Long id) {
         return productService.getProductById(id)
                 .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.noContent().build());
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("")
