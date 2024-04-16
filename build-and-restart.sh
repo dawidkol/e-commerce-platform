@@ -1,5 +1,5 @@
 docker network create e-commerce-network
-docker-compose up -d
+docker compose up -d
 docker network connect e-commerce-network postgres
 docker build . -t e-commerce
 docker stop e-commerce || true
