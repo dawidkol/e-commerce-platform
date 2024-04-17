@@ -35,3 +35,6 @@ build/
 ### screencast
 screencast/
 .DS_Store
+
+### postgres volume ##
+postgres-data/*

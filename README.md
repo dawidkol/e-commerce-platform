@@ -51,7 +51,7 @@ GET https://e-commerce-platform.pl/api/v1/swagger-ui/index.html
 GET https://e-commerce-platform.pl/api/v1/products?page=0&size=12&property=price&dir=DESC
 ```
 ```
-Optional parameters:
+Optional parameters(pagination and filtering):
 - page(int): Default value : 0
 - size(int): Default value : 10
 - property(string): Default value : name
@@ -93,7 +93,7 @@ Optional parameters:
 GET https://e-commerce-platform.pl/api/v1/products/promotions?page=0&size=12
 ```
 ```
-Optional parameters:
+Optional parameters(pagination):
 - page(int): Default value : 0
 - size(int): Default value : 10
 ```
@@ -110,7 +110,7 @@ GET https://e-commerce-platform.pl/api/v1/brands/{id}
 GET https://e-commerce-platform.pl/api/v1/brands?page=0&size=5
 ```
 ```
-Optional parameters:
+Optional parameters(pagination):
 - page(int): Default value : 0
 - size(int): Default value : 10
 ```
@@ -130,7 +130,7 @@ GET https://e-commerce-platform.pl/api/v1/category/{name}?page=0&size=5
 Required parameters:
 - name(String):
 
-Optional parameters:
+Optional parameters(pagination):
 - page(int): Default value : 0
 - size(int): Default value : 10
 ```
@@ -346,9 +346,9 @@ POST https://e-commerce-platform.pl/api/v1/payments/{orderId}?code=EUR
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZWJhc3RpYW4ua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODczMDE3MCwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.urEAuriMLLZNbLvvzUvDJlhCGWw0fRopaneit4VW_2Y
 ```
 ```
-Optional parameters:
+Optional parameters(pagination):
 - code(String): Default value : PLN
-Available currency values:
+Available currency values(code):
 - PLN
 - EUR
 - USD
@@ -508,7 +508,7 @@ GET https://e-commerce-platform.pl/api/v1/items?page=1&size=7
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 ```
-Optional parameters:
+Optional parameters(pagination):
 - page(int): Default value : 0
 - size(int): Default value : 10
 ```
@@ -581,7 +581,7 @@ GET https://e-commerce-platform.pl/api/v1/promos
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 ```
-Optional parameters:
+Optional parameters(pagination):
 - page(int): Default value : 0
 - size(int): Default value : 10
 ```
@@ -689,7 +689,7 @@ GET https://e-commerce-platform.pl/api/v1/stats/avg?start=2024-01-01&end=2024-02
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 ```
-Optional property:
+Optional parameters:
 - "start"
 - "end"
 If you do not provide properties, statistics for the last month will be generated.
@@ -698,5 +698,10 @@ If you do not provide properties, statistics for the last month will be generate
 
 ## Test coverage: 
 ![Screenshot 2024-04-13 at 23 22 01](https://github.com/dawidkol/e-commerce-platform/assets/15035709/1d0e31c0-b408-45d8-ae97-4cb6519a9b60)
+
+## Author:
+```injectedfreemarker
+dawid.kolano@icloud.com
+
 
 
