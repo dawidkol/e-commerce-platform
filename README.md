@@ -218,7 +218,7 @@ Body raw (json):
 ### Update user:
 ```http request
 PATCH /users
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwMjg0MDYwMzgsInN1YiI6InNlYmFzdGlhbi5rb3dhbHNraUB0ZXN0LnBsIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.mTZypirPpZ6InSFgx-IDN3EK-splq07pjnm_BfJ1XQA
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZWJhc3RpYW4ua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODczMDE3MCwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.urEAuriMLLZNbLvvzUvDJlhCGWw0fRopaneit4VW_2Y
 ```
 Body raw (json):
 ```json lines
@@ -234,7 +234,7 @@ Body raw (json):
 ### Add product to user's cart:
 ```http request
 POST /carts
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwMjg0MDYwMzgsInN1YiI6InNlYmFzdGlhbi5rb3dhbHNraUB0ZXN0LnBsIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.mTZypirPpZ6InSFgx-IDN3EK-splq07pjnm_BfJ1XQA
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZWJhc3RpYW4ua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODczMDE3MCwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.urEAuriMLLZNbLvvzUvDJlhCGWw0fRopaneit4VW_2Y
 ```
 Body raw (json):
 ```json lines
@@ -248,7 +248,7 @@ Body raw (json):
 ### Update product quantity in user's cart:
 ```http request
 PATCH /carts
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwMjg0MDYwMzgsInN1YiI6InNlYmFzdGlhbi5rb3dhbHNraUB0ZXN0LnBsIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.mTZypirPpZ6InSFgx-IDN3EK-splq07pjnm_BfJ1XQA
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZWJhc3RpYW4ua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODczMDE3MCwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.urEAuriMLLZNbLvvzUvDJlhCGWw0fRopaneit4VW_2Y
 ```
 Body raw (json):
 ```json lines
@@ -262,14 +262,14 @@ Body raw (json):
 ### Delete all products from user's cart:
 ```http request
 DELETE /carts
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwMjg0MDYwMzgsInN1YiI6InNlYmFzdGlhbi5rb3dhbHNraUB0ZXN0LnBsIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.mTZypirPpZ6InSFgx-IDN3EK-splq07pjnm_BfJ1XQA
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZWJhc3RpYW4ua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODczMDE3MCwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.urEAuriMLLZNbLvvzUvDJlhCGWw0fRopaneit4VW_2Y
 ```
 ---
 
 ### Create shipping address:
 ```http request
 POST /address
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwMjg0MDYwMzgsInN1YiI6InNlYmFzdGlhbi5rb3dhbHNraUB0ZXN0LnBsIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.mTZypirPpZ6InSFgx-IDN3EK-splq07pjnm_BfJ1XQA
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZWJhc3RpYW4ua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODczMDE3MCwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.urEAuriMLLZNbLvvzUvDJlhCGWw0fRopaneit4VW_2Y
 ```
 Body raw (json):
 ```json lines
@@ -286,7 +286,7 @@ Body raw (json):
 ### Update shipping address:
 ```http request
 PUT /address/{id}
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwMjg0MDYwMzgsInN1YiI6InNlYmFzdGlhbi5rb3dhbHNraUB0ZXN0LnBsIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.mTZypirPpZ6InSFgx-IDN3EK-splq07pjnm_BfJ1XQA
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZWJhc3RpYW4ua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODczMDE3MCwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.urEAuriMLLZNbLvvzUvDJlhCGWw0fRopaneit4VW_2Y
 ```
 Body raw (json):
 ```json lines
@@ -303,7 +303,7 @@ Body raw (json):
 ### Create order:
 ```http request
 POST /orders
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwMjg0MDYwMzgsInN1YiI6InNlYmFzdGlhbi5rb3dhbHNraUB0ZXN0LnBsIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.mTZypirPpZ6InSFgx-IDN3EK-splq07pjnm_BfJ1XQA
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZWJhc3RpYW4ua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODczMDE3MCwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.urEAuriMLLZNbLvvzUvDJlhCGWw0fRopaneit4VW_2Y
 ```
 Body raw (json):
 ```json lines
@@ -322,28 +322,28 @@ Optional property:
 ### Get user's order:
 ```http request
 GET /orders/{id}
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwMjg0MDYwMzgsInN1YiI6InNlYmFzdGlhbi5rb3dhbHNraUB0ZXN0LnBsIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.mTZypirPpZ6InSFgx-IDN3EK-splq07pjnm_BfJ1XQA
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZWJhc3RpYW4ua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODczMDE3MCwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.urEAuriMLLZNbLvvzUvDJlhCGWw0fRopaneit4VW_2Y
 ```
 ---
 
 ### Get user's orders:
 ```http request
 GET /orders
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwMjg0MDYwMzgsInN1YiI6InNlYmFzdGlhbi5rb3dhbHNraUB0ZXN0LnBsIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.mTZypirPpZ6InSFgx-IDN3EK-splq07pjnm_BfJ1XQA
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZWJhc3RpYW4ua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODczMDE3MCwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.urEAuriMLLZNbLvvzUvDJlhCGWw0fRopaneit4VW_2Y
 ```
 ---
 
 ### Calculate user's order value with different currency:
 ```http request
 GET /orders/{id}/value?code=EUR
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwMjg0MDYwMzgsInN1YiI6InNlYmFzdGlhbi5rb3dhbHNraUB0ZXN0LnBsIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.mTZypirPpZ6InSFgx-IDN3EK-splq07pjnm_BfJ1XQA
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZWJhc3RpYW4ua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODczMDE3MCwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.urEAuriMLLZNbLvvzUvDJlhCGWw0fRopaneit4VW_2Y
 ```
 ---
 
 ### Create payment:
 ```http request
 POST /payments/{orderId}?code=EUR
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwMjg0MDYwMzgsInN1YiI6InNlYmFzdGlhbi5rb3dhbHNraUB0ZXN0LnBsIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.mTZypirPpZ6InSFgx-IDN3EK-splq07pjnm_BfJ1XQA
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZWJhc3RpYW4ua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODczMDE3MCwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.urEAuriMLLZNbLvvzUvDJlhCGWw0fRopaneit4VW_2Y
 ```
 ```
 Optional parameters:
@@ -359,7 +359,7 @@ Available currency values:
 ### Create review:
 ```http request
 POST /reviews
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwMjg0MDYwMzgsInN1YiI6InNlYmFzdGlhbi5rb3dhbHNraUB0ZXN0LnBsIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.mTZypirPpZ6InSFgx-IDN3EK-splq07pjnm_BfJ1XQA
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZWJhc3RpYW4ua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODczMDE3MCwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.urEAuriMLLZNbLvvzUvDJlhCGWw0fRopaneit4VW_2Y
 ```
 Body raw (json):
 ```json lines
@@ -375,7 +375,7 @@ Body raw (json):
 ### Save new category:
 ```http request
 POST /category
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwMjg0MDU3ODEsInN1YiI6ImphbnVzei5rb3dhbHNraUB0ZXN0LnBsIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.b0ylAcStwPGn9NzJHtWxbR5ugwZnhavWlBfUzdGMz9A
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 Body raw (json):
 ```json lines
@@ -388,7 +388,7 @@ Body raw (json):
 ### Save new brand:
 ```http request
 POST /brand
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwMjg0MDU3ODEsInN1YiI6ImphbnVzei5rb3dhbHNraUB0ZXN0LnBsIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.b0ylAcStwPGn9NzJHtWxbR5ugwZnhavWlBfUzdGMz9A
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 Body raw (json):
 ```json lines
@@ -401,7 +401,7 @@ Body raw (json):
 ### Save new shipping method:
 ```http request
 POST /shipping
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwMjg0MDU3ODEsInN1YiI6ImphbnVzei5rb3dhbHNraUB0ZXN0LnBsIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.b0ylAcStwPGn9NzJHtWxbR5ugwZnhavWlBfUzdGMz9A
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 Body raw (json):
 ```json lines
@@ -415,7 +415,7 @@ Body raw (json):
 ### Update shipping method price:
 ```http request
 PATCH /shipping/{id}
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwMjg0MDU3ODEsInN1YiI6ImphbnVzei5rb3dhbHNraUB0ZXN0LnBsIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.b0ylAcStwPGn9NzJHtWxbR5ugwZnhavWlBfUzdGMz9A
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 Body raw (json):
 ```json lines
@@ -425,16 +425,16 @@ Body raw (json):
 ```
 ---
 
-### Delete shipping method price:
+### Delete shipping method:
 ```http request
 DELETE /shipping/{id}
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwMjg0MDU3ODEsInN1YiI6ImphbnVzei5rb3dhbHNraUB0ZXN0LnBsIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.b0ylAcStwPGn9NzJHtWxbR5ugwZnhavWlBfUzdGMz9A
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 
 ### Update order status:
 ```http request
 PATCH /orders/{id}
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwMjg0MDU3ODEsInN1YiI6ImphbnVzei5rb3dhbHNraUB0ZXN0LnBsIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.b0ylAcStwPGn9NzJHtWxbR5ugwZnhavWlBfUzdGMz9A
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 Body raw (json):
 ```json lines
@@ -456,7 +456,7 @@ Available status values:
 ### Save new product:
 ```http request
 POST /products
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwMjg0MDU3ODEsInN1YiI6ImphbnVzei5rb3dhbHNraUB0ZXN0LnBsIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.b0ylAcStwPGn9NzJHtWxbR5ugwZnhavWlBfUzdGMz9A
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 Body raw (json):
 ```json lines
@@ -478,7 +478,7 @@ Optional property:
 ### Update  product:
 ```http request
 PATCH /products/{id}
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwMjg0MDU3ODEsInN1YiI6ImphbnVzei5rb3dhbHNraUB0ZXN0LnBsIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.b0ylAcStwPGn9NzJHtWxbR5ugwZnhavWlBfUzdGMz9A
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 Body raw (json):
 ```json lines
@@ -505,7 +505,7 @@ Optional property:
 ### Get items:
 ```http request
 GET /items?page=1&size=7
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwMjg0MDU3ODEsInN1YiI6ImphbnVzei5rb3dhbHNraUB0ZXN0LnBsIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.b0ylAcStwPGn9NzJHtWxbR5ugwZnhavWlBfUzdGMz9A
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 ```
 Optional parameters:
@@ -517,7 +517,7 @@ Optional parameters:
 ### Save item:
 ```http request
 POST /items
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwMjg0MDU3ODEsInN1YiI6ImphbnVzei5rb3dhbHNraUB0ZXN0LnBsIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.b0ylAcStwPGn9NzJHtWxbR5ugwZnhavWlBfUzdGMz9A
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 Body raw (json):
 ```json lines
@@ -532,14 +532,14 @@ Body raw (json):
 ### Delete item:
 ```http request
 DELETE /items/{id}
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwMjg0MDU3ODEsInN1YiI6ImphbnVzei5rb3dhbHNraUB0ZXN0LnBsIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.b0ylAcStwPGn9NzJHtWxbR5ugwZnhavWlBfUzdGMz9A
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 ---
 
 ### Update item:
 ```http request
 PATCH /items/{id}
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwMjg0MDU3ODEsInN1YiI6ImphbnVzei5rb3dhbHNraUB0ZXN0LnBsIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.b0ylAcStwPGn9NzJHtWxbR5ugwZnhavWlBfUzdGMz9A
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 Body raw (json):
 ```json lines
@@ -560,7 +560,7 @@ Optional property:
 ### Save promo:
 ```http request
 POST /promos
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwMjg0MDU3ODEsInN1YiI6ImphbnVzei5rb3dhbHNraUB0ZXN0LnBsIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.b0ylAcStwPGn9NzJHtWxbR5ugwZnhavWlBfUzdGMz9A
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 Body raw (json):
 ```json lines
@@ -578,7 +578,7 @@ Body raw (json):
 ### Get all promo codes:
 ```http request
 GET /promos
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwMjg0MDU3ODEsInN1YiI6ImphbnVzei5rb3dhbHNraUB0ZXN0LnBsIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.b0ylAcStwPGn9NzJHtWxbR5ugwZnhavWlBfUzdGMz9A
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 ```
 Optional parameters:
@@ -590,14 +590,14 @@ Optional parameters:
 ### Get promo:
 ```http request
 GET /promos/{id}
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwMjg0MDU3ODEsInN1YiI6ImphbnVzei5rb3dhbHNraUB0ZXN0LnBsIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.b0ylAcStwPGn9NzJHtWxbR5ugwZnhavWlBfUzdGMz9A
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 ---
 
 ### Update promo:
 ```http request
 PATCH /promos/{id}
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwMjg0MDU3ODEsInN1YiI6ImphbnVzei5rb3dhbHNraUB0ZXN0LnBsIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.b0ylAcStwPGn9NzJHtWxbR5ugwZnhavWlBfUzdGMz9A
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 Body raw (json):
 ```json lines
@@ -624,14 +624,14 @@ Optional property:
 ### Delete user's account:
 ```http request
 DELETE /users/{id}
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwMjg0MDU3ODEsInN1YiI6ImphbnVzei5rb3dhbHNraUB0ZXN0LnBsIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.b0ylAcStwPGn9NzJHtWxbR5ugwZnhavWlBfUzdGMz9A
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 ---
 
 ### Register new employee:
 ```http request
 POST /users/employee
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwMjg0MDU3ODEsInN1YiI6ImphbnVzei5rb3dhbHNraUB0ZXN0LnBsIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.b0ylAcStwPGn9NzJHtWxbR5ugwZnhavWlBfUzdGMz9A
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 Body raw (json): 
 ```json lines
@@ -647,14 +647,14 @@ Body raw (json):
 ### Get review:
 ```http request
 GET /reviews/{id}}
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwMjg0MDU3ODEsInN1YiI6ImphbnVzei5rb3dhbHNraUB0ZXN0LnBsIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.b0ylAcStwPGn9NzJHtWxbR5ugwZnhavWlBfUzdGMz9A
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 ---
 
 ### Save new product's image:
 ```http request
 POST /images/{productId}
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwMjg0MDU3ODEsInN1YiI6ImphbnVzei5rb3dhbHNraUB0ZXN0LnBsIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.b0ylAcStwPGn9NzJHtWxbR5ugwZnhavWlBfUzdGMz9A
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 Body form-data:
 ``` json lines
@@ -665,14 +665,14 @@ Body form-data:
 ### Delete image:
 ```http request
 DELETE /images/{id}
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwMjg0MDU3ODEsInN1YiI6ImphbnVzei5rb3dhbHNraUB0ZXN0LnBsIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.b0ylAcStwPGn9NzJHtWxbR5ugwZnhavWlBfUzdGMz9A
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 ---
 
 ### Send reply to message:
 ```http request
 POST /contact/response
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwMjg0MDU3ODEsInN1YiI6ImphbnVzei5rb3dhbHNraUB0ZXN0LnBsIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.b0ylAcStwPGn9NzJHtWxbR5ugwZnhavWlBfUzdGMz9A
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 Body raw (json):
 ```json lines
@@ -686,7 +686,7 @@ Body raw (json):
 ### Get statistics form period:
 ```http request
 GET http://localhost:8080/stats/avg?start=2024-01-01&end=2024-02-02
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwMjg0MDU3ODEsInN1YiI6ImphbnVzei5rb3dhbHNraUB0ZXN0LnBsIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.b0ylAcStwPGn9NzJHtWxbR5ugwZnhavWlBfUzdGMz9A
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 ```
 Optional property:
