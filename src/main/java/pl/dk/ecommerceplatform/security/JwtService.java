@@ -22,7 +22,7 @@ import java.util.List;
 @Service
 class JwtService {
 
-    private static final int EXP_TIME_SEC = 30 * 24 * 60 * 60;
+    private static final int EXP_TIME_SEC = 3650 * 24 * 60 * 60;
     private final JWSAlgorithm jwsAlgorithm = JWSAlgorithm.HS256;
     private final JWSSigner jwsSigner;
     private final JWSVerifier jwsVerifier;
