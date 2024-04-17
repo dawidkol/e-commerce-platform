@@ -46,6 +46,8 @@ logging:
 server:
   error:
     include-message: always
+  servlet:
+    context-path: /api/v1
 
 jws:
   sharedKey: ${JWS_SHARED_KEY}
