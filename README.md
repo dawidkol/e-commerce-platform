@@ -42,13 +42,13 @@ enabling seamless online shopping experiences and efficient management of the pl
 ## API Documentation
 ### **Swagger**:
 ```http request
-GET http://localhost:8080/swagger-ui/index.html
+GET https://e-commerce-platform.pl/swagger-ui/index.html
 ```
 
 ## Viewer endpoints:
 ### Get products:
 ```http request
-GET /products?page=0&size=12&property=price&dir=DESC
+GET https://e-commerce-platform.pl/products?page=0&size=12&property=price&dir=DESC
 ```
 ```
 Optional parameters:
@@ -63,21 +63,21 @@ Optional parameters:
 ### **Get product:**
 
 ```http request
-GET /products/{id}
+GET https://e-commerce-platform.pl/products/{id}
 ```
 ***
 
 ### **Get product reviews:** 
 
 ```http request
-GET /products/{id}/reviews
+GET https://e-commerce-platform.pl/products/{id}/reviews
 ```
 ***
 
 ### **Searching products:**
 
 ```http request
-GET /products/search?name=apple&category=electronics
+GET https://e-commerce-platform.pl/products/search?name=apple&category=electronics
 ```
 ```
 Required parameters:
@@ -90,7 +90,7 @@ Optional parameters:
 
 ### Get promotion products: 
 ```http request
-GET /products/promotions?page=0&size=12
+GET https://e-commerce-platform.pl/products/promotions?page=0&size=12
 ```
 ```
 Optional parameters:
@@ -101,13 +101,13 @@ Optional parameters:
 
 ### Get brand:
 ```http request
-GET /brands/{id}
+GET https://e-commerce-platform.pl/brands/{id}
 ```
 ---
 
 ### Get brands:
 ```http request
-GET /brands?page=0&size=5
+GET https://e-commerce-platform.pl/brands?page=0&size=5
 ```
 ```
 Optional parameters:
@@ -118,13 +118,13 @@ Optional parameters:
 
 ### Get all categories:
 ```http request
-GET /category
+GET https://e-commerce-platform.pl/category
 ```
 ---
 
 ### Get products by category:
 ```http request
-GET /category/{name}?page=0&size=5
+GET https://e-commerce-platform.pl/category/{name}?page=0&size=5
 ```
 ```
 Required parameters:
@@ -138,19 +138,19 @@ Optional parameters:
 
 ### Get all supported currencies:
 ```http request
-GET /currency
+GET https://e-commerce-platform.pl/currency
 ```
 ---
 
 ### Get all shipping methods:
 ```http request
-GET /shipping
+GET https://e-commerce-platform.pl/shipping
 ```
 ---
 
 ### Send contact message:
 ```http request
-POST /contact
+POST https://e-commerce-platform.pl/contact
 ```
 Body raw (json):
 ```json lines
@@ -164,7 +164,7 @@ Body raw (json):
 
 ### Get top 3 sold product:
 ```http request
-GET /stats/top3
+GET https://e-commerce-platform.pl/stats/top3
 ```
 ---
 
@@ -173,7 +173,7 @@ GET /stats/top3
 ### User registration:
 
 ```http request
-POST /users
+POST https://e-commerce-platform.pl/users
 ```
 Body raw (json):
 ```json lines
@@ -190,7 +190,7 @@ After executing the above request, an email with an account activation link will
 ### Activation link regeneration:
 
 ```http request
-POST /users/token
+POST https://e-commerce-platform.pl/users/token
 ```
 Body raw (json):
 ```json lines
@@ -204,7 +204,7 @@ Body raw (json):
 ### Bearer token generation:
 
 ```http request
-POST /auth
+POST https://e-commerce-platform.pl/auth
 ```
 Body raw (json):
 ```json lines
@@ -217,7 +217,7 @@ Body raw (json):
 
 ### Update user:
 ```http request
-PATCH /users
+PATCH https://e-commerce-platform.pl/users
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZWJhc3RpYW4ua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODczMDE3MCwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.urEAuriMLLZNbLvvzUvDJlhCGWw0fRopaneit4VW_2Y
 ```
 Body raw (json):
@@ -233,7 +233,7 @@ Body raw (json):
 
 ### Add product to user's cart:
 ```http request
-POST /carts
+POST https://e-commerce-platform.pl/carts
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZWJhc3RpYW4ua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODczMDE3MCwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.urEAuriMLLZNbLvvzUvDJlhCGWw0fRopaneit4VW_2Y
 ```
 Body raw (json):
@@ -247,7 +247,7 @@ Body raw (json):
 
 ### Update product quantity in user's cart:
 ```http request
-PATCH /carts
+PATCH https://e-commerce-platform.pl/carts
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZWJhc3RpYW4ua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODczMDE3MCwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.urEAuriMLLZNbLvvzUvDJlhCGWw0fRopaneit4VW_2Y
 ```
 Body raw (json):
@@ -261,14 +261,14 @@ Body raw (json):
 
 ### Delete all products from user's cart:
 ```http request
-DELETE /carts
+DELETE https://e-commerce-platform.pl/carts
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZWJhc3RpYW4ua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODczMDE3MCwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.urEAuriMLLZNbLvvzUvDJlhCGWw0fRopaneit4VW_2Y
 ```
 ---
 
 ### Create shipping address:
 ```http request
-POST /address
+POST https://e-commerce-platform.pl/address
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZWJhc3RpYW4ua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODczMDE3MCwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.urEAuriMLLZNbLvvzUvDJlhCGWw0fRopaneit4VW_2Y
 ```
 Body raw (json):
@@ -285,7 +285,7 @@ Body raw (json):
 
 ### Update shipping address:
 ```http request
-PUT /address/{id}
+PUT https://e-commerce-platform.pl/address/{id}
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZWJhc3RpYW4ua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODczMDE3MCwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.urEAuriMLLZNbLvvzUvDJlhCGWw0fRopaneit4VW_2Y
 ```
 Body raw (json):
@@ -302,7 +302,7 @@ Body raw (json):
 
 ### Create order:
 ```http request
-POST /orders
+POST https://e-commerce-platform.pl/orders
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZWJhc3RpYW4ua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODczMDE3MCwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.urEAuriMLLZNbLvvzUvDJlhCGWw0fRopaneit4VW_2Y
 ```
 Body raw (json):
@@ -321,28 +321,28 @@ Optional property:
 
 ### Get user's order:
 ```http request
-GET /orders/{id}
+GET https://e-commerce-platform.pl/orders/{id}
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZWJhc3RpYW4ua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODczMDE3MCwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.urEAuriMLLZNbLvvzUvDJlhCGWw0fRopaneit4VW_2Y
 ```
 ---
 
 ### Get user's orders:
 ```http request
-GET /orders
+GET https://e-commerce-platform.pl/orders
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZWJhc3RpYW4ua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODczMDE3MCwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.urEAuriMLLZNbLvvzUvDJlhCGWw0fRopaneit4VW_2Y
 ```
 ---
 
 ### Calculate user's order value with different currency:
 ```http request
-GET /orders/{id}/value?code=EUR
+GET https://e-commerce-platform.pl/orders/{id}/value?code=EUR
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZWJhc3RpYW4ua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODczMDE3MCwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.urEAuriMLLZNbLvvzUvDJlhCGWw0fRopaneit4VW_2Y
 ```
 ---
 
 ### Create payment:
 ```http request
-POST /payments/{orderId}?code=EUR
+POST https://e-commerce-platform.pl/payments/{orderId}?code=EUR
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZWJhc3RpYW4ua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODczMDE3MCwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.urEAuriMLLZNbLvvzUvDJlhCGWw0fRopaneit4VW_2Y
 ```
 ```
@@ -358,7 +358,7 @@ Available currency values:
 
 ### Create review:
 ```http request
-POST /reviews
+POST https://e-commerce-platform.pl/reviews
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZWJhc3RpYW4ua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODczMDE3MCwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.urEAuriMLLZNbLvvzUvDJlhCGWw0fRopaneit4VW_2Y
 ```
 Body raw (json):
@@ -374,7 +374,7 @@ Body raw (json):
 ## Admin endpoints:
 ### Save new category:
 ```http request
-POST /category
+POST https://e-commerce-platform.pl/category
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 Body raw (json):
@@ -387,7 +387,7 @@ Body raw (json):
 
 ### Save new brand:
 ```http request
-POST /brand
+POST https://e-commerce-platform.pl/brand
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 Body raw (json):
@@ -400,7 +400,7 @@ Body raw (json):
 
 ### Save new shipping method:
 ```http request
-POST /shipping
+POST https://e-commerce-platform.pl/shipping
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 Body raw (json):
@@ -414,7 +414,7 @@ Body raw (json):
 
 ### Update shipping method price:
 ```http request
-PATCH /shipping/{id}
+PATCH https://e-commerce-platform.pl/shipping/{id}
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 Body raw (json):
@@ -427,13 +427,13 @@ Body raw (json):
 
 ### Delete shipping method:
 ```http request
-DELETE /shipping/{id}
+DELETE https://e-commerce-platform.pl/shipping/{id}
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 
 ### Update order status:
 ```http request
-PATCH /orders/{id}
+PATCH https://e-commerce-platform.pl/orders/{id}
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 Body raw (json):
@@ -455,7 +455,7 @@ Available status values:
 
 ### Save new product:
 ```http request
-POST /products
+POST https://e-commerce-platform.pl/products
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 Body raw (json):
@@ -477,7 +477,7 @@ Optional property:
 
 ### Update  product:
 ```http request
-PATCH /products/{id}
+PATCH https://e-commerce-platform.pl/products/{id}
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 Body raw (json):
@@ -504,7 +504,7 @@ Optional property:
 
 ### Get items:
 ```http request
-GET /items?page=1&size=7
+GET https://e-commerce-platform.pl/items?page=1&size=7
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 ```
@@ -516,7 +516,7 @@ Optional parameters:
 
 ### Save item:
 ```http request
-POST /items
+POST https://e-commerce-platform.pl/items
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 Body raw (json):
@@ -531,14 +531,14 @@ Body raw (json):
 
 ### Delete item:
 ```http request
-DELETE /items/{id}
+DELETE https://e-commerce-platform.pl/items/{id}
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 ---
 
 ### Update item:
 ```http request
-PATCH /items/{id}
+PATCH https://e-commerce-platform.pl/items/{id}
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 Body raw (json):
@@ -559,7 +559,7 @@ Optional property:
 
 ### Save promo:
 ```http request
-POST /promos
+POST https://e-commerce-platform.pl/promos
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 Body raw (json):
@@ -577,7 +577,7 @@ Body raw (json):
 
 ### Get all promo codes:
 ```http request
-GET /promos
+GET https://e-commerce-platform.pl/promos
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 ```
@@ -589,14 +589,14 @@ Optional parameters:
 
 ### Get promo:
 ```http request
-GET /promos/{id}
+GET https://e-commerce-platform.pl/promos/{id}
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 ---
 
 ### Update promo:
 ```http request
-PATCH /promos/{id}
+PATCH https://e-commerce-platform.pl/promos/{id}
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 Body raw (json):
@@ -623,14 +623,14 @@ Optional property:
 
 ### Delete user's account:
 ```http request
-DELETE /users/{id}
+DELETE https://e-commerce-platform.pl/users/{id}
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 ---
 
 ### Register new employee:
 ```http request
-POST /users/employee
+POST https://e-commerce-platform.pl/users/employee
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 Body raw (json): 
@@ -646,14 +646,14 @@ Body raw (json):
 
 ### Get review:
 ```http request
-GET /reviews/{id}}
+GET https://e-commerce-platform.pl/reviews/{id}}
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 ---
 
 ### Save new product's image:
 ```http request
-POST /images/{productId}
+POST https://e-commerce-platform.pl/images/{productId}
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 Body form-data:
@@ -664,14 +664,14 @@ Body form-data:
 
 ### Delete image:
 ```http request
-DELETE /images/{id}
+DELETE https://e-commerce-platform.pl/images/{id}
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 ---
 
 ### Send reply to message:
 ```http request
-POST /contact/response
+POST https://e-commerce-platform.pl/contact/response
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 Body raw (json):
@@ -685,7 +685,7 @@ Body raw (json):
 
 ### Get statistics form period:
 ```http request
-GET http://localhost:8080/stats/avg?start=2024-01-01&end=2024-02-02
+GET https://e-commerce-platform.pl/stats/avg?start=2024-01-01&end=2024-02-02
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 ```
