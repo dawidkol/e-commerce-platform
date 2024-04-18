@@ -39,6 +39,13 @@ enabling seamless online shopping experiences and efficient management of the pl
 * **User Management:** Admins can delete user accounts, register new employees, and manage user-related operations like resetting activation links and sending replies to user messages.
 ---
 
+## Entity relationship diagram:
+
+
+![Screenshot 2024-04-18 at 22 12 54](https://github.com/dawidkol/e-commerce-platform/assets/15035709/d6875806-5d9e-4d80-b84e-8c35626fd842)
+
+---
+
 ## API Documentation
 ### **Swagger**:
 ```http request
