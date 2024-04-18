@@ -7,15 +7,14 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.dk.ecommerceplatform.confirmationToken.dtos.TokenDto;
-import pl.dk.ecommerceplatform.constant.TokenConstant;
 import pl.dk.ecommerceplatform.error.exceptions.token.TokenNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.user.UserNotFoundException;
 import pl.dk.ecommerceplatform.user.User;
 import pl.dk.ecommerceplatform.user.UserRepository;
-import pl.dk.ecommerceplatform.user.dtos.UserDto;
 import pl.dk.ecommerceplatform.utils.UtilsService;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 import static pl.dk.ecommerceplatform.constant.TokenConstant.VALID_TIME;
@@ -55,7 +54,11 @@ class TokenServiceImpl implements TokenService {
     @Scheduled(cron = "${scheduler.token}")
     public void cleanInactiveTokens() {
         logger.debug("Starting deleting inactive tokens");
-        tokenRepository.deleteAllInactiveTokens();
-        logger.debug("Token table cleaned");
+        List<Token> allExpiredTokens = tokenRepository.findAllExpiredTokens();
+        if (!allExpiredTokens.isEmpty()) {
+            tokenRepository.deleteAll(allExpiredTokens);
+            logger.debug("Token table cleaned. Deleted {} records", allExpiredTokens.size());
+        } else
+            logger.debug("No tokens were expired");
     }
 }

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import pl.dk.ecommerceplatform.confirmationToken.dtos.TokenDto;
@@ -13,6 +14,8 @@ import pl.dk.ecommerceplatform.user.User;
 import pl.dk.ecommerceplatform.user.UserRepository;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -160,10 +163,25 @@ class TokenServiceTest {
     @Test
     void itShouldDeleteAllInactiveTokens() throws InterruptedException {
         // Given
+        when(tokenRepository.findAllExpiredTokens()).thenReturn(List.of(mock(Token.class), mock(Token.class), mock(Token.class)));
+
         // When
         underTest.cleanInactiveTokens();
 
         // Then
-        verify(tokenRepository, times(1)).deleteAllInactiveTokens();
+        verify(tokenRepository, times(1)).findAllExpiredTokens();
+        verify(tokenRepository, times(1)).deleteAll(any());
+    }
+
+    @Test
+    void itShouldDeleteAllInactiveNoTokensToDelete() throws InterruptedException {
+        // Given
+        when(tokenRepository.findAllExpiredTokens()).thenReturn(Collections.emptyList());
+
+        // When
+        underTest.cleanInactiveTokens();
+
+        // Then
+        verify(tokenRepository, times(1)).findAllExpiredTokens();
     }
 }

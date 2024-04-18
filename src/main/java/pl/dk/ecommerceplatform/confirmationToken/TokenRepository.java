@@ -20,4 +20,7 @@ interface TokenRepository extends JpaRepository<Token, Long> {
     @Query(value = "DELETE FROM token WHERE expiration > NOW()", nativeQuery = true)
     void deleteAllInactiveTokens();
 
+    @Query(value = "SELECT * FROM token WHERE expiration > NOW()", nativeQuery = true)
+    List<Token> findAllExpiredTokens();
+
 }
