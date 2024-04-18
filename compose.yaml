@@ -7,5 +7,8 @@ services:
       POSTGRES_DB: e-commerce
       POSTGRES_PASSWORD: password
       POSTGRES_USER: admin
+      TZ: "Europe/Warsaw"
     ports:
       - '5432:5432'
+    volumes:
+      - ./postgres-data:/var/lib/posgresql/data
