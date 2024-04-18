@@ -215,6 +215,14 @@ Body raw (json):
 ```
 ---
 
+### If you prefer not to register, you can generate a Bearer token using the data below:
+```json lines
+{
+  "email": "sebastian.kowalski@test.pl",
+  "password": "password"
+}
+```
+
 ### Update user:
 ```http request
 PATCH https://e-commerce-platform.pl/api/v1/users
@@ -372,6 +380,15 @@ Body raw (json):
 ---
 
 ## Admin endpoints:
+
+### Admin example data for a Bearer token generation:
+```json lines
+{
+  "email": "janusz.kowalski@test.pl",
+  "password": "password"
+}
+```
+
 ### Save new category:
 ```http request
 POST https://e-commerce-platform.pl/api/v1/category
@@ -699,9 +716,12 @@ If you do not provide properties, statistics for the last month will be generate
 ## Test coverage: 
 ![Screenshot 2024-04-13 at 23 22 01](https://github.com/dawidkol/e-commerce-platform/assets/15035709/1d0e31c0-b408-45d8-ae97-4cb6519a9b60)
 
+---
 ## Author:
-```injectedfreemarker
-dawid.kolano@icloud.com
+### dawid.kolano@icloud.com
+
+---
+
 
 
 
