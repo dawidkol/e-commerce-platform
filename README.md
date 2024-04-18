@@ -604,14 +604,14 @@ Optional parameters(pagination):
 ```
 ---
 
-### Get promo:
+### Get promo code:
 ```http request
 GET https://e-commerce-platform.pl/api/v1/promos/{id}
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 ---
 
-### Update promo:
+### Update promo code:
 ```http request
 PATCH https://e-commerce-platform.pl/api/v1/promos/{id}
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
@@ -686,7 +686,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzd
 ```
 ---
 
-### Send reply to message:
+### Send an email reply to the contact message:
 ```http request
 POST https://e-commerce-platform.pl/api/v1/contact/response
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
@@ -700,7 +700,7 @@ Body raw (json):
 ```
 ---
 
-### Get statistics from period:
+### Get sales statistics for the period:
 ```http request
 GET https://e-commerce-platform.pl/api/v1/stats/avg?start=2024-01-01&end=2024-02-02
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
