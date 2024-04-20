@@ -70,7 +70,7 @@ class PromoService {
         int[] discounts = IntStream.rangeClosed(5, 36).toArray();
         LocalDateTime activeStart = LocalDateTime.now();
         LocalDateTime activeEnd = activeStart.plusDays(1L);
-        int discount = discounts[(random.nextInt(0, discounts.length))];
+        int discount = discounts[(random.nextInt(1, discounts.length))];
         return Promo.builder()
                 .code(code)
                 .discountPercent(random.nextLong(discount))
