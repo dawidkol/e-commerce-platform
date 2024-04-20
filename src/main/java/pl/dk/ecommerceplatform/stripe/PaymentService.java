@@ -9,12 +9,15 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.dk.ecommerceplatform.currency.CurrencyCode;
 import pl.dk.ecommerceplatform.error.exceptions.order.OrderNotFoundException;
+import pl.dk.ecommerceplatform.error.exceptions.stripe.PaymentException;
 import pl.dk.ecommerceplatform.error.exceptions.stripe.UserNotMatchException;
 import pl.dk.ecommerceplatform.order.Order;
 import pl.dk.ecommerceplatform.order.OrderRepository;
 import pl.dk.ecommerceplatform.order.OrderService;
+import pl.dk.ecommerceplatform.order.OrderStatus;
 import pl.dk.ecommerceplatform.order.dtos.OrderValueDto;
 import pl.dk.ecommerceplatform.stripe.dtos.CreatePaymentRequest;
 import pl.dk.ecommerceplatform.stripe.dtos.PaymentResponse;
@@ -41,9 +44,10 @@ class PaymentService {
         Stripe.apiKey = stripeApiKey;
     }
 
+    @Transactional
     public PaymentResponse createPayment(Long orderId, String emailFromSecurityContext, String currencyCode) throws StripeException {
         OrderValueDto orderValueDto = orderService.calculateOrderValueWithOtherCurrency(orderId, currencyCode);
-        CreatePaymentRequest paymentRequest = this.createPaymentRequest(orderId);
+        CreatePaymentRequest paymentRequest = this.createAndValidatePaymentRequest(orderId);
 
         if (!emailFromSecurityContext.equals(paymentRequest.customerEmail())) {
             throw new UserNotMatchException("User %s not match with user from Token".formatted(paymentRequest.customerEmail()));
@@ -83,12 +87,18 @@ class PaymentService {
 
     }
 
-    private CreatePaymentRequest createPaymentRequest(Long orderId) {
-        Order order = orderRepository.findUnpaidOrder(orderId).orElseThrow(OrderNotFoundException::new);
-        return CreatePaymentRequest.builder()
+    private CreatePaymentRequest createAndValidatePaymentRequest(Long orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
+        if (order.getStatus() != OrderStatus.NEW) {
+            throw new PaymentException("Payment creation request for order = %s rejected. Current order status = %s"
+                    .formatted(orderId, order.getStatus()));
+        }
+        CreatePaymentRequest build = CreatePaymentRequest.builder()
                 .customerEmail(order.getUser().getEmail())
                 .amount(order.getOrderValue().add(order.getShipping().getShippingCost()))
                 .build();
+        order.setStatus(OrderStatus.PAYMENT_IN_PROGRESS);
+        return build;
     }
 
     private PaymentResponse getPaymentSucceed(Session session) {
