@@ -61,19 +61,19 @@ class PromoService {
     public void generateRandomPromoCode() {
         Promo randomPromoCode = this.createRandomPromoCode();
         promoRepository.save(randomPromoCode);
-        logger.warn("Random promo code generated. Code = {} ", randomPromoCode.getCode());
+        logger.info("Random promo code generated. Code = {} ", randomPromoCode.getCode());
     }
 
     private Promo createRandomPromoCode() {
         String code = UUID.randomUUID().toString();
         Random random = new Random();
-        int[] discounts = IntStream.rangeClosed(5, 36).toArray();
+        int[] discounts = IntStream.rangeClosed(5, 21).toArray();
         LocalDateTime activeStart = LocalDateTime.now();
         LocalDateTime activeEnd = activeStart.plusDays(1L);
         int discount = discounts[(random.nextInt(1, discounts.length))];
         return Promo.builder()
                 .code(code)
-                .discountPercent(random.nextLong(discount))
+                .discountPercent(Long.valueOf(discount))
                 .activeStart(activeStart)
                 .activeEnd(activeEnd)
                 .active(true)
