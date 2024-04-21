@@ -3,9 +3,12 @@ package pl.dk.ecommerceplatform.stripe;
 import com.stripe.exception.StripeException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pl.dk.ecommerceplatform.security.SecurityService;
 import pl.dk.ecommerceplatform.stripe.dtos.PaymentResponse;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/payments")
@@ -16,9 +19,17 @@ class PaymentController {
     private final SecurityService securityService;
 
     @PostMapping("/{orderId}")
-    public ResponseEntity<PaymentResponse> createPayment(@PathVariable Long orderId, @RequestParam(name = "code", required = false, defaultValue = "PLN") String currencyCode) throws StripeException {
+    @PreAuthorize(value = "hasRole('ROLE_CUSTOMER')")
+    public ResponseEntity<PaymentResponse> createPayment(@PathVariable Long orderId, @RequestParam(name = "code", required = false, defaultValue = "PLN") String currencyCode) {
         String emailFromSecurityContext = securityService.getEmailFromSecurityContext();
         PaymentResponse payment = paymentService.createPayment(orderId, emailFromSecurityContext, currencyCode);
         return ResponseEntity.ok(payment);
+    }
+
+    @PostMapping("/refund/{orderId}")
+    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> getList(@PathVariable Long orderId) throws StripeException {
+         paymentService.refund(orderId);
+         return ResponseEntity.ok().build();
     }
 }

@@ -68,17 +68,32 @@ class WebHookController {
                 logger.info("Payment for {} succeed", paymentIntent.getAmount());
                 break;
             }
+            case "charge.succeeded": {
+                logger.info(event.getType());
+                Charge charge = (Charge) stripeObject;
+                logger.info("Charge succeed.Charge id {},  Amount: {}", charge.getId(), charge.getAmount());
+                break;
+            }
             case "checkout.session.completed": {
                 logger.info(event.getType());
                 try {
-                    webHookService.setOrderStatusAsPaid(payload, event);
+                    logger.info(payload);
+                    webHookService.saveStripePayment(payload, event);
+                    break;
                 } catch (NumberFormatException ex) {
                     logger.error("OrderId not received");
                 }
                 break;
             }
+            case "charge.refunded": {
+                logger.info(event.getType());
+                Charge charge = (Charge) stripeObject;
+                String paymentIntent = charge.getPaymentIntent();
+                webHookService.refund(paymentIntent);
+                break;
+            }
             default:
-                logger.info("Unhandled event type: " + event.getType());
+                logger.info("Unhandled event type: " + event.getType() + "payload = " + payload);
         }
         return ResponseEntity.ok().build();
     }

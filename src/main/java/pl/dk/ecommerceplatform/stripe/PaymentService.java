@@ -1,18 +1,28 @@
 package pl.dk.ecommerceplatform.stripe;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
+import com.stripe.model.Refund;
 import com.stripe.model.checkout.Session;
+import com.stripe.net.StripeResponse;
+import com.stripe.param.RefundCreateParams;
 import com.stripe.param.checkout.SessionCreateParams;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestClient;
+import org.springframework.web.server.ServerErrorException;
 import pl.dk.ecommerceplatform.currency.CurrencyCode;
 import pl.dk.ecommerceplatform.error.exceptions.order.OrderNotFoundException;
+import pl.dk.ecommerceplatform.error.exceptions.server.ServerException;
 import pl.dk.ecommerceplatform.error.exceptions.stripe.PaymentException;
+import pl.dk.ecommerceplatform.error.exceptions.stripe.RefundException;
 import pl.dk.ecommerceplatform.error.exceptions.stripe.UserNotMatchException;
 import pl.dk.ecommerceplatform.order.Order;
 import pl.dk.ecommerceplatform.order.OrderRepository;
@@ -29,12 +39,27 @@ import java.util.List;
 import static com.stripe.param.checkout.SessionCreateParams.*;
 
 @Service
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 class PaymentService {
 
     private final OrderRepository orderRepository;
     private final OrderService orderService;
+    private final RestClient restClient;
+    private final StripePaymentRepository stripePaymentRepository;
     private static final Logger logger = UtilsService.getLogger(PaymentService.class);
+
+    public PaymentService(OrderRepository orderRepository,
+                          OrderService orderService,
+                          RestClient.Builder restClient,
+                          StripePaymentRepository stripePaymentRepository) {
+        this.orderRepository = orderRepository;
+        this.orderService = orderService;
+        this.restClient = restClient
+                .baseUrl("https://api.stripe.com")
+                .defaultHeader("Authorization", "Bearer " + stripeApiKey)
+                .build();
+        this.stripePaymentRepository = stripePaymentRepository;
+    }
 
     @Value("${stripe.api.key}")
     private String stripeApiKey;
@@ -45,7 +70,7 @@ class PaymentService {
     }
 
     @Transactional
-    public PaymentResponse createPayment(Long orderId, String emailFromSecurityContext, String currencyCode) throws StripeException {
+    public PaymentResponse createPayment(Long orderId, String emailFromSecurityContext, String currencyCode) {
         OrderValueDto orderValueDto = orderService.calculateOrderValueWithOtherCurrency(orderId, currencyCode);
         CreatePaymentRequest paymentRequest = this.createAndValidatePaymentRequest(orderId);
 
@@ -81,16 +106,19 @@ class PaymentService {
                         .setCancelUrl("https://example.com/cancel")
                         .build();
 
-        Session session = Session.create(params);
-        logger.info(session.getUrl());
-        return getPaymentSucceed(session);
-
+        try {
+            Session session = Session.create(params);
+            logger.info(session.getUrl());
+            return getPaymentSucceed(session);
+        } catch (StripeException ex) {
+            throw new ServerException();
+        }
     }
 
     private CreatePaymentRequest createAndValidatePaymentRequest(Long orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
         if (order.getStatus() != OrderStatus.NEW) {
-            throw new PaymentException("Payment creation request for order = %s rejected. Current order status = %s"
+            throw new PaymentException("StripePayment creation request for order = %s rejected. Current order status = %s"
                     .formatted(orderId, order.getStatus()));
         }
         CreatePaymentRequest build = CreatePaymentRequest.builder()
@@ -103,8 +131,26 @@ class PaymentService {
 
     private PaymentResponse getPaymentSucceed(Session session) {
         return PaymentResponse.builder()
-                .message("Payment created")
+                .message("StripePayment created")
                 .url(session.getUrl())
                 .build();
+    }
+
+    public void refund(Long orderId) {
+        StripePayment stripePayment = stripePaymentRepository.findByOrder_id(orderId)
+                .orElseThrow(() -> new RefundException("StripePayment for orderId %s not found".formatted(orderId)));
+        RefundCreateParams params = RefundCreateParams.builder()
+                .setPaymentIntent(stripePayment.getPaymentIntent()).build();
+        Refund refund;
+        try {
+            refund = Refund.create(params);
+        } catch (StripeException ex) {
+            throw new ServerException();
+        }
+        restClient.post()
+                .uri("/v1/refunds")
+                .header("Authorization", "Bearer " + stripeApiKey)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(refund);
     }
 }

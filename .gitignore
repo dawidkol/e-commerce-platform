@@ -37,4 +37,4 @@ screencast/
 .DS_Store
 
 ### postgres volume ##
-postgres-data/*
+pg-data/*
