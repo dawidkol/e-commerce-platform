@@ -1,23 +1,18 @@
 package pl.dk.ecommerceplatform.stripe;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Refund;
 import com.stripe.model.checkout.Session;
-import com.stripe.net.StripeResponse;
 import com.stripe.param.RefundCreateParams;
 import com.stripe.param.checkout.SessionCreateParams;
 import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
-import org.springframework.web.server.ServerErrorException;
 import pl.dk.ecommerceplatform.currency.CurrencyCode;
 import pl.dk.ecommerceplatform.error.exceptions.order.OrderNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.server.ServerException;
@@ -156,7 +151,7 @@ class PaymentService {
     }
 
     public List<StripePaymentDto> getAllPaymentsToRefund() {
-        return stripePaymentRepository.findAllByRefundIsTrue()
+        return stripePaymentRepository.findAllByRefundIsTrueAndRefundedIsFalse()
                 .stream()
                 .map(StripePaymentMapper::map)
                 .toList();

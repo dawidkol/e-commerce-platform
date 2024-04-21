@@ -13,5 +13,5 @@ public interface StripePaymentRepository extends JpaRepository<StripePayment, Lo
 
     Optional<StripePayment> findByPaymentIntent(String paymentIntent);
 
-    List<StripePayment> findAllByRefundIsTrue();
+    List<StripePayment> findAllByRefundIsTrueAndRefundedIsFalse();
 }
