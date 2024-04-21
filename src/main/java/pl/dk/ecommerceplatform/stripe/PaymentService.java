@@ -31,6 +31,7 @@ import pl.dk.ecommerceplatform.order.OrderStatus;
 import pl.dk.ecommerceplatform.order.dtos.OrderValueDto;
 import pl.dk.ecommerceplatform.stripe.dtos.CreatePaymentRequest;
 import pl.dk.ecommerceplatform.stripe.dtos.PaymentResponse;
+import pl.dk.ecommerceplatform.stripe.dtos.StripePaymentDto;
 import pl.dk.ecommerceplatform.utils.UtilsService;
 
 import java.math.BigDecimal;
@@ -152,5 +153,12 @@ class PaymentService {
                 .header("Authorization", "Bearer " + stripeApiKey)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(refund);
+    }
+
+    public List<StripePaymentDto> getAllPaymentsToRefund() {
+        return stripePaymentRepository.findAllByRefundIsTrue()
+                .stream()
+                .map(StripePaymentMapper::map)
+                .toList();
     }
 }

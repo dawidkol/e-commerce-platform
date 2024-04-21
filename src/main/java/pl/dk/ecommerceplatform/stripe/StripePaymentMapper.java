@@ -10,6 +10,7 @@ class StripePaymentMapper {
                 .orderId(stripePayment.getOrder().getId())
                 .customerEmail(stripePayment.getOrder().getUser().getEmail())
                 .refund(stripePayment.getRefund())
+                .refunded(stripePayment.getRefunded())
                 .build();
     }
 }

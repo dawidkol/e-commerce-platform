@@ -7,6 +7,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pl.dk.ecommerceplatform.security.SecurityService;
 import pl.dk.ecommerceplatform.stripe.dtos.PaymentResponse;
+import pl.dk.ecommerceplatform.stripe.dtos.StripePaymentDto;
 
 import java.util.List;
 
@@ -28,8 +29,15 @@ class PaymentController {
 
     @PostMapping("/refund/{orderId}")
     @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> getList(@PathVariable Long orderId) throws StripeException {
-         paymentService.refund(orderId);
-         return ResponseEntity.ok().build();
+    public ResponseEntity<?> getList(@PathVariable Long orderId) {
+        paymentService.refund(orderId);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/refunds")
+    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<StripePaymentDto>> getAllPaymentsToRefund() {
+        List<StripePaymentDto> allPaymentsToRefund = paymentService.getAllPaymentsToRefund();
+        return ResponseEntity.ok(allPaymentsToRefund);
     }
 }

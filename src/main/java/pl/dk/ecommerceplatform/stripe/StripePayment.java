@@ -13,7 +13,7 @@ import pl.dk.ecommerceplatform.order.Order;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-class StripePayment {
+public class StripePayment {
 
     @Id
     private String paymentIntent;
