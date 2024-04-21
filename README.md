@@ -41,7 +41,7 @@ enabling seamless online shopping experiences and efficient management of the pl
 
 ## Entity relationship diagram:
 
-![Screenshot 2024-04-18 at 22 12 54](https://github.com/dawidkol/e-commerce-platform/assets/15035709/d6875806-5d9e-4d80-b84e-8c35626fd842)
+![Screenshot 2024-04-21 at 18 01 55](https://github.com/dawidkol/e-commerce-platform/assets/15035709/7c5a8f54-2d7c-4f4d-ad71-c1180c112316)
 
 ---
 
@@ -722,14 +722,14 @@ If you do not provide properties, statistics for the last month will be generate
 ```
 ---
 
-### Get all payments to refund
+### Get all payments to refund:
 ```http request
 GET https://e-commerce-platform.pl/api/v1/payments/refunds
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 ---
 
-### Refund payment
+### Refund payment:
 ```http request
 POST https://e-commerce-platform.pl/api/v1/
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
