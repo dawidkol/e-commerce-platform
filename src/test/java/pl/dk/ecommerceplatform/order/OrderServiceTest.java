@@ -10,8 +10,10 @@ import org.springframework.data.domain.PageRequest;
 import pl.dk.ecommerceplatform.cart.Cart;
 import pl.dk.ecommerceplatform.cart.CartRepository;
 import pl.dk.ecommerceplatform.currency.CurrencyCode;
+import pl.dk.ecommerceplatform.error.exceptions.order.OrderCancelledException;
 import pl.dk.ecommerceplatform.error.exceptions.order.OrderNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.order.OrderStatusNotFoundException;
+import pl.dk.ecommerceplatform.error.exceptions.stripe.UserNotMatchException;
 import pl.dk.ecommerceplatform.error.exceptions.warehouse.ItemNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.warehouse.QuantityException;
 import pl.dk.ecommerceplatform.order.dtos.OrderDto;
@@ -21,6 +23,8 @@ import pl.dk.ecommerceplatform.order.dtos.UpdateOrderStatusDto;
 import pl.dk.ecommerceplatform.product.Product;
 import pl.dk.ecommerceplatform.promo.Promo;
 import pl.dk.ecommerceplatform.promo.PromoRepository;
+import pl.dk.ecommerceplatform.stripe.StripePaymentRepository;
+import pl.dk.ecommerceplatform.user.User;
 import pl.dk.ecommerceplatform.warehouse.Item;
 import pl.dk.ecommerceplatform.warehouse.WarehouseRepository;
 
@@ -28,6 +32,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -43,6 +48,8 @@ class OrderServiceTest {
     private CartRepository cartRepository;
     @Mock
     private PromoRepository promoRepository;
+    @Mock
+    private StripePaymentRepository stripePaymentRepository;
 
     private OrderService underTest;
     private AutoCloseable autoCloseable;
@@ -50,7 +57,7 @@ class OrderServiceTest {
     @BeforeEach
     void init() {
         autoCloseable = MockitoAnnotations.openMocks(this);
-        underTest = new OrderServiceImpl(orderRepository, orderDtoMapper, warehouseRepository, cartRepository, promoRepository);
+        underTest = new OrderServiceImpl(orderRepository, orderDtoMapper, warehouseRepository, cartRepository, promoRepository, stripePaymentRepository);
     }
 
     @AfterEach
@@ -434,4 +441,102 @@ class OrderServiceTest {
         verify(orderRepository, times(1)).findById(orderId);
         verify(orderDtoMapper, times(1)).map(order, CurrencyCode.EUR);
     }
+
+    @Test
+    void itShouldCancelOrderSuccessfully() {
+        // Given
+        Long userId = 1L;
+        Long orderId = 1L;
+        Order order = Order.builder()
+                .id(orderId)
+                .orderValue(BigDecimal.valueOf(1000))
+                .status(OrderStatus.NEW)
+                .user(User.builder().id(userId).build())
+                .build();
+
+        OrderDto orderDto = OrderDto.builder()
+                .id(orderId)
+                .status(OrderStatus.CANCELED.name())
+                .build();
+
+        when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
+        when(orderDtoMapper.map(any(Order.class))).thenReturn(orderDto);
+
+        // When
+        OrderDto result = underTest.cancelOrder(orderId, userId);
+
+        // Then
+        verify(orderRepository, times(1)).findById(orderId);
+        assertThat(result.status()).isEqualTo(OrderStatus.CANCELED.name());
+    }
+
+    @Test
+    void itShouldThrowExceptionWhenOrderCannotBeCanceled() {
+        // Given
+        Long userId = 1L;
+        Long orderId = 1L;
+        Order order = Order.builder()
+                .id(orderId)
+                .orderValue(BigDecimal.valueOf(1000))
+                .status(OrderStatus.SENT)
+                .user(User.builder().id(userId).build())
+                .build();
+
+        when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
+
+        // When
+        // Then
+        assertThrows(OrderCancelledException.class, () -> underTest.cancelOrder(orderId, userId));
+        verify(orderRepository, times(1)).findById(orderId);
+    }
+
+    @Test
+    void itShouldCancelOrderSuccessfullyAndUpdateStripePaymentRepository() {
+        // Given
+        Long userId = 1L;
+        Long orderId = 1L;
+        Order order = Order.builder()
+                .id(orderId)
+                .orderValue(BigDecimal.valueOf(1000))
+                .status(OrderStatus.PAID)
+                .user(User.builder().id(userId).build())
+                .build();
+
+        OrderDto orderDto = OrderDto.builder()
+                .id(orderId)
+                .status(OrderStatus.CANCELED.name())
+                .build();
+
+        when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
+        when(orderDtoMapper.map(any(Order.class))).thenReturn(orderDto);
+
+        // When
+        OrderDto result = underTest.cancelOrder(orderId, userId);
+
+        // Then
+        verify(orderRepository, times(1)).findById(orderId);
+        verify(stripePaymentRepository, times(1)).findByOrder_id(orderId);
+        assertThat(result.status()).isEqualTo(OrderStatus.CANCELED.name());
+    }
+
+    @Test
+    void itShouldThrowUserNotMatchExceptionWhenUserProvideBadRequest() {
+        // Given
+        Long userId = 1L;
+        Long orderId = 1L;
+        Order order = Order.builder()
+                .id(orderId)
+                .orderValue(BigDecimal.valueOf(1000))
+                .status(OrderStatus.NEW)
+                .user(User.builder().id(2L).build())
+                .build();
+
+        when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
+
+        // When
+        // Then
+        assertThrows(UserNotMatchException.class, () -> underTest.cancelOrder(orderId, userId));
+        verify(orderRepository, times(1)).findById(orderId);
+    }
+
 }

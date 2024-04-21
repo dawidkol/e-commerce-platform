@@ -58,16 +58,20 @@ class OrderControllerTest extends BaseIntegrationTest {
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.currencyCode").value(CurrencyCode.EUR.name()));
 
-        // 3. User retrieves his offer by given orderId = 3
-        Long orderId = 3L;
+        // 3. User retrieves his offer by given orderId
+        Long orderId = orderDto.id();
         mockMvc.perform(MockMvcRequestBuilders.get("/orders/{id}", orderId))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
 
         // 4. User retrieves all his offers
-        mockMvc.perform(MockMvcRequestBuilders.get("/orders", orderId))
+        mockMvc.perform(MockMvcRequestBuilders.get("/orders"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
+
+        // 5. User wants to cancel his offer
+        mockMvc.perform(MockMvcRequestBuilders.patch("/orders/{id}/cancel", orderId))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
@@ -85,4 +89,6 @@ class OrderControllerTest extends BaseIntegrationTest {
         mockMvc.perform(MockMvcRequestBuilders.patch("/orders/{id}", orderId).content(orderStatusJson).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
+
+
 }
