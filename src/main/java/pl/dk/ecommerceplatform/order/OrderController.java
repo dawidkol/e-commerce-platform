@@ -77,4 +77,12 @@ class OrderController {
         OrderValueDto orderValueDto = orderService.calculateOrderValueWithOtherCurrency(id, code);
         return ResponseEntity.ok(orderValueDto);
     }
+
+    @PatchMapping("/{id}/cancel")
+    @PreAuthorize(value = "hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
+    public ResponseEntity<OrderDto> cancelOrder(@PathVariable Long id) {
+        Long userId = securityService.getIdFromSecurityContextOrThrowException();
+        OrderDto orderDto = orderService.cancelOrder(id, userId);
+        return ResponseEntity.ok(orderDto);
+    }
 }

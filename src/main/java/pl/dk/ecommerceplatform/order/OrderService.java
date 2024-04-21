@@ -18,4 +18,7 @@ public interface OrderService {
     List<OrderDto> getOrders(List<String> credentials, Long userId, int page, int size);
 
     OrderValueDto calculateOrderValueWithOtherCurrency(Long orderId, String code);
+
+    OrderDto cancelOrder(Long orderId, Long userId);
+
 }

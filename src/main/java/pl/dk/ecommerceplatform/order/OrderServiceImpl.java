@@ -1,5 +1,6 @@
 package pl.dk.ecommerceplatform.order;
 
+import com.stripe.Stripe;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.springframework.data.domain.PageRequest;
@@ -9,6 +10,7 @@ import pl.dk.ecommerceplatform.cart.Cart;
 import pl.dk.ecommerceplatform.cart.CartRepository;
 import pl.dk.ecommerceplatform.currency.CurrencyCode;
 import pl.dk.ecommerceplatform.currency.CurrencyService;
+import pl.dk.ecommerceplatform.error.exceptions.order.OrderCancelledException;
 import pl.dk.ecommerceplatform.error.exceptions.order.OrderNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.order.OrderStatusNotFoundException;
 import pl.dk.ecommerceplatform.error.exceptions.promo.PromoCodeExpiredException;
@@ -24,6 +26,8 @@ import pl.dk.ecommerceplatform.order.dtos.UpdateOrderStatusDto;
 import pl.dk.ecommerceplatform.product.Product;
 import pl.dk.ecommerceplatform.promo.Promo;
 import pl.dk.ecommerceplatform.promo.PromoRepository;
+import pl.dk.ecommerceplatform.stripe.StripePayment;
+import pl.dk.ecommerceplatform.stripe.StripePaymentRepository;
 import pl.dk.ecommerceplatform.warehouse.Item;
 import pl.dk.ecommerceplatform.warehouse.WarehouseRepository;
 
@@ -34,6 +38,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static pl.dk.ecommerceplatform.order.OrderStatus.*;
 import static pl.dk.ecommerceplatform.utils.UtilsService.getLogger;
 import static pl.dk.ecommerceplatform.utils.UtilsService.isAdmin;
 
@@ -46,6 +51,7 @@ class OrderServiceImpl implements OrderService {
     private final WarehouseRepository warehouseRepository;
     private final CartRepository cartRepository;
     private final PromoRepository promoRepository;
+    private final StripePaymentRepository stripePaymentRepository;
     private final Logger logger = getLogger(OrderServiceImpl.class);
 
     @Override
@@ -191,4 +197,26 @@ class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
         return orderDtoMapper.map(order, currencyCode);
     }
+
+    @Override
+    @Transactional
+    public OrderDto cancelOrder(Long orderId, Long userId) {
+        StripePayment stripePayment = stripePaymentRepository.findByOrder_id(orderId).orElseThrow(OrderNotFoundException::new);
+        Order order = stripePayment.getOrder();
+        OrderStatus orderStatus = order.getStatus();
+
+        EnumSet<OrderStatus> notAllowedOrderStatus = EnumSet.of(SENT, RECEIVED, CANCELED, DELIVERED);
+        if (notAllowedOrderStatus.contains(orderStatus)) {
+            throw new OrderCancelledException("You cannot cancel your order. The current order[id = %s] status is %s"
+                    .formatted(orderId, orderStatus.name()));
+        }
+
+        EnumSet<OrderStatus> orderStatusesForRefund = EnumSet.of(PAID, ORDER_HANDED_FOR_PROCESSING, PROCESSING_ORDER);
+        if (orderStatusesForRefund.contains(orderStatus)) {
+            stripePayment.setRefund(true);
+        }
+        order.setStatus(CANCELED);
+        return orderDtoMapper.map(order);
+    }
+
 }

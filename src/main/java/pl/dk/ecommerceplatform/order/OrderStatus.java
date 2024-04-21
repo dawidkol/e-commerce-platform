@@ -8,6 +8,7 @@ public enum OrderStatus {
     PROCESSING_ORDER,
     SENT,
     DELIVERED,
-    RECEIVED
+    RECEIVED,
+    CANCELED
 
 }
