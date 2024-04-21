@@ -7,7 +7,7 @@ enabling seamless online shopping experiences and efficient management of the pl
 * **Spring Boot:** Framework for building Java applications.
 * **Spring Data JPA:** Data access and persistence.
 * **Flyway:** Database migration tool.
-* **PostgreSQL:** Relational database management system.
+* **PostgresSQL:** Relational database management system.
 * **Lombok:** Library for reducing boilerplate code in Java classes.
 * **Spring Test:** Testing framework for Spring components.
 * **Spring Security:** Framework for authentication and authorization.
@@ -327,9 +327,12 @@ Body raw (json):
   "promoCode": "testPromoCode"
 }
 ```
-```
-Optional property:
-- "promoCode"
+---
+
+### Cancel order:
+```http request
+PATCH https://e-commerce-platform.pl/api/v1/orders/{id}/delete
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZWJhc3RpYW4ua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODczMDE3MCwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DVVNUT01FUiJdfQ.urEAuriMLLZNbLvvzUvDJlhCGWw0fRopaneit4VW_2Y
 ```
 ---
 
@@ -716,6 +719,20 @@ Optional parameters:
 - "start"
 - "end"
 If you do not provide properties, statistics for the last month will be generated.
+```
+---
+
+### Get all payments to refund
+```http request
+GET https://e-commerce-platform.pl/api/v1/payments/refunds
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
+```
+---
+
+### Refund payment
+```http request
+POST https://e-commerce-platform.pl/api/v1/
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzdC5wbCIsImV4cCI6MjAyODcyOTk4NywiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.EFYP41cXOCD2J3fhQnPOHrn1RMTbWoNY_vDZREiLNnk
 ```
 ---
 
