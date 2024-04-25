@@ -29,7 +29,7 @@ class PaymentController {
 
     @PostMapping("/refund/{orderId}")
     @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> getList(@PathVariable Long orderId) {
+    public ResponseEntity<?> refund(@PathVariable Long orderId) {
         paymentService.refund(orderId);
         return ResponseEntity.ok().build();
     }
