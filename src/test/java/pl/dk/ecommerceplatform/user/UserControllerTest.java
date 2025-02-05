@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import pl.dk.ecommerceplatform.BaseIntegrationTest;
 import pl.dk.ecommerceplatform.confirmationToken.TokenService;
@@ -26,7 +27,7 @@ import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static pl.dk.ecommerceplatform.user.Role.*;
 
-
+@Transactional(propagation = Propagation.NOT_SUPPORTED)
 class UserControllerTest extends BaseIntegrationTest {
 
     @Autowired
