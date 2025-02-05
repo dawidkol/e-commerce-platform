@@ -1,3 +1,2 @@
-ALTER TABLE product
-DROP COLUMN quantity,
-DROP COLUMN available;
+ALTER TABLE product DROP COLUMN quantity;
+ALTER TABLE product DROP COLUMN available;

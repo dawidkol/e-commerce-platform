@@ -1,0 +1,81 @@
+server:
+  port: 8080
+  error:
+    include-message: always
+  servlet:
+    context-path: /api/v1
+
+spring:
+  profiles:
+    active: prod
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        highlight_sql: true
+        format_sql: true
+      open-in-view: false
+
+  flyway:
+    clean-disabled: false
+    enabled: true
+
+  docker:
+    compose:
+      skip:
+        in-tests: false
+      enabled: false
+
+  output:
+    ansi:
+      enabled: ALWAYS
+
+  servlet:
+    multipart:
+      max-file-size: 3MB
+      max-request-size: 3MB
+
+jws:
+  sharedKey: ${JWS_SHARED_KEY}
+
+stripe:
+  api:
+    key: ${STRIPE_API_KEY}
+  webhook:
+    key: ${STRIPE_WEBHOOK_KEY}
+
+scheduler:
+  promo: 0 0 12 * * ?
+  token: 0 0 3 * * ?
+  currency: 0 0 8 * * ?
+
+app:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL}
+    password: ${EMAIL_PASSWORD}
+    protocol-key: mail.transport.protocol
+    protocol-value: smtp
+    smtp-key: mail.smtp.auth
+    smtp-value: true
+    starttls-key: mail.smtp.starttls.enable
+    starttls-value: true
+
+  storage:
+    location:
+      images: ./uploads/product_images
+
+logging:
+  level:
+    pl:
+      dk: TRACE
+    org:
+      flywaydb: TRACE
+      hibernate:
+        orm:
+          jdbc:
+            bind: TRACE

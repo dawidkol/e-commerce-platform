@@ -1,6 +1,6 @@
 package pl.dk.ecommerceplatform.confirmationToken;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -20,7 +20,7 @@ import java.util.UUID;
 import static pl.dk.ecommerceplatform.constant.TokenConstant.VALID_TIME;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 class TokenServiceImpl implements TokenService {
 
     private final TokenRepository tokenRepository;
