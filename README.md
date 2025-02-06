@@ -14,7 +14,7 @@ Ensure you have the following installed on your system:
 
 ### Step 1: Clone the Repository
 ```shell
-git clone https://github.com/your-username/e-commerce-platform.git
+git clone https://github.com/dawidkol/e-commerce-platform.git
 cd e-commerce-platform
 ```
 
