@@ -2,7 +2,7 @@
 This application is a comprehensive e-commerce platform built using various technologies.
 It provides a range of features for both users and administrators,
 enabling seamless online shopping experiences and efficient management of the platform.
----
+
 ## Setup and Run
 This guide will walk you through setting up and running the e-commerce-platform using Docker Compose.
 Make sure you have Docker and Docker Compose installed on your machine before proceeding
@@ -14,8 +14,8 @@ Ensure you have the following installed on your system:
 
 ### Step 1: Clone the Repository
 ```shell
-  git clone https://github.com/your-username/e-commerce-platform.git
-  cd e-commerce-platform
+git clone https://github.com/your-username/e-commerce-platform.git
+cd e-commerce-platform
 ```
 
 ### Step: 2. Set Up Environment Variables
@@ -41,7 +41,7 @@ Replace the placeholders (your_postgres_user, your_postgres_password, etc.) with
 ### Step 3: Build and Run the Application
 Run the following command to start the application and database using Docker Compose:
 ```shell
-  docker compose -f docker-compose.yml up -d
+docker compose -f docker-compose.yml up -d
 ```
 This will:
 - Build the Docker images for the e-commerce platform and PostgreSQL database.
@@ -56,17 +56,17 @@ http://localhost:8080
 ### Step 5: Stopping the Application
 To stop the application and remove the containers, run:
 ```shell
-  docker compose -f docker-compose.yml down
+docker compose -f docker-compose.yml down
 ```
 
 If you want to remove the volumes (including the database data), use:
 ```shell
-  docker compose -f docker-compose.yml down -v
+docker compose -f docker-compose.yml down -v
 ```
 ### Step 6: (Optional) Running Tests
 To run unit and integration tests, use the following command:
 ```shell
-  mvn test -Dspring.profiles.active=test
+mvn test -Dspring.profiles.active=test
 ```
 ---
 ## Technologies used:
