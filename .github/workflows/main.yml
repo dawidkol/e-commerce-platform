@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - Feature/github
+      - master
 jobs:
   build-deploy:
     name: Build and Deploy e-commerce-platform
