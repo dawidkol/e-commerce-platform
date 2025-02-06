@@ -1,9 +1,6 @@
 package pl.dk.ecommerceplatform.stripe;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.JsonSyntaxException;
+import com.nimbusds.jose.shaded.gson.JsonSyntaxException;
 import com.stripe.exception.SignatureVerificationException;
 import com.stripe.model.*;
 import com.stripe.net.Webhook;

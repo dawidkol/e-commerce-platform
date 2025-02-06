@@ -13,8 +13,8 @@ import pl.dk.ecommerceplatform.error.exceptions.server.ServerException;
 @AllArgsConstructor
 class AddressService {
 
-    private AddressRepository addressRepository;
-    private AddressDtoMapper addressDtoMapper;
+    private final AddressRepository addressRepository;
+    private final AddressDtoMapper addressDtoMapper;
 
     @Transactional
     public AddressDto createShippingAddress(SaveAddressDto saveAddressDto) {

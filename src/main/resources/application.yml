@@ -26,7 +26,7 @@ spring:
   docker:
     compose:
       skip:
-        in-tests: false
+        in-tests: true
       enabled: false
 
   output:
