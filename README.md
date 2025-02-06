@@ -806,6 +806,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzd
 ![Screenshot 2024-04-13 at 23 22 01](https://github.com/dawidkol/e-commerce-platform/assets/15035709/1d0e31c0-b408-45d8-ae97-4cb6519a9b60)
 
 ---
+## CI/CD Pipeline
+- **GitHub Actions** is configured for automated builds and deployments.
+- Uses **Docker Hub** for containerization.
+- Runs unit tests and static analysis before pushing to production.
+---
 ## Author:
 ### dawid.kolano@igmail.com
 
