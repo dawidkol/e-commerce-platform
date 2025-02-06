@@ -1,0 +1,42 @@
+services:
+  e-commerce-platform-db:
+    image: postgres:15-alpine
+    container_name: e-commerce-platform-db
+    hostname: e-commerce-platform-db
+    restart: always
+    environment:
+      POSTGRES_DB: e-commerce-platform-db
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - e-commerce-platform-data:/var/lib/postgresql/data
+    networks:
+      - e-commerce-platform-network
+
+  e-commerce-platform:
+    image: dkcodepro/e-commerce-platform:latest
+    hostname: e-commerce-platform
+    container_name: e-commerce-platform
+    restart: always
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DOCKER_COMPOSE_ENABLED: false
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://e-commerce-platform-db:5432/e-commerce-platform-db
+      JWS_SHARED_KEY: ${JWS_SHARED_KEY}
+      STRIPE_API_KEY: ${STRIPE_API_KEY}
+      STRIPE_WEBHOOK_KEY: ${STRIPE_WEBHOOK_KEY}
+      APP_MAIL_USERNAME: ${EMAIL}
+      APP_MAIL_PASSWORD: ${EMAIL_PASSWORD}
+    networks:
+      - e-commerce-platform-network
+    depends_on:
+      - e-commerce-platform-db
+
+volumes:
+  e-commerce-platform-data:
+
+networks:
+  e-commerce-platform-network:
+    driver: bridge
