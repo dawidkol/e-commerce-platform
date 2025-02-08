@@ -811,9 +811,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzd
 - Uses **Docker Hub** for containerization.
 - Runs unit tests and static analysis before pushing to production.
 ---
-## Author:
-### dawid.kolano@gmail.com
-
 ---
 
 
