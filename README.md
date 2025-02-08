@@ -812,7 +812,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW51c3oua293YWxza2lAdGVzd
 - Runs unit tests and static analysis before pushing to production.
 ---
 ## Author:
-### dawid.kolano@igmail.com
+### dawid.kolano@gmail.com
 
 ---
 
